@@ -29,5 +29,8 @@
   },
   "peerDependencies": {
     "react": "^16.8.0"
+  },
+  "dependencies": {
+    "openfin-layouts": "^1.0.3"
   }
 }

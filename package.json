@@ -4,7 +4,7 @@
   "description": "React hooks for openfin API",
   "main": "src/index.ts",
   "scripts": {
-    "compile": "tsc src/index.ts",
+    "compile": "tsc",
     "lint": "tslint src/**/*.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,8 +22,16 @@
   "bugs": {
     "url": "https://github.com/oriondean/openfin-react-hooks/issues"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run compile && npm run lint"
+    }
+  },
   "homepage": "https://github.com/oriondean/openfin-react-hooks#readme",
   "devDependencies": {
+    "@types/openfin": "^41.0.0",
+    "@types/react": "^16.8.17",
+    "husky": "^2.3.0",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
   },

@@ -5,5 +5,11 @@
     ],
     "jsRules": {},
     "rules": {},
-    "rulesDirectory": []
+    "rulesDirectory": [],
+    "linterOptions": {
+        "exclude": [
+            "node_modules/**/*",
+            "demo/node_modules/**/*"
+        ]
+    }
 }

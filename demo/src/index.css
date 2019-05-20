@@ -6,7 +6,7 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-        monospace;
+* {
+    box-sizing: border-box;
 }
+

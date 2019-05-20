@@ -1,0 +1,25 @@
+{
+    "devtools_port": 9090,
+    "runtime": {
+        "arguments": "--enable-aggressive-domstorage-flushing",
+        "version": "10.66.39.43"
+    },
+    "startup_app": {
+        "name": "openfin-react-hooks-maximized-demo",
+        "uuid": "eeb07543-4a39-4fcb-a9cd-cfbb22c32117",
+        "url": "http://localhost:3000/index.html",
+        "applicationIcon": "http://localhost:3000/favicon.ico",
+        "autoShow": true,
+        "defaultWidth": 800,
+        "defaultHeight": 600,
+        "frame": true,
+        "contextMenu": true
+    },
+    "services": [],
+    "shortcut": {
+        "company": "",
+        "description": "openfin react hooks demo",
+        "name": "Openfin react hooks demo",
+        "icon": "http://localhost:3000/favicon.ico"
+    }
+}

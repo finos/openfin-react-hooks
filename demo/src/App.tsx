@@ -6,13 +6,13 @@ import {ReactComponent as Logo} from "./images/logo-openfin.svg";
 
 const cards: IDemoCard[] = [
     {
-        description: "Allows you to detect if current window is maximized",
+        description: "Detects if the current window is maximized",
         icon: "maximize",
         id: "maximized",
         name: "useMaximized",
     },
     {
-        description: "Allows you to detect if current window is docked",
+        description: "Detects if the current window is docked",
         icon: "lock",
         id: "docked",
         name: "useDocked",

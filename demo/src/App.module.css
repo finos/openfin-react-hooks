@@ -1,12 +1,19 @@
 .containerApp {
   background-image: url('./images/bg.png');
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .containerHeader {
   margin: 0 auto;
   padding-top: 20px;
   width: 200px;
+}
+
+.containerContent {
+  margin: 10px;
+  flex: 1;
 }
 
 .subtitle {

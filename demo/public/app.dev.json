@@ -7,7 +7,7 @@
     "startup_app": {
         "name": "openfin-react-hooks-maximized-demo",
         "uuid": "eeb07543-4a39-4fcb-a9cd-cfbb22c32117",
-        "url": "http://localhost:3000/index.html",
+        "url": "http://localhost:3000",
         "applicationIcon": "http://localhost:3000/favicon.ico",
         "autoShow": true,
         "defaultWidth": 800,

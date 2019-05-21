@@ -9,6 +9,7 @@
     "@types/react-dom": "16.8.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.1",
     "typescript": "3.4.5"
   },
@@ -36,6 +37,7 @@
   },
   "devDependencies": {
     "@types/openfin": "^41.0.0",
+    "@types/react-router-dom": "^4.3.3",
     "cross-env": "^5.2.0",
     "openfin-cli": "^2.0.8"
   }

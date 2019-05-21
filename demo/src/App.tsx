@@ -1,36 +1,20 @@
 import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
 import styles from "./App.module.css";
-
-import DemoCard from "./demo-card";
 import {ReactComponent as Logo} from "./images/logo-openfin.svg";
-
-const cards: IDemoCard[] = [
-    {
-        description: "Detects if the current window is maximized",
-        icon: "maximize",
-        id: "maximized",
-        name: "useMaximized",
-    },
-    {
-        description: "Detects if the current window is docked",
-        icon: "lock",
-        id: "docked",
-        name: "useDocked",
-    },
-];
+import Home from "./pages/home";
 
 const App: React.FC = () => {
     return (
         <div className={styles.containerApp}>
             <div className={styles.containerHeader}>
-                <Logo/>
+                <Logo />
                 <div className={styles.subtitle}>React Hooks</div>
             </div>
-            <div className={styles.containerContent}>
-                {
-                    cards.map((demo) => <DemoCard key={demo.id} demo={demo} />)
-                }
-            </div>
+            <Router>
+                <Route exact path="/" component={Home} />
+            </Router>
         </div>
     );
 };

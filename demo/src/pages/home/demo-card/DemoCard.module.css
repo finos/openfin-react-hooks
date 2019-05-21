@@ -1,7 +1,14 @@
 .container {
     background-color: white;
     padding: 10px;
-    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1)
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
+    user-select: none;
+    cursor: pointer;
+}
+
+.container:hover {
+    background-color: #EFEFEF;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.2);
 }
 
 .header {

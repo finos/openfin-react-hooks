@@ -1,14 +1,16 @@
 import React from "react";
+import {RouteComponentProps, withRouter} from "react-router-dom";
 
 import styles from "./DemoCard.module.css";
 
-interface IProps {
+interface IProps extends RouteComponentProps {
     demo: IDemoCard;
 }
 
-const DemoCard: React.FC<IProps> = ({demo}) => {
+const DemoCard: React.FC<IProps> = ({demo, history}) => {
     return (
-        <div className={styles.container}>
+        <div className={styles.container}
+            onClick={() => history.push(`demo/${demo.id}`)}>
             <div className={styles.header}>
                 <div className={styles.name}>{demo.name}</div>
                 <div className="material-icons">{demo.icon}</div>
@@ -18,4 +20,4 @@ const DemoCard: React.FC<IProps> = ({demo}) => {
     );
 };
 
-export default DemoCard;
+export default withRouter<IProps>(DemoCard);

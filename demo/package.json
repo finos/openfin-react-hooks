@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "classnames": "^2.2.6",
     "openfin-react-hooks": "file:../",
     "prismjs": "^1.16.0",
     "react": "^16.8.6",
@@ -34,6 +35,7 @@
     ]
   },
   "devDependencies": {
+    "@types/classnames": "^2.2.7",
     "@types/jest": "^24.0.13",
     "@types/node": "^12.0.2",
     "@types/openfin": "^41.0.0",

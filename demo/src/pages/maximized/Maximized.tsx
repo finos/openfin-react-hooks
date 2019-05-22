@@ -3,19 +3,18 @@ import React from "react";
 
 import styles from "./Maximized.module.css";
 
-const codeExample = `
-    import {useMaximized} from "openfin-react-hooks";
+const codeExample = `import {useMaximized} from "openfin-react-hooks";
 
-    const Maximized: React.FC = () => {
-        const [maximized, setMaximized] = useMaximized();
+const Maximized = () => {
+    const [maximized, setMaximized] = useMaximized();
 
-        return (
-            <div>
-                <div>Window is <strong>{maximized ? "maximized" : "not maximized"}</strong></div>
-                <button type="button" onClick={() => setMaximized(!maximized)}>Toggle Maximize</button>
-            </div>
-        )
-    }
+    return (
+        <div>
+            <div>Window is <strong>{maximized ? "maximized" : "not maximized"}</strong></div>
+            <button type="button" onClick={() => setMaximized(!maximized)}>Toggle Maximize</button>
+        </div>
+    )
+}
 `;
 
 const Maximized: React.FC = () => {

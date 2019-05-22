@@ -1,9 +1,7 @@
 .container {
-    background-color: white;
-    height: 100%;
-    padding: var(--padding-medium);
+    composes: container from '../../styles/demo-content.module.css';
 }
 
 .title {
-    margin: var(--margin-medium) 0;
+    composes: title from '../../styles/demo-content.module.css';
 }

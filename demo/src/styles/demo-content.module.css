@@ -1,0 +1,9 @@
+.container {
+    background-color: white;
+    height: 100%;
+    padding: var(--padding-medium);
+}
+
+.title {
+    margin: var(--margin-medium) 0;
+}

@@ -1,6 +1,7 @@
+import {snapAndDock} from "openfin-layouts";
 import {useEffect, useState} from "react";
 
-import {snapAndDock} from "openfin-layouts";
+const undock = () => snapAndDock.undockWindow();
 
 export default () => {
     const [isDocked, setIsDocked] = useState(false);
@@ -18,5 +19,5 @@ export default () => {
         };
     }, []);
 
-    return isDocked;
+    return [isDocked, undock];
 };

@@ -26,13 +26,14 @@ const Maximized: React.FC = () => {
     return (
         <div className={styles.container}>
             <h1 className={styles.title}>useMaximize</h1>
-            <div className={styles.description}>Please maximize / unmaximize the window to demonstrate this hook</div>
+            <div className={styles.description}>Try maximizing / unmaximizing the window to demonstrate this hook</div>
+            <h2>Code Example</h2>
             <pre>
                 <code className="language-jsx">
                     {codeExample}
                 </code>
             </pre>
-            <h2>Example</h2>
+            <h2>Try it out</h2>
             <div>Window is <strong>{maximized ? "maximized" : "not maximized"}</strong></div>
             <br />
             <button type="button" onClick={() => setMaximized(!maximized)}>Toggle Maximize</button>

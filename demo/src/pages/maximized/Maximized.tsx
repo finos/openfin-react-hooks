@@ -25,7 +25,7 @@ const Maximized: React.FC = () => {
             <h1 className={styles.title}>useMaximize</h1>
             <div className={styles.description}>Please maximize / unmaximize the window to demonstrate this hook</div>
             <pre>
-                <code className="language-javascript">
+                <code className="language-jsx">
                     {codeExample}
                 </code>
             </pre>

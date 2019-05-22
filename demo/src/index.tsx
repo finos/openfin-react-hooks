@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 
 import App from "./App";
 
+import "prismjs/components/prism-jsx.min";
 import "prismjs/themes/prism.css";
 import "./index.css";
 

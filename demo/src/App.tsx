@@ -4,6 +4,7 @@ import {Link, Route, RouteComponentProps, withRouter} from "react-router-dom";
 
 import styles from "./App.module.css";
 import {ReactComponent as Logo} from "./images/logo-openfin.svg";
+import Docked from "./pages/docked";
 import Home from "./pages/home";
 import Maximized from "./pages/maximized";
 
@@ -27,6 +28,7 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
             <div className={styles.containerContent}>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/demo/maximized" component={Maximized} />
+                <Route exact path="/demo/docked" component={Docked} />
             </div>
         </div>
     );

@@ -15,7 +15,18 @@
         "frame": true,
         "contextMenu": true
     },
-    "services": [],
+    "services": [
+        {
+            "name": "layouts",
+            "config": {
+                "features": {
+                    "tab": false,
+                    "dock": true,
+                    "snap": true
+                }
+            }
+        }
+    ],
     "shortcut": {
         "company": "",
         "description": "openfin react hooks demo",

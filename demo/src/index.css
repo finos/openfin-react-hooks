@@ -1,5 +1,23 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700&display=swap');
 
+:root {
+    --margin-small: 5px;
+    --margin-medium: 10px;
+    --margin-large: 15px;
+
+    --padding-small: 5px;
+    --padding-medium: 10px;
+    --padding-large: 15px;
+
+    --size-font-small: 14px;
+    --size-font-medium: 16px;
+    --size-font-large: 20px;
+
+    --color-white-darkened: #EFEFEF;
+    --color-grey-dark: #666666;
+    --color-grey-light: #AAAAAA;
+}
+
 
 body {
     margin: 0;

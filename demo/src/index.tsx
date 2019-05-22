@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import {BrowserRouter as Router} from "react-router-dom";
 
 import App from "./App";
 
@@ -8,7 +9,7 @@ import "prismjs/themes/prism.css";
 import "./index.css";
 
 const mountApp = () => {
-    ReactDOM.render(<App/>, document.getElementById("root"));
+    ReactDOM.render(<Router><App/></Router>, document.getElementById("root"));
 };
 
 if ("fin" in window) {

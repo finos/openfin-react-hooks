@@ -6,13 +6,22 @@
 }
 
 .containerHeader {
-  margin: 0 auto;
-  padding-top: 20px;
-  width: 200px;
+  align-items: center;
+  padding: var(--padding-medium);
+  height: 80px;
+}
+
+.containerLogo {
+  --width: 200px;
+  position: absolute;
+  width: var(--width);
+  left: calc(50% - var(--width) / 2);
+  top: var(--padding-medium);
+  cursor: pointer;
 }
 
 .containerContent {
-  margin: 10px;
+  margin: 0 var(--margin-medium) var(--margin-medium) var(--margin-medium);
   flex: 1;
 }
 
@@ -20,5 +29,21 @@
   position: relative;
   bottom: 20px;
   left: 115px;
-  color: #666666;
+  color: var(--color-grey-dark);
+}
+
+.buttonBack {
+  cursor: pointer;
+  user-select: none;
+  width: 25px;
+  height: 25px;
+  margin-top: var(--margin-large);
+}
+
+.buttonBackDisabled {
+  color: var(--color-grey-light);
+}
+
+.buttonBack:not(.buttonBackDisabled):hover {
+  color: var(--color-grey-dark);
 }

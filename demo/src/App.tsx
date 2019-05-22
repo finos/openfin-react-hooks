@@ -1,6 +1,5 @@
 import classNames from "classnames";
-import * as Prism from "prismjs";
-import React, {useEffect} from "react";
+import React from "react";
 import {Link, Route, RouteComponentProps, withRouter} from "react-router-dom";
 
 import styles from "./App.module.css";
@@ -9,8 +8,6 @@ import Home from "./pages/home";
 import Maximized from "./pages/maximized";
 
 const App: React.FC<RouteComponentProps> = ({ history }) => {
-    useEffect(Prism.highlightAll, []);
-
     return (
         <div className={styles.containerApp}>
             <div className={styles.containerHeader} >

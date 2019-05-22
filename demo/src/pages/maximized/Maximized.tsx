@@ -1,5 +1,6 @@
 import {useMaximized} from "openfin-react-hooks";
-import React from "react";
+import * as Prism from "prismjs";
+import React, {useEffect} from "react";
 
 import styles from "./Maximized.module.css";
 
@@ -19,6 +20,8 @@ const Maximized = () => {
 
 const Maximized: React.FC = () => {
     const [maximized, setMaximized] = useMaximized();
+
+    useEffect(Prism.highlightAll, []);
 
     return (
         <div className={styles.container}>

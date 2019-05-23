@@ -16,6 +16,12 @@ const cards: IDemoCard[] = [
         id: "docked",
         name: "useDocked",
     },
+    {
+        description: "Safely subscribe to a topic on the InterApplicationBus",
+        icon: "arrow_back",
+        id: "inter-application-bus-subscribe",
+        name: "useInterApplicationBusSubscribe",
+    },
 ];
 
 const Home: React.FC = () => {

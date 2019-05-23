@@ -4,8 +4,10 @@ import {Link, Route, RouteComponentProps, withRouter} from "react-router-dom";
 
 import styles from "./App.module.css";
 import {ReactComponent as Logo} from "./images/logo-openfin.svg";
+
 import Docked from "./pages/docked";
 import Home from "./pages/home";
+import InterApplicationBusSubscribe from "./pages/interApplicationBusSubscribe";
 import Maximized from "./pages/maximized";
 
 const App: React.FC<RouteComponentProps> = ({ history }) => {
@@ -29,6 +31,7 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
                 <Route exact path="/" component={Home} />
                 <Route exact path="/demo/maximized" component={Maximized} />
                 <Route exact path="/demo/docked" component={Docked} />
+                <Route exact path="/demo/inter-application-bus-subscribe" component={InterApplicationBusSubscribe} />
             </div>
         </div>
     );

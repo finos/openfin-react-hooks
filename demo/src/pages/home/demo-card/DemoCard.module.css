@@ -26,3 +26,7 @@
 .description {
     font-size: var(--size-font-small);
 }
+
+.icon {
+    color: var(--color-openfin-blue);
+}

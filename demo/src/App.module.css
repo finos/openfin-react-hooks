@@ -30,6 +30,7 @@
   bottom: 20px;
   left: 115px;
   color: var(--color-grey-dark);
+  user-select: none;
 }
 
 .buttonBack {

@@ -10,8 +10,10 @@
         "url": "http://localhost:3000",
         "applicationIcon": "http://localhost:3000/favicon.ico",
         "autoShow": true,
-        "defaultWidth": 1000,
-        "defaultHeight": 900,
+        "minWidth": 1200,
+        "defaultWidth": 1200,
+        "minHeight": 825,
+        "defaultHeight": 825,
         "frame": true,
         "contextMenu": true
     },

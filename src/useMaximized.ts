@@ -11,14 +11,13 @@ export default (): [boolean, (shouldMaximize: boolean) => Promise<void>] => {
         const setIsMaximizedTrue = () => setIsMaximized(true);
         const setIsMaximizedFalse = () => setIsMaximized(false);
 
-        const currentWindow = fin.desktop.Window.getCurrent();
-
-        currentWindow.addEventListener("maximized", setIsMaximizedTrue);
-        currentWindow.addEventListener("restored", setIsMaximizedFalse);
+        const currentWindow = fin.Window.getCurrentSync();
+        currentWindow.addListener("maximized", setIsMaximizedTrue);
+        currentWindow.addListener("restored", setIsMaximizedFalse);
 
         return () => {
-            currentWindow.removeEventListener("maximized", setIsMaximizedTrue);
-            currentWindow.removeEventListener("restored", setIsMaximizedFalse);
+            currentWindow.removeListener("maximized", setIsMaximizedTrue);
+            currentWindow.removeListener("restored", setIsMaximizedFalse);
         };
     }, []);
 

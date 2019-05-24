@@ -2,6 +2,11 @@ import {Identity} from "openfin/_v2/identity";
 
 export const useDocked: () => [boolean, () => Promise<void>];
 
+export const useInterApplicationBusSend: <T>(identity: Identity, topic: string, message: T) => {
+    success: boolean;
+    error: Error;
+};
+
 export const useInterApplicationBusSubscribe: <T>(identity: Identity, topic: string) => {
     data: {
         message: T;

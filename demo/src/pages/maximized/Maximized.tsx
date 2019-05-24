@@ -37,7 +37,6 @@ const Maximized: React.FC = () => {
             <div>Window is <strong>{maximized ? "maximized" : "not maximized"}</strong></div>
             <br />
             <button type="button" onClick={() => setMaximized(!maximized)}>Toggle Maximize</button>
-
         </div>
     );
 };

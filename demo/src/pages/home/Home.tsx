@@ -22,6 +22,12 @@ const cards: IDemoCard[] = [
         id: "inter-application-bus-subscribe",
         name: "useInterApplicationBusSubscribe",
     },
+    {
+        description: "Auto-magically send properties on the InterApplicationBus whenever they change",
+        icon: "arrow_upward",
+        id: "inter-application-bus-send",
+        name: "useInterApplicationBusSend",
+    },
 ];
 
 const Home: React.FC = () => {

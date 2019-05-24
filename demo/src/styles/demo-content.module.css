@@ -1,7 +1,7 @@
 .container {
     background-color: white;
     height: 100%;
-    padding: var(--padding-medium);
+    padding: var(--padding-large) var(--padding-medium) var(--padding-medium) var(--padding-medium);
 }
 
 .title {

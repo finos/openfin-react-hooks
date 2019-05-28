@@ -25,7 +25,7 @@ const Component = () => {
 
 const InterApplicationBusSend: React.FC = () => {
     const [name, setName] = useState("John Smith");
-    const { data } = useInterApplicationBusSubscribe(IDENTITY, TOPIC);
+    const {data} = useInterApplicationBusSubscribe(IDENTITY, TOPIC);
 
     useInterApplicationBusSend(IDENTITY, TOPIC, name);
     useEffect(Prism.highlightAll, []);
@@ -34,7 +34,7 @@ const InterApplicationBusSend: React.FC = () => {
         <div className={styles.container}>
             <h1 className={styles.title}>useInterApplicationBusSend</h1>
             <div className={styles.description}>
-                Try editing the input  below to send a message down the InterApplicationBus whenever it changes value.
+                Try editing the input below to send a message down the InterApplicationBus whenever it changes value.
             </div>
             <div className={styles.description}>
                 This hook automatically unsubscribes whenever your component unmounts.

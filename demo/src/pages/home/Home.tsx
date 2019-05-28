@@ -28,6 +28,12 @@ const cards: IDemoCard[] = [
         id: "inter-application-bus-send",
         name: "useInterApplicationBusSend",
     },
+    {
+        description: "Auto-magically publish properties on the InterApplicationBus whenever they change",
+        icon: "publish",
+        id: "inter-application-bus-publish",
+        name: "useInterApplicationBusPublish",
+    },
 ];
 
 const Home: React.FC = () => {

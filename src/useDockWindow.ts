@@ -1,4 +1,4 @@
-import {MonitorInfo, Rect} from "openfin/_v2/api/system/monitor";
+import {MonitorDetails, MonitorInfo, Rect} from "openfin/_v2/api/system/monitor";
 import Bounds from "openfin/_v2/api/window/bounds";
 import {Transition} from "openfin/_v2/api/window/transition";
 import {_Window} from "openfin/_v2/api/window/window";
@@ -9,13 +9,23 @@ import WindowBoundsEvent = fin.WindowBoundsEvent;
 const ANIMATION_DURATION: number = 250;
 let isAnimating = false;
 
+const getMonitorRect = async (bounds: Bounds): Promise<Rect> => {
+    const monitorInfo: MonitorInfo = await fin.System.getMonitorInfo();
+    return monitorInfo.nonPrimaryMonitors
+            .concat(monitorInfo.primaryMonitor)
+            .map((info: MonitorDetails) => info.monitorRect)
+            .find((rect) => bounds.left >= rect.left && (bounds.left + bounds.width) <= rect.right &&
+                bounds.top >= rect.top && (bounds.top + bounds.height) <= rect.bottom)
+        || monitorInfo.primaryMonitor.availableRect;
+};
+
 const getLocation = (edge: ScreenEdge, windowBounds: Bounds, screenBounds: Rect): Transition => ({
     position: {
         duration: ANIMATION_DURATION,
-        left: edge === ScreenEdge.LEFT ? 0 : edge === ScreenEdge.RIGHT ?
+        left: edge === ScreenEdge.LEFT ? screenBounds.left : edge === ScreenEdge.RIGHT ?
             screenBounds.right - windowBounds.width : windowBounds.left,
         relative: false,
-        top: edge === ScreenEdge.TOP ? 0 : windowBounds.top,
+        top: edge === ScreenEdge.TOP ? screenBounds.top : windowBounds.top,
     },
     size: {
         duration: ANIMATION_DURATION,
@@ -72,10 +82,10 @@ export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getC
             }
 
             const bounds: Bounds = await toMove.getBounds();
-            const monitorInfo: MonitorInfo = await fin.System.getMonitorInfo();
+            const monitorRect: Rect = await getMonitorRect(bounds);
 
             isAnimating = true; // set flag to prevent bounds listener from resetting edge to NONE
-            toMove.animate(getLocation(edge, bounds, monitorInfo.primaryMonitor.availableRect), {interrupt: true});
+            toMove.animate(getLocation(edge, bounds, monitorRect), {interrupt: true});
         };
 
         doWindowActions();

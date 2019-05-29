@@ -10,24 +10,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oriondean/openfin-react-hooks.git"
+    "url": "git+https://github.com/ScottLogic/openfin-react-hooks.git"
   },
   "keywords": [
     "openfin",
     "react",
     "react-hooks"
   ],
-  "author": "Dean Kerr",
+  "author": "Scott Logic",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/oriondean/openfin-react-hooks/issues"
+    "url": "https://github.com/ScottLogic/openfin-react-hooks/issues"
   },
   "husky": {
     "hooks": {
       "pre-commit": "npm run compile && npm run lint"
     }
   },
-  "homepage": "https://github.com/oriondean/openfin-react-hooks#readme",
+  "homepage": "https://github.com/ScottLogic/openfin-react-hooks#readme",
   "devDependencies": {
     "@types/openfin": "^41.0.0",
     "@types/react": "^16.8.17",

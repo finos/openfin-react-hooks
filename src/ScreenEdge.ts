@@ -3,4 +3,5 @@ export enum ScreenEdge {
     LEFT = "left",
     RIGHT = "right",
     NONE = "none",
+    BOTTOM = "bottom",
 }

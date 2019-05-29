@@ -5,6 +5,7 @@ import {ScreenEdge} from "./src/ScreenEdge";
 export const useDocked: () => [boolean, () => Promise<void>];
 
 export const useDockWindow: (initialEdge?: ScreenEdge, toMove?: _Window, allowUserToUndock?: boolean) => [ScreenEdge, {
+    dockBottom: () => void;
     dockLeft: () => void;
     dockNone: () => void;
     dockRight: () => void;

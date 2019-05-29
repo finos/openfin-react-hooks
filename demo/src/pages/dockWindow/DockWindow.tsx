@@ -75,6 +75,7 @@ const DockWindow: React.FC = () => {
                     <button type="button" onClick={actions.dockTop}>Dock Top</button>
                     <button type="button" onClick={actions.dockLeft}>Dock Left</button>
                     <button type="button" onClick={actions.dockRight}>Dock Right</button>
+                    <button type="button" onClick={actions.dockBottom}>Dock Bottom</button>
                     <button type="button" onClick={actions.dockNone}>Dock None</button>
                 </div>
                 <div>

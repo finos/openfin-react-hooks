@@ -13,7 +13,7 @@ const getMonitorRect = async (bounds: Bounds): Promise<Rect> => {
     const monitorInfo: MonitorInfo = await fin.System.getMonitorInfo();
     return monitorInfo.nonPrimaryMonitors
             .concat(monitorInfo.primaryMonitor)
-            .map((info: MonitorDetails) => info.monitorRect)
+            .map((info: MonitorDetails) => info.availableRect)
             .find((rect) => bounds.left >= rect.left && (bounds.left + bounds.width) <= rect.right &&
                 bounds.top >= rect.top && (bounds.top + bounds.height) <= rect.bottom)
         || monitorInfo.primaryMonitor.availableRect;
@@ -25,7 +25,8 @@ const getLocation = (edge: ScreenEdge, windowBounds: Bounds, screenBounds: Rect)
         left: edge === ScreenEdge.LEFT ? screenBounds.left : edge === ScreenEdge.RIGHT ?
             screenBounds.right - windowBounds.width : windowBounds.left,
         relative: false,
-        top: edge === ScreenEdge.TOP ? screenBounds.top : windowBounds.top,
+        top: edge === ScreenEdge.TOP ? screenBounds.top : edge === ScreenEdge.BOTTOM ?
+            screenBounds.bottom - windowBounds.height : windowBounds.top,
     },
     size: {
         duration: ANIMATION_DURATION,
@@ -92,6 +93,7 @@ export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getC
     }, [edge]);
 
     return [edge, {
+        dockBottom: () => setEdge(ScreenEdge.BOTTOM),
         dockLeft: () => setEdge(ScreenEdge.LEFT),
         dockNone: () => setEdge(ScreenEdge.NONE),
         dockRight: () => setEdge(ScreenEdge.RIGHT),

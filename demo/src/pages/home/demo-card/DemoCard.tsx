@@ -14,7 +14,9 @@ const DemoCard: React.FC<IProps> = ({demo, history}) => {
             onClick={() => history.push(`demo/${demo.id}`)}>
             <div className={styles.header}>
                 <div className={styles.name}>{demo.name}</div>
-                <div className={classNames("material-icons", styles.icon)}>{demo.icon}</div>
+                <div className={classNames("material-icons", styles.icon, demo.iconRotate && styles.iconRotate)}>
+                    {demo.icon}
+                </div>
             </div>
             <div className={styles.description}>{demo.description}</div>
         </div>

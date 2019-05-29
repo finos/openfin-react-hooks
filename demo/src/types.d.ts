@@ -3,4 +3,5 @@ interface IDemoCard {
     name: string;
     description: string;
     icon: string;
+    iconRotate: boolean;
 }

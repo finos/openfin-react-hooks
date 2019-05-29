@@ -30,3 +30,7 @@
 .icon {
     color: var(--color-openfin-blue);
 }
+
+.iconRotate {
+    transform: rotate(45deg);
+}

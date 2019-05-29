@@ -6,6 +6,7 @@ import styles from "./App.module.css";
 import {ReactComponent as Logo} from "./images/logo-openfin.svg";
 
 import Docked from "./pages/docked";
+import DockWindow from "./pages/dockWindow";
 import Home from "./pages/home";
 import InterApplicationBusPublish from "./pages/interApplicationBusPublish";
 import InterApplicationBusSend from "./pages/interApplicationBusSend";
@@ -36,6 +37,7 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
                 <Route exact path="/demo/inter-application-bus-subscribe" component={InterApplicationBusSubscribe} />
                 <Route exact path="/demo/inter-application-bus-send" component={InterApplicationBusSend} />
                 <Route exact path="/demo/inter-application-bus-publish" component={InterApplicationBusPublish} />
+                <Route exact path="/demo/dock-window" component={DockWindow} />
             </div>
         </div>
     );

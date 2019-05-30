@@ -90,7 +90,9 @@ export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getC
         }
 
         return () => {
-            toMove.enableUserMovement();
+            if (toMove.enableUserMovement) {
+                toMove.enableUserMovement();
+            }
         };
     }, [edge, toMove, allowUserToUndock]);
 

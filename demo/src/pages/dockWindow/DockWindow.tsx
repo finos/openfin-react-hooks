@@ -11,7 +11,9 @@ const codeExample = `import {ScreenEdge, useDockWindow} from "openfin-react-hook
 
 const Component = () => {
     const [allowUndocking, setAllowUndocking] = useState(true);
-    const [edge, actions] = useDockWindow(ScreenEdge.NONE, window.fin.Window.getCurrentSync(), allowUndocking);
+    const [enableStretchToFit, setEnableStretchToFit] = useState(false);
+    const [edge, actions] = useDockWindow(ScreenEdge.NONE, win || window.fin.Window.getCurrentSync(),
+        allowUndocking, enableStretchToFit ? { dockedWidth: 50, dockedHeight: 50 } : undefined);
 
     return (
         <div>
@@ -19,7 +21,12 @@ const Component = () => {
             <button type="button" onClick={actions.dockLeft}>Dock Left</button>
             <button type="button" onClick={actions.dockRight}>Dock Right</button>
             <button type="button" onClick={actions.dockNone}>Dock None</button>
-            <button type="button" onClick={() => setAllowUndocking(!allowUndocking)}>Toggle user undocking</button>
+            <button type="button" onClick={() => setAllowUndocking(!allowUndocking)}>
+                Toggle user undocking
+            </button>
+            <button type="button" onClick={() => setEnableStretchToFit(!allowStretchToFit)}>
+                Toggle Stretch to fit
+            </button>
         </div>
     )
 }

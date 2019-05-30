@@ -3,8 +3,9 @@ import Bounds from "openfin/_v2/api/window/bounds";
 import {Transition} from "openfin/_v2/api/window/transition";
 import {_Window} from "openfin/_v2/api/window/window";
 import {useEffect, useState} from "react";
+
+import {IDimensions} from "../index";
 import {ScreenEdge} from "./ScreenEdge";
-import WindowBoundsEvent = fin.WindowBoundsEvent;
 
 const ANIMATION_DURATION: number = 250;
 let isAnimating = false;
@@ -19,7 +20,24 @@ const getMonitorRect = async (bounds: Bounds): Promise<Rect> => {
         || monitorInfo.primaryMonitor.availableRect;
 };
 
-const getLocation = (edge: ScreenEdge, windowBounds: Bounds, screenBounds: Rect): Transition => ({
+const getStretchTransition = (edge: ScreenEdge, screenBounds: Rect, stretchToFit: IDimensions): Transition => ({
+    position: {
+        duration: ANIMATION_DURATION,
+        left: edge !== ScreenEdge.RIGHT ? screenBounds.left : screenBounds.right - stretchToFit.dockedWidth,
+        relative: false,
+        top: edge !== ScreenEdge.BOTTOM ? screenBounds.top : screenBounds.bottom - stretchToFit.dockedHeight,
+    },
+    size: {
+        duration: ANIMATION_DURATION,
+        height: edge === ScreenEdge.TOP || edge === ScreenEdge.BOTTOM ?
+            stretchToFit.dockedHeight : screenBounds.bottom - screenBounds.top,
+        relative: false,
+        width: edge === ScreenEdge.TOP || edge === ScreenEdge.BOTTOM ?
+            screenBounds.right - screenBounds.left : stretchToFit.dockedWidth,
+    },
+});
+
+const getTransition = (edge: ScreenEdge, screenBounds: Rect, windowBounds: Bounds): Transition => ({
     position: {
         duration: ANIMATION_DURATION,
         left: edge === ScreenEdge.LEFT ? screenBounds.left : edge === ScreenEdge.RIGHT ?
@@ -37,11 +55,11 @@ const getLocation = (edge: ScreenEdge, windowBounds: Bounds, screenBounds: Rect)
 });
 
 export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getCurrentSync(),
-                allowUserToUndock: boolean = true) => {
+                allowUserToUndock: boolean = true, stretchToFit?: IDimensions) => {
     const [edge, setEdge] = useState(initialEdge);
 
     useEffect(() => {
-        const handleBoundsChanged = (event: WindowBoundsEvent) => {
+        const handleBoundsChanged = (event: fin.WindowBoundsEvent) => {
             // Don't reset edge if we're the ones moving it or only a resize bound event has occurred
             if (isAnimating || event.changeType === 1) {
                 if (isAnimating) {
@@ -86,7 +104,11 @@ export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getC
             const monitorRect: Rect = await getMonitorRect(bounds);
 
             isAnimating = true; // set flag to prevent bounds listener from resetting edge to NONE
-            toMove.animate(getLocation(edge, bounds, monitorRect), {interrupt: true});
+            if (stretchToFit) {
+                await toMove.animate(getStretchTransition(edge, monitorRect, stretchToFit), {interrupt: true});
+            } else {
+                await toMove.animate(getTransition(edge, monitorRect, bounds), {interrupt: true});
+            }
         };
 
         doWindowActions();

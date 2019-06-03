@@ -6,33 +6,35 @@ import {IDimensions} from "../index";
 import {ScreenEdge} from "./ScreenEdge";
 
 const ANIMATION_DURATION: number = 250;
+const UNDOCK_MARGIN: number = 25;
 
 const stretchedUndock = (previous: ScreenEdge, monitorBounds: Rect, stretchToFit: IDimensions): Transition => ({
     position: {
         duration: ANIMATION_DURATION,
         left: previous !== ScreenEdge.RIGHT ?
-            25 : monitorBounds.right - stretchToFit.dockedWidth - 25,
+            monitorBounds.left + UNDOCK_MARGIN : monitorBounds.right - stretchToFit.dockedWidth - UNDOCK_MARGIN,
         relative: false,
-        top: previous !== ScreenEdge.BOTTOM ? 25 : monitorBounds.bottom - stretchToFit.dockedHeight - 25,
+        top: previous !== ScreenEdge.BOTTOM ? monitorBounds.top + UNDOCK_MARGIN :
+            monitorBounds.bottom - stretchToFit.dockedHeight - UNDOCK_MARGIN,
     },
     size: {
         duration: ANIMATION_DURATION,
         height: previous === ScreenEdge.LEFT || previous === ScreenEdge.RIGHT ?
-            monitorBounds.bottom - monitorBounds.top - 50 : stretchToFit.dockedHeight,
+            monitorBounds.bottom - monitorBounds.top - (UNDOCK_MARGIN * 2) : stretchToFit.dockedHeight,
         relative: false,
         width: previous === ScreenEdge.TOP || previous === ScreenEdge.BOTTOM ?
-            monitorBounds.right - monitorBounds.left - 50 : stretchToFit.dockedWidth,
+            monitorBounds.right - monitorBounds.left - (UNDOCK_MARGIN * 2) : stretchToFit.dockedWidth,
     },
 });
 
 const undock = (previous: ScreenEdge, windowBounds: Bounds): Transition => ({
     position: {
         duration: ANIMATION_DURATION,
-        left: previous === ScreenEdge.LEFT ? 25 : previous === ScreenEdge.RIGHT ?
-            windowBounds.left - 25 : windowBounds.left,
+        left: previous === ScreenEdge.LEFT ? windowBounds.left + UNDOCK_MARGIN : previous === ScreenEdge.RIGHT ?
+            windowBounds.left - UNDOCK_MARGIN : windowBounds.left,
         relative: false,
-        top: previous === ScreenEdge.TOP ? 25 : previous === ScreenEdge.BOTTOM ?
-            windowBounds.top - 25 : windowBounds.top,
+        top: previous === ScreenEdge.TOP ? windowBounds.top + UNDOCK_MARGIN : previous === ScreenEdge.BOTTOM ?
+            windowBounds.top - UNDOCK_MARGIN : windowBounds.top,
     },
 });
 

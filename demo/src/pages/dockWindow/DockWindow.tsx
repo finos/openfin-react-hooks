@@ -32,7 +32,7 @@ const Component = () => {
 }
 `;
 
-const dimensions: IDimensions = { dockedWidth: 50, dockedHeight: 50 };
+const dimensions: IDimensions = { dockedWidth: 80, dockedHeight: 80 };
 
 const DockWindow: React.FC = () => {
     const [win, setWin] = useState();
@@ -47,6 +47,7 @@ const DockWindow: React.FC = () => {
         const createWindow = async () => {
             newWindow = await window.fin.Window.create({
                 autoShow: true,
+                backgroundColor: "#F5F2F0",
                 defaultHeight: 200,
                 defaultWidth: 500,
                 frame: !enableStretchToFit,

@@ -8,7 +8,7 @@
 .containerHeader {
   align-items: center;
   padding: var(--padding-medium);
-  height: 80px;
+  flex: 0 0 75px;
 }
 
 .containerLogo {

@@ -88,6 +88,7 @@ const getDockTransition = (edge: ScreenEdge, screenBounds: Rect, windowBounds: B
 export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getCurrentSync(),
                 allowUserToUndock: boolean = true, stretchToFit?: IDimensions) => {
     const [edge, setEdge] = useState(initialEdge);
+    const [isUndocking, setIsUndocking] = useState(false);
     const previousEdge = usePreviousValue<ScreenEdge>(edge);
 
     useEffect(() => {
@@ -135,31 +136,46 @@ export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getC
             const bounds: Bounds = await toMove.getBounds();
             const monitorRect: Rect = await getMonitorRect(bounds);
 
-            if (edge === ScreenEdge.NONE) {
-                if (stretchToFit) {
-                    await toMove.animate(getStretchedUndockTransition(previousEdge!, monitorRect, stretchToFit),
-                        {interrupt: true});
-                } else {
-                    await toMove.animate(getUndockTransition(previousEdge!, bounds), {interrupt: true});
-                }
-
+            if (stretchToFit) {
+                await toMove.animate(getStretchedDockTransition(edge, monitorRect, stretchToFit),
+                    {interrupt: true});
             } else {
-                if (stretchToFit) {
-                    await toMove.animate(getStretchedDockTransition(edge, monitorRect, stretchToFit),
-                        {interrupt: true});
-                } else {
-                    await toMove.animate(getDockTransition(edge, monitorRect, bounds), {interrupt: true});
-                }
+                await toMove.animate(getDockTransition(edge, monitorRect, bounds), {interrupt: true});
             }
         };
 
-        doWindowActions();
+        if (edge !== ScreenEdge.NONE) {
+            doWindowActions();
+        }
     }, [edge]);
+
+    useEffect(() => {
+        const performUndockTransition = async () => {
+            const bounds: Bounds = await toMove.getBounds();
+            const monitorRect: Rect = await getMonitorRect(bounds);
+
+            if (stretchToFit) {
+                await toMove.animate(getStretchedUndockTransition(previousEdge!, monitorRect, stretchToFit),
+                    {interrupt: true});
+            } else {
+                await toMove.animate(getUndockTransition(previousEdge!, bounds), {interrupt: true});
+            }
+
+            setIsUndocking(false);
+        };
+
+        if (isUndocking) {
+            performUndockTransition();
+        }
+    }, [isUndocking, stretchToFit]);
 
     return [edge, {
         dockBottom: () => setEdge(ScreenEdge.BOTTOM),
         dockLeft: () => setEdge(ScreenEdge.LEFT),
-        dockNone: () => setEdge(ScreenEdge.NONE),
+        dockNone: () => {
+            setIsUndocking(true);
+            setEdge(ScreenEdge.NONE);
+        },
         dockRight: () => setEdge(ScreenEdge.RIGHT),
         dockTop: () => setEdge(ScreenEdge.TOP),
     }];

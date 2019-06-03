@@ -147,7 +147,7 @@ export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getC
         if (edge !== ScreenEdge.NONE) {
             doWindowActions();
         }
-    }, [edge]);
+    }, [edge, stretchToFit, toMove]);
 
     useEffect(() => {
         const performUndockTransition = async () => {
@@ -167,7 +167,7 @@ export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getC
         if (isUndocking) {
             performUndockTransition();
         }
-    }, [isUndocking, stretchToFit]);
+    }, [isUndocking, stretchToFit, toMove]);
 
     return [edge, {
         dockBottom: () => setEdge(ScreenEdge.BOTTOM),

@@ -1,3 +1,4 @@
+import Bounds from "openfin/_v2/api/window/bounds";
 import {_Window} from "openfin/_v2/api/window/window";
 import {Identity} from "openfin/_v2/identity";
 import {ScreenEdge} from "./src/ScreenEdge";
@@ -6,6 +7,8 @@ export interface IDimensions {
     dockedWidth: number;
     dockedHeight: number;
 }
+
+export const useBounds: (target?: _Window) => Bounds;
 
 export const useDocked: () => [boolean, () => Promise<void>];
 

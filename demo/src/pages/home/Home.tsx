@@ -46,6 +46,13 @@ const cards: IDemoCard[] = [
         id: "dock-window",
         name: "useDockWindow",
     },
+    {
+        description: "Subscribe to the bounds of a window changing",
+        icon: "settings_overscan",
+        iconRotate: false,
+        id: "bounds",
+        name: "useBounds",
+    },
 ];
 
 const Home: React.FC = () => {

@@ -5,6 +5,7 @@ import {Link, Route, RouteComponentProps, withRouter} from "react-router-dom";
 import styles from "./App.module.css";
 import {ReactComponent as Logo} from "./images/logo-openfin.svg";
 
+import Bounds from "./pages/bounds";
 import Docked from "./pages/docked";
 import DockWindow from "./pages/dockWindow";
 import Home from "./pages/home";
@@ -38,6 +39,7 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
                 <Route exact path="/demo/inter-application-bus-send" component={InterApplicationBusSend} />
                 <Route exact path="/demo/inter-application-bus-publish" component={InterApplicationBusPublish} />
                 <Route exact path="/demo/dock-window" component={DockWindow} />
+                <Route exact path="/demo/bounds" component={Bounds} />
             </div>
         </div>
     );

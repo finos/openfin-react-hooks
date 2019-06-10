@@ -53,6 +53,13 @@ const cards: IDemoCard[] = [
         id: "bounds",
         name: "useBounds",
     },
+    {
+        description: "Listen to and update window options",
+        icon: "menu",
+        iconRotate: false,
+        id: "options",
+        name: "useOptions",
+    },
 ];
 
 const Home: React.FC = () => {

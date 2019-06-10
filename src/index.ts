@@ -7,6 +7,7 @@ import useInterApplicationBusSendHook from "./useInterApplicationBusSend";
 import useInterApplicationBusSubscribeHook from "./useInterApplicationBusSubscribe";
 import useMaximizedHook from "./useMaximized";
 import useOptionsHook from "./useOptions";
+import useZoomHook from "./useZoom";
 
 export const ScreenEdge = ScreenEdgeEnum;
 export const useBounds = useBoundsHook;
@@ -17,6 +18,7 @@ export const useOptions = useOptionsHook;
 export const useInterApplicationBusSend = useInterApplicationBusSendHook;
 export const useInterApplicationBusSubscribe = useInterApplicationBusSubscribeHook;
 export const useInterApplicationBusPublish = useInterApplicationBusPublishHook;
+export const useZoom = useZoomHook;
 
 export default {
     ScreenEdge,
@@ -28,4 +30,5 @@ export default {
     useInterApplicationBusSubscribe,
     useMaximized,
     useOptions,
+    useZoom,
 };

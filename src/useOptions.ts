@@ -8,10 +8,10 @@ export default (win: _Window = fin.Window.getCurrentSync()) => {
     const updateOptions = () => win.getOptions().then(setOptions);
 
     useEffect(() => {
-        win.addListener("window-options-changed", updateOptions);
+        win.addListener("options-changed", updateOptions);
 
         return () => {
-            win.removeListener("window-options-changed", updateOptions);
+            win.removeListener("options-changed", updateOptions);
         };
     }, [win.identity.uuid, win.identity.name]);
 
@@ -19,5 +19,5 @@ export default (win: _Window = fin.Window.getCurrentSync()) => {
         updateOptions();
     }, [win.identity.uuid, win.identity.name]);
 
-    return [options, setOptions];
+    return [options, (newOptions: WindowOption) => win.updateOptions(newOptions)];
 };

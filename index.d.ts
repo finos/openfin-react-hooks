@@ -1,5 +1,6 @@
 import Bounds from "openfin/_v2/api/window/bounds";
 import {_Window} from "openfin/_v2/api/window/window";
+import {WindowOption} from "openfin/_v2/api/window/windowOption";
 import {Identity} from "openfin/_v2/identity";
 import {ScreenEdge} from "./src/ScreenEdge";
 
@@ -42,5 +43,7 @@ export const useInterApplicationBusSubscribe: <T>(identity: Identity, topic: str
 };
 
 export const useMaximized: () => [boolean, (shouldMaximize: boolean) => Promise<void>];
+
+export const useOptions: (target?: _Window) => [WindowOption, (options: WindowOption) => Promise<void>];
 
 export {ScreenEdge} from "./src/ScreenEdge";

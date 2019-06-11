@@ -8,7 +8,7 @@ import styles from "./Docked.module.css";
 
 const codeExample = `import {useMaximized} from "openfin-react-hooks";
 
-const Maximized = () => {
+const Component = () => {
     const [isDocked, undock] = useDocked();
 
     return (

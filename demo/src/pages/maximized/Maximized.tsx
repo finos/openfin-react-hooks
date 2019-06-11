@@ -6,7 +6,7 @@ import styles from "./Maximized.module.css";
 
 const codeExample = `import {useMaximized} from "openfin-react-hooks";
 
-const Maximized = () => {
+const Component = () => {
     const [maximized, setMaximized] = useMaximized();
 
     return (

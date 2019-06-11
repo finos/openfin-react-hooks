@@ -14,6 +14,7 @@ import InterApplicationBusSend from "./pages/interApplicationBusSend";
 import InterApplicationBusSubscribe from "./pages/interApplicationBusSubscribe";
 import Maximized from "./pages/maximized";
 import Options from "./pages/options";
+import Zoom from "./pages/zoom";
 
 const App: React.FC<RouteComponentProps> = ({ history }) => {
     return (
@@ -42,6 +43,7 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
                 <Route exact path="/demo/dock-window" component={DockWindow} />
                 <Route exact path="/demo/bounds" component={Bounds} />
                 <Route exact path="/demo/options" component={Options} />
+                <Route exact path="/demo/zoom" component={Zoom} />
             </div>
         </div>
     );

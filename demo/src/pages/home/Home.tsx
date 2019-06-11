@@ -60,6 +60,13 @@ const cards: IDemoCard[] = [
         id: "options",
         name: "useOptions",
     },
+    {
+        description: "Listen to and update window zoom level",
+        icon: "zoom_in",
+        iconRotate: false,
+        id: "zoom",
+        name: "useZoom",
+    },
 ];
 
 const Home: React.FC = () => {

@@ -23,6 +23,8 @@ Currently, the collection of hooks consists of the following:
 | useInterApplicationBusPublish  | Auto-magically publish properties on the InterApplicationBus whenever they change |
 | useInterApplicationBusSubscribe | Subscribe to a topic on the InterApplicationBus |
 | useMaximized  | Detects if the current window is maximized |
+| useOptions | Listen to and update window options |
+| useZoom | Listen to and update window zoom level |
 
 ## Demo
 

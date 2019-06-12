@@ -25,6 +25,7 @@ Currently, the collection of hooks consists of the following:
 | useInterApplicationBusSubscribe | Subscribe to a topic on the InterApplicationBus |
 | useMaximized  | Detects if the current window is maximized |
 | useOptions | Listen to and update window options |
+| useUserMovement | Listen to and update whether user movement is enabled / disabled for a window |
 | useZoom | Listen to and update window zoom level |
 
 ## Demo

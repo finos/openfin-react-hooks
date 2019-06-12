@@ -74,6 +74,13 @@ const cards: IDemoCard[] = [
         id: "focus",
         name: "useFocus",
     },
+    {
+        description: "Listen to and update whether user movement is enabled or disabled for a window",
+        icon: "pan_tool",
+        iconRotate: false,
+        id: "user-movement",
+        name: "useUserMovement",
+    },
 ];
 
 const Home: React.FC = () => {

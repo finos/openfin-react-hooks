@@ -15,6 +15,7 @@ import InterApplicationBusSend from "./pages/interApplicationBusSend";
 import InterApplicationBusSubscribe from "./pages/interApplicationBusSubscribe";
 import Maximized from "./pages/maximized";
 import Options from "./pages/options";
+import UserMovement from "./pages/userMovement";
 import Zoom from "./pages/zoom";
 
 const App: React.FC<RouteComponentProps> = ({ history }) => {
@@ -46,6 +47,7 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
                 <Route exact path="/demo/options" component={Options} />
                 <Route exact path="/demo/zoom" component={Zoom} />
                 <Route exact path="/demo/focus" component={Focus} />
+                <Route exact path="/demo/user-movement" component={UserMovement} />
             </div>
         </div>
     );

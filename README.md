@@ -19,6 +19,7 @@ Currently, the collection of hooks consists of the following:
 | useBounds  | Subscribe to the bounds of a window changing  |
 | useDocked  | Detects if the current window is docked |
 | useDockWindow  | Dock a window to the edges of a screen  |
+| useFocus | Listen to and affect focus of a window |
 | useInterApplicationBusSend  | Auto-magically send properties on the InterApplicationBus whenever they change |
 | useInterApplicationBusPublish  | Auto-magically publish properties on the InterApplicationBus whenever they change |
 | useInterApplicationBusSubscribe | Subscribe to a topic on the InterApplicationBus |

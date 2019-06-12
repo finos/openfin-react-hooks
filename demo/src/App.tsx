@@ -8,6 +8,7 @@ import {ReactComponent as Logo} from "./images/logo-openfin.svg";
 import Bounds from "./pages/bounds";
 import Docked from "./pages/docked";
 import DockWindow from "./pages/dockWindow";
+import Focus from "./pages/focus";
 import Home from "./pages/home";
 import InterApplicationBusPublish from "./pages/interApplicationBusPublish";
 import InterApplicationBusSend from "./pages/interApplicationBusSend";
@@ -44,6 +45,7 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
                 <Route exact path="/demo/bounds" component={Bounds} />
                 <Route exact path="/demo/options" component={Options} />
                 <Route exact path="/demo/zoom" component={Zoom} />
+                <Route exact path="/demo/focus" component={Focus} />
             </div>
         </div>
     );

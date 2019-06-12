@@ -1,0 +1,11 @@
+.container {
+    composes: container from '../../styles/demo-content.module.css';
+}
+
+.title {
+    composes: title from '../../styles/demo-content.module.css';
+}
+
+.marginLeft {
+    margin-left: var(--margin-medium);
+}

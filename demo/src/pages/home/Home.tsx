@@ -67,6 +67,13 @@ const cards: IDemoCard[] = [
         id: "zoom",
         name: "useZoom",
     },
+    {
+        description: "Listen to and update the focused state of a window",
+        icon: "center_focus_weak",
+        iconRotate: false,
+        id: "focus",
+        name: "useFocus",
+    },
 ];
 
 const Home: React.FC = () => {

@@ -22,7 +22,14 @@ export default (win: _Window = fin.Window.getCurrentSync()) => {
         };
     }, [win.identity.uuid, win.identity.name]);
 
-    // bringToFront, isShowing, setAsForground, blur, focus
+    useEffect(() => {
+        const setBlurred = () => setIsFocused(false);
+        win.addListener("closed", setBlurred);
+
+        return () => {
+            win.removeListener("closed", setBlurred);
+        };
+    }, [win.identity.uuid, win.identity.name]);
 
     return [
         isFocused,

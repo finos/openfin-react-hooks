@@ -75,15 +75,16 @@ const Focus: React.FC = () => {
             <div>
                 <span>Window is <strong>{isFocused ? "focused" : "not focused"}</strong></span>
                 <h3>Window Actions</h3>
-                <button type="button" onClick={() => setFocus(true)} disabled={isFocused}>Focus</button>
-                <button type="button" className={styles.marginLeft} onClick={() => setFocus(false)}
-                        disabled={!isFocused}>
+                <button type="button" onClick={() => setFocus(true)}>
+                    Focus
+                </button>
+                <button type="button" className={styles.marginLeft} onClick={() => setFocus(false)}>
                     Blur
                 </button>
-                <button type="button" className={styles.marginLeft} onClick={bringToFront} disabled={isFocused}>
+                <button type="button" className={styles.marginLeft} onClick={bringToFront}>
                     Bring to front
                 </button>
-                <button type="button" className={styles.marginLeft} onClick={setAsForeground} disabled={isFocused}>
+                <button type="button" className={styles.marginLeft} onClick={setAsForeground}>
                     Set as foreground
                 </button>
             </div>

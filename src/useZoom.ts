@@ -2,7 +2,7 @@ import {_Window} from "openfin/_v2/api/window/window";
 import {useEffect, useState} from "react";
 
 export default (win: _Window = fin.Window.getCurrentSync()) => {
-    const [zoom, setZoom] = useState<number>();
+    const [zoom, setZoom] = useState<number>(0);
 
     useEffect(() => {
         win.getZoomLevel().then(setZoom);

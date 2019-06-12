@@ -28,7 +28,7 @@ const Component = () => {
 
 const Zoom: React.FC = () => {
     const [win, setWin] = useState();
-    const [zoom, setZoom] = useZoom(win || window.fin.Window.getCurrentSync());
+    const [zoom, setZoom] = useZoom(win);
 
     useEffect(Prism.highlightAll, []);
 

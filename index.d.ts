@@ -49,6 +49,9 @@ export const useMaximized: () => [boolean, (shouldMaximize: boolean) => Promise<
 
 export const useOptions: (target?: _Window) => [WindowOption, (options: WindowOption) => Promise<void>];
 
+export const useUserMovement: (target?: _Window, initialValue?: boolean) =>
+    [boolean, (toEnable: boolean) => Promise<void>];
+
 export const useZoom: (target?: _Window) => [number, (newZoom: number) => Promise<void>];
 
 export {ScreenEdge} from "./src/ScreenEdge";

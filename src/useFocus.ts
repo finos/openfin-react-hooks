@@ -24,5 +24,10 @@ export default (win: _Window = fin.Window.getCurrentSync()) => {
 
     // bringToFront, isShowing, setAsForground, blur, focus
 
-    return [isFocused, (newFocus: boolean) => newFocus ? win.focus() : win.blur()];
+    return [
+        isFocused,
+        (newFocus: boolean) => newFocus ? win.focus() : win.blur(),
+        () => win.bringToFront(),
+        () => win.setAsForeground(),
+    ];
 };

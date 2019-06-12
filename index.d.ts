@@ -22,7 +22,8 @@ export const useDockWindow: (initialEdge?: ScreenEdge, toMove?: _Window, allowUs
     dockTop: () => void;
 }];
 
-export const useFocus: (target?: _Window) => [boolean, (newFocus: boolean) => Promise<void>];
+export const useFocus: (target?: _Window) => [boolean, (newFocus: boolean) => Promise<void>,
+    () => Promise<void>, () => Promise<void>];
 
 export const useInterApplicationBusPublish: <T>(topic: string, message: T) => {
     success: boolean;

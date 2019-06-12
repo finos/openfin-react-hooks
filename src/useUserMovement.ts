@@ -25,9 +25,5 @@ export default (win: _Window = fin.Window.getCurrentSync(), initialValue: boolea
         };
     }, [win.identity.uuid, win.identity.name]);
 
-    useEffect(() => {
-        updateUserMovement(initialValue);
-    }, []);
-
     return [isUserMovementEnabled, updateUserMovement];
 };

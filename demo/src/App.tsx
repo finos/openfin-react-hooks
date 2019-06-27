@@ -3,7 +3,8 @@ import React from "react";
 import {Link, Route, RouteComponentProps, withRouter} from "react-router-dom";
 
 import styles from "./App.module.css";
-import {ReactComponent as Logo} from "./images/logo-openfin.svg";
+import {ReactComponent as LogoOpenfin} from "./images/logo-openfin.svg";
+import {ReactComponent as LogoScottLogic} from "./images/logo-scott-logic.svg";
 
 import Bounds from "./pages/bounds";
 import Docked from "./pages/docked";
@@ -29,11 +30,15 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
                     <span className="material-icons">arrow_back</span>
                 </div>
                 <Link to="/">
-                    <div className={styles.containerLogo}>
-                        <Logo />
-                        <div className={styles.subtitle}>React Hooks</div>
+                    <div className={styles.containerLogoOpenfin}>
+                        <LogoOpenfin />
+                        <span className={styles.subtitleOpenfin}>React Hooks</span>
                     </div>
                 </Link>
+                <div className={styles.containerLogoScottLogic}>
+                    <span className={styles.containerSubtitleScottLogic}>developed thanks to</span>
+                    <LogoScottLogic />
+                </div>
             </div>
             <div className={styles.containerContent}>
                 <Route exact path="/" component={Home} />

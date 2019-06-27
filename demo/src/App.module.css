@@ -1,3 +1,8 @@
+.subtitle {
+  color: var(--color-grey-dark);
+  user-select: none;
+}
+
 .containerApp {
   background-image: url('./images/bg.png');
   height: 100vh;
@@ -6,31 +11,45 @@
 }
 
 .containerHeader {
+  --width-logo: 200px;
   align-items: center;
   padding: var(--padding-medium);
   flex: 0 0 75px;
 }
 
-.containerLogo {
-  --width: 200px;
+.containerLogoOpenfin {
   position: absolute;
-  width: var(--width);
-  left: calc(50% - var(--width) / 2);
+  width: var(--width-logo);
+  left: calc(50% - var(--width-logo) / 2);
   top: var(--padding-medium);
   cursor: pointer;
+}
+
+.subtitleOpenfin {
+  composes: subtitle;
+  position: relative;
+  bottom: 20px;
+  left: 115px;
+}
+
+.containerLogoScottLogic {
+  width: var(--width-logo);
+  height: 50px;
+  position: absolute;
+  right: var(--padding-medium);
+  top: 0;
+}
+
+.containerSubtitleScottLogic {
+  composes: subtitle;
+  position: relative;
+  top: 15px;
+  left: 30px;
 }
 
 .containerContent {
   margin: var(--margin-medium);
   flex: 1;
-}
-
-.subtitle {
-  position: relative;
-  bottom: 20px;
-  left: 115px;
-  color: var(--color-grey-dark);
-  user-select: none;
 }
 
 .buttonBack {

@@ -1,7 +1,7 @@
 {
   "name": "openfin-react-hooks",
   "version": "1.0.0",
-  "description": "React hooks for openfin API",
+  "description": "A collection of React Hooks built on top of the Openfin API",
   "main": "dist/index.js",
   "scripts": {
     "compile": "tsc",

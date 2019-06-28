@@ -2,6 +2,12 @@
 
 A collection of [React Hooks](https://reactjs.org/docs/hooks-intro.html) built on top of the [Openfin API](https://developers.openfin.co/docs/javascript-api).
 
+## Getting Started
+
+1. `npm install --save openfin-react-hooks`
+2. `import {useDockWindow} from "openfin-react-hooks";`
+3. Enjoy!
+
 ## Motive
 
 Wrapping up the OpenFin API in a higher level hooks abstraction allows developers to share common functionality across React-based OpenFin applications.

@@ -28,6 +28,28 @@ Currently, the collection of hooks consists of the following:
 | `useUserMovement` | Listen to and update whether user movement is enabled / disabled for a window |
 | `useZoom` | Listen to and update window zoom level |
 
+## Example
+
+The following example demonstrates the usage of the `useInterApplicationBusSubscribe` and `useInterApplicationBusSend` hooks in order to subscribe to the OpenFin [InterApplicationBus](https://cdn.openfin.co/jsdocs/stable/fin.desktop.module_InterApplicationBus.html) and send a message:
+
+```
+import {useInterApplicationBusSend, useInterApplicationBusSubscribe} from "openfin-react-hooks";
+
+const Component = () => {
+    const [name, setName] = useState("John Smith");
+    const { data } = useInterApplicationBusSubscribe(IDENTITY, TOPIC);
+    useInterApplicationBusSend(IDENTITY, TOPIC, name);
+    return (
+        <div>
+            <input type="text" onChange={(e) => setName(e.target.value)} value={name} />
+            <div><strong>Received Message:</strong> {data ? data.message : "None"}</div>
+        </div>
+    )
+}
+```
+
+Usage examples for all of the hooks can be found in the interactive demo, as detailed below.
+
 ## Demo
 
 If you'd like a demo of the current collection of hooks, you can do so by:

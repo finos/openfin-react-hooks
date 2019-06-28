@@ -8,6 +8,8 @@ const TOPIC = "demo-topic";
 
 const codeExample = `import {useInterApplicationBusPublish, useInterApplicationBusSubscribe} from "openfin-react-hooks";
 
+const TOPIC = "demo-topic";
+
 const Component = () => {
     const [name, setName] = useState("John Smith");
     const {data} = useInterApplicationBusSubscribe({ uuid: "*" }, TOPIC);

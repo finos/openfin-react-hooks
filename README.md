@@ -35,6 +35,9 @@ The following example demonstrates the usage of the `useInterApplicationBusSubsc
 ```
 import {useInterApplicationBusSend, useInterApplicationBusSubscribe} from "openfin-react-hooks";
 
+const IDENTITY = window.fin.Window.me;
+const TOPIC = "demo-topic";
+
 const Component = () => {
     const [name, setName] = useState("John Smith");
     const { data } = useInterApplicationBusSubscribe(IDENTITY, TOPIC);

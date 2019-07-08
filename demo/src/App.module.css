@@ -4,7 +4,7 @@
 }
 
 .containerApp {
-  background-image: url('./images/bg.png');
+  background-image: url("./images/bg.png");
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -15,6 +15,8 @@
   align-items: center;
   padding: var(--padding-medium);
   flex: 0 0 75px;
+  cursor: grab;
+  -webkit-app-region: drag;
 }
 
 .containerLogoOpenfin {

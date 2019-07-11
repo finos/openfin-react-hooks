@@ -1,10 +1,10 @@
 import classNames from "classnames";
 import React from "react";
-import {Link, Route, RouteComponentProps, withRouter} from "react-router-dom";
+import {Link, Redirect, Route, RouteComponentProps, Switch, withRouter} from "react-router-dom";
 
 import styles from "./App.module.css";
 import {ReactComponent as LogoOpenfin} from "./images/logo-openfin.svg";
-import {ReactComponent as LogoScottLogic} from "./images/logo-scott-logic.svg";
+import {ReactComponent as LogoScottLogic} from "./images/sl-logo-charcoal.svg";
 
 import Bounds from "./pages/bounds";
 import Docked from "./pages/docked";
@@ -24,8 +24,10 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
         <div className={styles.containerApp}>
             <div className={styles.containerHeader} >
                 <div
-                    className={classNames(styles.buttonBack, { [styles.buttonBackDisabled]: history.length === 1})}
-                    onClick={() => history.length > 1 && history.goBack()}
+                    className={classNames(styles.buttonBack,
+                        {[styles.buttonBackDisabled]: history.location.pathname === "/"})
+                    }
+                    onClick={() => history.location.pathname !== "/" && history.goBack()}
                 >
                     <span className="material-icons">arrow_back</span>
                 </div>
@@ -36,23 +38,26 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
                     </div>
                 </Link>
                 <div className={styles.containerLogoScottLogic}>
-                    <span className={styles.containerSubtitleScottLogic}>developed thanks to</span>
                     <LogoScottLogic />
                 </div>
             </div>
             <div className={styles.containerContent}>
-                <Route exact path="/" component={Home} />
-                <Route exact path="/demo/maximized" component={Maximized} />
-                <Route exact path="/demo/docked" component={Docked} />
-                <Route exact path="/demo/inter-application-bus-subscribe" component={InterApplicationBusSubscribe} />
-                <Route exact path="/demo/inter-application-bus-send" component={InterApplicationBusSend} />
-                <Route exact path="/demo/inter-application-bus-publish" component={InterApplicationBusPublish} />
-                <Route exact path="/demo/dock-window" component={DockWindow} />
-                <Route exact path="/demo/bounds" component={Bounds} />
-                <Route exact path="/demo/options" component={Options} />
-                <Route exact path="/demo/zoom" component={Zoom} />
-                <Route exact path="/demo/focus" component={Focus} />
-                <Route exact path="/demo/user-movement" component={UserMovement} />
+                <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route exact path="/demo/maximized" component={Maximized} />
+                    <Route exact path="/demo/docked" component={Docked} />
+                    <Route exact path="/demo/inter-application-bus-subscribe"
+                            component={InterApplicationBusSubscribe} />
+                    <Route exact path="/demo/inter-application-bus-send" component={InterApplicationBusSend} />
+                    <Route exact path="/demo/inter-application-bus-publish" component={InterApplicationBusPublish} />
+                    <Route exact path="/demo/dock-window" component={DockWindow} />
+                    <Route exact path="/demo/bounds" component={Bounds} />
+                    <Route exact path="/demo/options" component={Options} />
+                    <Route exact path="/demo/zoom" component={Zoom} />
+                    <Route exact path="/demo/focus" component={Focus} />
+                    <Route exact path="/demo/user-movement" component={UserMovement} />
+                    <Redirect to={"/"} />
+                </Switch>
             </div>
         </div>
     );

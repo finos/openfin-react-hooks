@@ -2,6 +2,8 @@
 
 A collection of [React Hooks](https://reactjs.org/docs/hooks-intro.html) built on top of the [Openfin API](https://developers.openfin.co/docs/javascript-api).
 
+![screenshot](https://user-images.githubusercontent.com/2376919/61056255-e3246a00-a3ea-11e9-9807-9b4824ee032c.PNG)
+
 ## Installing the Demo
 
 In order to install the Openfin React Hooks demo application, download the installer [here](https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fstockflux.scottlogic.com%2Fartifacts%2Fopenfin-react-hooks%2Fapp.json&fileName=Openfin-react-hooks&unzipped=true) and run the executable. If you haven't already installed an OpenFin application, this will install the required runtime. It'll also add the shortcut to Openfin React Hooks Demo to your desktop and start menu.

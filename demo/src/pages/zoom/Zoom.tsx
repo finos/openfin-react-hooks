@@ -40,7 +40,7 @@ const Zoom: React.FC = () => {
                 defaultHeight: 200,
                 defaultWidth: 500,
                 name: uuidv4(),
-                url: "/zoom.html",
+                url: process.env.REACT_APP_ZOOM_HTML,
             });
             setWin(newWindow);
         };

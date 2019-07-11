@@ -1,0 +1,38 @@
+{
+    "devtools_port": 9090,
+    "runtime": {
+        "arguments": "--enable-aggressive-domstorage-flushing",
+        "version": "11.69.42.14"
+    },
+    "startup_app": {
+        "name": "openfin-react-hooks",
+        "uuid": "eeb07543-4a39-4fcb-a9cd-cfbb22c32117",
+        "url": "https://stockflux.scottlogic.com/artifacts/openfin-react-hooks/index.html",
+        "applicationIcon": "https://stockflux.scottlogic.com/artifacts/openfin-react-hooks/favicon.ico",
+        "autoShow": true,
+        "minWidth": 1200,
+        "defaultWidth": 1200,
+        "minHeight": 825,
+        "defaultHeight": 825,
+        "frame": true,
+        "contextMenu": true
+    },
+    "services": [
+        {
+            "name": "layouts",
+            "config": {
+                "features": {
+                    "tab": false,
+                    "dock": true,
+                    "snap": true
+                }
+            }
+        }
+    ],
+    "shortcut": {
+        "company": "",
+        "description": "openfin react hooks demo",
+        "name": "Openfin react hooks demo",
+        "icon": "https://stockflux.scottlogic.com/artifacts/openfin-react-hooks/favicon.ico"
+    }
+}

@@ -2,6 +2,14 @@
 
 A collection of [React Hooks](https://reactjs.org/docs/hooks-intro.html) built on top of the [Openfin API](https://developers.openfin.co/docs/javascript-api).
 
+![screenshot](https://user-images.githubusercontent.com/2376919/61056255-e3246a00-a3ea-11e9-9807-9b4824ee032c.PNG)
+
+## Installing the Demo
+
+In order to install the Openfin React Hooks demo application, download the installer [here](https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fstockflux.scottlogic.com%2Fartifacts%2Fopenfin-react-hooks%2Fapp.json&fileName=Openfin-react-hooks&unzipped=true) and run the executable. If you haven't already installed an OpenFin application, this will install the required runtime. It'll also add the shortcut to Openfin React Hooks Demo to your desktop and start menu.
+
+The project is deployed and hosted by AWS, so with each time the application is ran the latest released version will be used. This means no further installations will be needed to keep the installed project up to date.
+
 ## Getting Started
 
 1. `npm install --save openfin-react-hooks`
@@ -65,7 +73,7 @@ If you'd like a demo of the current collection of hooks, you can do so by:
 
 * Cloning the repository (e.g. `git clone https://github.com/ScottLogic/openfin-react-hooks.git`)
 * Checkout the repository in your command line of choice (e.g. `cd c:/dev/openfin-react-hooks`)
-* Run `npm install` and `npm run build` within the root of the project directory
+* Run `npm install` and `npm run compile` within the root of the project directory
 * Checkout the `demo` directory (e.g. `cd demo`)
 * Run `npm install` and `npm run start` within the demo directory
 * Once that's finished, execute `npm run launch` to see the demo application in all its glory

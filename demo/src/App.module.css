@@ -36,7 +36,7 @@
 
 .containerLogoScottLogic {
   width: var(--width-logo);
-  height: 50px;
+  height: 80px;
   position: absolute;
   right: var(--padding-medium);
   top: 0;
@@ -63,6 +63,7 @@
 }
 
 .buttonBackDisabled {
+  cursor: default;
   color: var(--color-grey-light);
 }
 

@@ -52,7 +52,7 @@ const DockWindow: React.FC = () => {
                 defaultWidth: 500,
                 frame: !enableStretchToFit,
                 name: uuidv4(),
-                url: "/dock-window.html",
+                url: process.env.REACT_APP_DOCK_WINDOW_HTML,
             });
             setWin(newWindow);
         };

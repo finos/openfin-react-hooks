@@ -14,7 +14,7 @@ const codeExample = `import {useChannelClient} from "openfin-react-hooks";
       useEffect(() => {
         // register for push messages from the ChannelProvider
         if (client) {
-          client.register("pushMessage", (payload: any) => setPushMessage(payload));
+          client.register("pushMessage", (payload) => setPushMessage(payload));
         }
       }, [client]);
 
@@ -50,6 +50,10 @@ const ChannelClient: React.FC = () => {
           This hook automatically unsubscribes whenever your component unmounts.
         </i>
       </div>
+      <h2>Code Example</h2>
+      <pre>
+        <code className="language-jsx">{codeExample}</code>
+      </pre>
       <h2>Try it out</h2>
       <button onClick={async () => await client.dispatch("increment")}>
         Increment
@@ -71,10 +75,6 @@ const ChannelClient: React.FC = () => {
           <strong>Push Received:</strong> <span>{pushMsg}</span>
         </div>
       ) : null}
-      <h2>Code Example</h2>
-      <pre>
-        <code className="language-jsx">{codeExample}</code>
-      </pre>
     </div>
   );
 };

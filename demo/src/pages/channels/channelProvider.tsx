@@ -1,4 +1,5 @@
 import { useChannelProvider } from "openfin-react-hooks";
+import { Identity } from "openfin/_v2/main";
 import * as Prism from "prismjs";
 import React, { useEffect, useReducer } from "react";
 import uuidv4 from "uuid/v4";
@@ -9,7 +10,7 @@ const CHANNEL_NAME = "demo";
 const codeExample = `import {useChannelProvider} from "openfin-react-hooks";
   const CHANNEL_NAME = "demo";
 
-  const reducer = (state: any, action: any) => {
+  const reducer = (state, action) => {
     switch (action.type) {
       case "increment":
         return {
@@ -104,6 +105,7 @@ const ChannelProvider: React.FC = () => {
     count: 0,
     statuses: [],
   });
+
   const channelActions = [
     {
       action: () => dispatch({ type: "increment" }),
@@ -118,14 +120,14 @@ const ChannelProvider: React.FC = () => {
       topic: "close",
     },
   ];
-
   const { provider } = useChannelProvider(CHANNEL_NAME, channelActions);
+
   useEffect(() => {
     if (provider) {
-      provider.onConnection((identity: any) => {
+      provider.onConnection((identity: Identity) => {
         dispatch({ type: "onConnection", payload: { identity } });
       });
-      provider.onDisconnection((identity: any) => {
+      provider.onDisconnection((identity: Identity) => {
         dispatch({ type: "onDisconnection", payload: { identity } });
       });
     }
@@ -160,6 +162,10 @@ const ChannelProvider: React.FC = () => {
           This hook automatically unsubscribes whenever your component unmounts.
         </i>
       </div>
+      <h2>Code Example</h2>
+      <pre>
+        <code className="language-jsx">{codeExample}</code>
+      </pre>
       <h2>Try it out</h2>
       <button onClick={() => createWindow()}>Connect Client</button>
       <div className={styles.input}>
@@ -189,10 +195,6 @@ const ChannelProvider: React.FC = () => {
       >
         Push
       </button>
-      <h2>Code Example</h2>
-      <pre>
-        <code className="language-jsx">{codeExample}</code>
-      </pre>
     </div>
   );
 };

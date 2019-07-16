@@ -1,8 +1,8 @@
 import { ChannelProvider } from "openfin/_v2/api/interappbus/channel/provider";
 import { useEffect, useState } from "react";
-import { ChannelAction } from "..";
+import { IChannelAction } from "..";
 
-export default (channelName: string, channelActions: ChannelAction[]) => {
+export default (channelName: string, channelActions: IChannelAction[]) => {
   const [provider, setProvider] = useState<ChannelProvider | null>(null);
   const [error, setError] = useState(null);
 

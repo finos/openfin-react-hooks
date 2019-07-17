@@ -28,19 +28,20 @@ More complex hooks (e.g. `useDockWindow`) provide functionality that could save 
 
 Currently, the collection of hooks consists of the following:
 
-| Name  | Description |
-| ------------- | ------------- |
-| `useBounds`  | Subscribe to the bounds of a window changing  |
-| `useDocked`  | Detects if the current window is docked |
-| `useDockWindow`  | Dock a window to the edges of a screen  |
-| `useFocus` | Listen to and affect focus of a window |
-| `useInterApplicationBusSend`  | Auto-magically send properties on the `InterApplicationBus` whenever they change |
-| `useInterApplicationBusPublish`  | Auto-magically publish properties on the `InterApplicationBus` whenever they change |
-| `useInterApplicationBusSubscribe` | Subscribe to a topic on the `InterApplicationBus` |
-| `useMaximized`  | Detects if the current window is maximized |
-| `useOptions` | Listen to and update window options |
-| `useUserMovement` | Listen to and update whether user movement is enabled / disabled for a window |
-| `useZoom` | Listen to and update window zoom level |
+| Name                              | Description                                                                         |
+| --------------------------------- | ----------------------------------------------------------------------------------- |
+| `useBounds`                       | Subscribe to the bounds of a window changing                                        |
+| `useDocked`                       | Detects if the current window is docked                                             |
+| `useDockWindow`                   | Dock a window to the edges of a screen                                              |
+| `useFocus`                        | Listen to and affect focus of a window                                              |
+| `useInterApplicationBusSend`      | Auto-magically send properties on the `InterApplicationBus` whenever they change    |
+| `useInterApplicationBusPublish`   | Auto-magically publish properties on the `InterApplicationBus` whenever they change |
+| `useInterApplicationBusSubscribe` | Subscribe to a topic on the `InterApplicationBus`                                   |
+| `useMaximized`                    | Detects if the current window is maximized                                          |
+| `useOptions`                      | Listen to and update window options                                                 |
+| `useUserMovement`                 | Listen to and update whether user movement is enabled / disabled for a window       |
+| `useZoom`                         | Listen to and update window zoom level                                              |
+| `useChannels`                     | Use the Channels API to send/receive messages between windows or applications       |
 
 ## Example
 

@@ -1,12 +1,14 @@
 import classNames from "classnames";
 import React from "react";
-import {Link, Redirect, Route, RouteComponentProps, Switch, withRouter} from "react-router-dom";
+import { Link, Redirect, Route, RouteComponentProps, Switch, withRouter } from "react-router-dom";
 
 import styles from "./App.module.css";
-import {ReactComponent as LogoOpenfin} from "./images/logo-openfin.svg";
-import {ReactComponent as LogoScottLogic} from "./images/sl-logo-charcoal.svg";
+import { ReactComponent as LogoOpenfin } from "./images/logo-openfin.svg";
+import { ReactComponent as LogoScottLogic } from "./images/sl-logo-charcoal.svg";
 
 import Bounds from "./pages/bounds";
+import ChannelProvider from "./pages/channels";
+import ChannelClient from "./pages/channels/channelClient";
 import Docked from "./pages/docked";
 import DockWindow from "./pages/dockWindow";
 import Focus from "./pages/focus";
@@ -25,7 +27,7 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
             <div className={styles.containerHeader} >
                 <div
                     className={classNames(styles.buttonBack,
-                        {[styles.buttonBackDisabled]: history.location.pathname === "/"})
+                        { [styles.buttonBackDisabled]: history.location.pathname === "/" })
                     }
                     onClick={() => history.location.pathname !== "/" && history.goBack()}
                 >
@@ -56,6 +58,8 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
                     <Route exact path="/demo/zoom" component={Zoom} />
                     <Route exact path="/demo/focus" component={Focus} />
                     <Route exact path="/demo/user-movement" component={UserMovement} />
+                    <Route exact path="/demo/channel-provider" component={ChannelProvider} />
+                    <Route exact path="/demo/channel-client" component={ChannelClient} />
                     <Redirect to={"/"} />
                 </Switch>
             </div>

@@ -1,0 +1,15 @@
+.container {
+  composes: container from "../../styles/demo-content.module.css";
+}
+
+.title {
+  composes: title from "../../styles/demo-content.module.css";
+}
+
+.input {
+  margin-top: var(--margin-medium);
+}
+
+code[class*="providerStatus"] {
+  font-size: 0.75em !important;
+}

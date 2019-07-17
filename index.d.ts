@@ -1,5 +1,8 @@
-import Bounds from "openfin/_v2/api/window/bounds";
 import {_Window} from "openfin/_v2/api/window/window";
+import Bounds from "openfin/_v2/api/window/bounds";
+import {Action} from "openfin/_v2/api/interappbus/channel/channel";
+import {ChannelClient} from "openfin/_v2/api/interappbus/channel/client";
+import {ChannelProvider} from "openfin/_v2/api/interappbus/channel/provider";
 import {WindowOption} from "openfin/_v2/api/window/windowOption";
 import {Identity} from "openfin/_v2/identity";
 import {ScreenEdge} from "./src/ScreenEdge";
@@ -9,7 +12,22 @@ export interface IDimensions {
     dockedHeight: number;
 }
 
+export interface IChannelAction {
+  topic: string;
+  action: Action;
+}
+
 export const useBounds: (target?: _Window) => Bounds;
+
+export const useChannelClient: (channelName: string) => {
+  client: ChannelClient;
+  error: Error;
+};
+
+export const useChannelProvider: (channelName: string, channelActions: IChannelAction[]) => {
+  provider: ChannelProvider;
+  error: Error;
+};
 
 export const useDocked: () => [boolean, () => Promise<void>];
 

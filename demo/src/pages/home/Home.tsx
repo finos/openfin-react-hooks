@@ -81,6 +81,13 @@ const cards: IDemoCard[] = [
         id: "user-movement",
         name: "useUserMovement",
     },
+    {
+      description: "Use the Channels API to send/receive messages between windows or applications",
+      icon: "linear_scale",
+      iconRotate: false,
+      id: "channel-provider",
+      name: "useChannels",
+    },
 ];
 
 const Home: React.FC = () => {

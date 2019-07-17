@@ -1,5 +1,7 @@
-import {ScreenEdge as ScreenEdgeEnum} from "./ScreenEdge";
+import { ScreenEdge as ScreenEdgeEnum } from "./ScreenEdge";
 import useBoundsHook from "./useBounds";
+import useChannelClientHook from "./useChannelClient";
+import useChannelProviderHook from "./useChannelProvider";
 import useDockedHook from "./useDocked";
 import useDockWindowHook from "./useDockWindow";
 import useFocusHook from "./useFocus";
@@ -13,6 +15,8 @@ import useZoomHook from "./useZoom";
 
 export const ScreenEdge = ScreenEdgeEnum;
 export const useBounds = useBoundsHook;
+export const useChannelClient = useChannelClientHook;
+export const useChannelProvider = useChannelProviderHook;
 export const useDockWindow = useDockWindowHook;
 export const useDocked = useDockedHook;
 export const useFocus = useFocusHook;
@@ -25,16 +29,18 @@ export const useUserMovement = useUserMovementHook;
 export const useZoom = useZoomHook;
 
 export default {
-    ScreenEdge,
-    useBounds,
-    useDockWindow,
-    useDocked,
-    useFocus,
-    useInterApplicationBusPublish,
-    useInterApplicationBusSend,
-    useInterApplicationBusSubscribe,
-    useMaximized,
-    useOptions,
-    useUserMovement,
-    useZoom,
+  ScreenEdge,
+  useBounds,
+  useChannelClient,
+  useChannelProvider,
+  useDockWindow,
+  useDocked,
+  useFocus,
+  useInterApplicationBusPublish,
+  useInterApplicationBusSend,
+  useInterApplicationBusSubscribe,
+  useMaximized,
+  useOptions,
+  useUserMovement,
+  useZoom,
 };

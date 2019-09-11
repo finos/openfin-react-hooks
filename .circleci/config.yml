@@ -21,14 +21,14 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-      - run: yarn install
+      - run: npm install
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn global add typescript
-      - run: yarn compile
-      - run: yarn lint
+      - run: sudo npm install -g typescript
+      - run: npm run compile
+      - run: npm run lint
 
   build-demo:
     docker:
@@ -41,11 +41,11 @@ jobs:
             - v1-dependencies-{{ checksum "./demo/package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-      - run: cd demo && yarn install
+      - run: cd demo && npm install
       - save_cache:
           paths:
             - ./demo/node_modules
           key: v1-dependencies-{{ checksum "./demo/package.json" }}
-      - run: yarn global add typescript
-      - run: cd demo && yarn build
-      - run: cd demo && yarn lint
+      - run: sudo npm install -g typescript
+      - run: cd demo && npm run build
+      - run: cd demo && npm run lint

@@ -7,7 +7,6 @@ workflows:
   pipeline:
     jobs:
       - build
-      - build-demo
 
 jobs:
   build:
@@ -29,13 +28,6 @@ jobs:
       - run: sudo npm install -g typescript
       - run: npm run compile
       - run: npm run lint
-
-  build-demo:
-    docker:
-      - image: circleci/node:10.16
-    working_directory: ~/build/demo
-    steps:
-      - checkout
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "./demo/package.json" }}
@@ -46,6 +38,4 @@ jobs:
           paths:
             - ./demo/node_modules
           key: v1-dependencies-{{ checksum "./demo/package.json" }}
-      - run: sudo npm install -g typescript
       - run: cd demo && npm run build
-      - run: cd demo && npm run lint

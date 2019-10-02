@@ -15,3 +15,8 @@
 .buttonDock {
     margin-right: var(--margin-small);
 }
+
+.smallInput {
+    width: 45px;
+    margin: 0 5px;
+}

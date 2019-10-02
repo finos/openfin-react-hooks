@@ -38,8 +38,25 @@ const DockWindow: React.FC = () => {
     const [win, setWin] = useState();
     const [enableStretchToFit, setEnableStretchToFit] = useState(false);
     const [allowUndocking, setAllowUndocking] = useState(true);
-    const [edge, actions] = useDockWindow(ScreenEdge.NONE, win || window.fin.Window.getCurrentSync(),
-        allowUndocking, enableStretchToFit ? dimensions : undefined);
+    const [undockWidth, setUndockWidth] = useState();
+    const [undockHeight, setUndockHeight] = useState();
+    const [undockTop, setUndockTop] = useState();
+    const [undockLeft, setUndockLeft] = useState();
+    const [update, setUpdate] = useState(false);
+    const [edge, actions] = useDockWindow(
+        ScreenEdge.NONE,
+        win || window.fin.Window.getCurrentSync(),
+        allowUndocking,
+        enableStretchToFit ? dimensions : undefined,
+        {
+            undockPosition: undockTop && undockLeft
+                ? { top: undockTop, left: undockLeft }
+                : undefined,
+            undockSize: undockWidth && undockHeight
+                ? { width: undockWidth, height: undockHeight }
+                : undefined,
+        },
+    );
 
     useEffect(() => {
         let newWindow: _Window;
@@ -58,13 +75,12 @@ const DockWindow: React.FC = () => {
         };
 
         createWindow();
-
         return () => {
             if (newWindow) {
                 newWindow.close();
             }
         };
-    }, [allowUndocking, enableStretchToFit]);
+    }, [allowUndocking, enableStretchToFit, update]);
 
     useEffect(Prism.highlightAll, []);
 
@@ -100,6 +116,39 @@ const DockWindow: React.FC = () => {
                     <button type="button" onClick={actions.dockRight} className={styles.buttonDock}>Right</button>
                     <button type="button" onClick={actions.dockBottom} className={styles.buttonDock}>Bottom</button>
                     <button type="button" onClick={actions.dockNone} className={styles.buttonDock}>None</button>
+                </div>
+                <div>
+                    <h3>Undock size</h3>
+                    <span>width:</span>
+                    <input
+                        type="number"
+                        value={undockWidth}
+                        onChange={(e) => setUndockWidth(e.target.value ? Number(e.target.value) : undefined)}
+                        className={styles.smallInput}
+                    />
+                    <span>height:</span>
+                    <input type="number"
+                        value={undockHeight}
+                        onChange={(e) => setUndockHeight(e.target.value ? Number(e.target.value) : undefined)}
+                        className={styles.smallInput}
+                    />
+                    <button onClick={() => setUpdate(!update)}>Update</button>
+                </div>
+                <div>
+                    <h3>Undock position</h3>
+                    <span>top:</span>
+                    <input type="number"
+                        value={undockTop}
+                        onChange={(e) => setUndockTop(e.target.value ? Number(e.target.value) : undefined)}
+                        className={styles.smallInput}
+                    />
+                    <span>left:</span>
+                    <input type="number"
+                        value={undockLeft}
+                        onChange={(e) => setUndockLeft(e.target.value ? Number(e.target.value) : undefined)}
+                        className={styles.smallInput}
+                    />
+                    <button onClick={() => setUpdate(!update)}>Update</button>
                 </div>
                 <div>
                     <h3>Current docked state</h3>

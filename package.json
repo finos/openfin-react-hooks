@@ -39,6 +39,8 @@
     "react": "^16.8.0"
   },
   "dependencies": {
-    "openfin-layouts": "^1.0.3"
+    "@types/react-dom": "^16.9.1",
+    "openfin-layouts": "^1.0.3",
+    "react-dom": "^16.10.1"
   }
 }

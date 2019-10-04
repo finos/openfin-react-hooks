@@ -1,0 +1,16 @@
+.container {
+    composes: container from '../../styles/demo-content.module.css';
+}
+
+.title {
+    composes: title from '../../styles/demo-content.module.css';
+}
+
+button {
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+button:disabled{
+    cursor: default;
+}

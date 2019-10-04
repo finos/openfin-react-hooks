@@ -88,6 +88,13 @@ const cards: IDemoCard[] = [
       id: "channel-provider",
       name: "useChannels",
     },
+    {
+      description: "Use ChildWindow",
+      icon: "window",
+      iconRotate: false,
+      id: "child-window",
+      name: "useChildWindow",
+    },
 ];
 
 const Home: React.FC = () => {

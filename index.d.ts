@@ -6,6 +6,7 @@ import {_Window} from "openfin/_v2/api/window/window";
 import {WindowOption} from "openfin/_v2/api/window/windowOption";
 import {Identity} from "openfin/_v2/identity";
 import {ScreenEdge} from "./src/ScreenEdge";
+import ChildWindowState from "./src/utils/types/enums/ChildWindowState";
 
 export interface IDimensions {
     dockedWidth: number;
@@ -27,6 +28,14 @@ export const useChannelClient: (channelName: string) => {
 export const useChannelProvider: (channelName: string, channelActions: IChannelAction[]) => {
   provider: ChannelProvider;
   error: Error;
+};
+
+export const useChildWindow: (name: string, document?: HTMLDocument, cssUrl?: string) => {
+        close: () => void,
+        launch: (windowOptions: WindowOption) => void,
+        populateDOM: (jsx: JSX.Element) => void,
+        state: ChildWindowState,
+        window: _Window,
 };
 
 export const useDocked: () => [boolean, () => Promise<void>];

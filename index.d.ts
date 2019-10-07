@@ -12,6 +12,17 @@ export interface IDimensions {
     dockedHeight: number;
 }
 
+export interface IUseDockWindowOptions {
+    undockPosition?: {
+        left: number;
+        top: number;
+    };
+    undockSize?: {
+        height: number;
+        width: number;
+    };
+}
+
 export interface IChannelAction {
   topic: string;
   action: Action;
@@ -32,7 +43,8 @@ export const useChannelProvider: (channelName: string, channelActions: IChannelA
 export const useDocked: () => [boolean, () => Promise<void>];
 
 export const useDockWindow: (initialEdge?: ScreenEdge, toMove?: _Window, allowUserToUndock?: boolean,
-                             stretchToFit?: IDimensions) => [ScreenEdge, {
+                             stretchToFit?: IDimensions,
+                             options?: IUseDockWindowOptions) => [ScreenEdge, {
     dockBottom: () => void;
     dockLeft: () => void;
     dockNone: () => void;

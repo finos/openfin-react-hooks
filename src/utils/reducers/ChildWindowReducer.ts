@@ -1,19 +1,19 @@
 import {_Window} from "openfin/_v2/api/window/window";
-import actionType from "../types/enums/ChildWindowAction";
-import childWindowState from "../types/enums/ChildWindowState";
+import CHILD_WINDOW_ACTION from "../types/enums/ChildWindowAction";
+import CHILD_WINDOW_STATE from "../types/enums/ChildWindowState";
 interface IState {
-  state: childWindowState;
+  state: CHILD_WINDOW_STATE;
   window: _Window | null;
 }
 
 interface IAction {
   error?: string;
-  payload?: childWindowState | _Window;
-  type: actionType;
+  payload?: CHILD_WINDOW_STATE | _Window;
+  type: CHILD_WINDOW_ACTION;
 }
 
-export const initialChildWindowState: IState = {
-  state: childWindowState.initial,
+export const INITIAL_CHILD_WINDOW_STATE: IState = {
+  state: CHILD_WINDOW_STATE.INITIAL,
   window: null,
 };
 
@@ -23,13 +23,13 @@ function isWindow(payload: any): payload is _Window {
 
 export default (state: IState, action: IAction): IState => {
   switch (action.type) {
-    case actionType.changeState:
+    case CHILD_WINDOW_ACTION.CHANGE_STATE:
       if (action.payload && !isWindow(action.payload)) {
-        if (!Object.keys(childWindowState).indexOf(String(action.payload))) {
+        if (!Object.keys(CHILD_WINDOW_STATE).indexOf(String(action.payload))) {
           throw new Error(`Invalid window state: ${action.payload}.`);
-        } else if (action.payload === childWindowState.error) {
+        } else if (action.payload === CHILD_WINDOW_STATE.ERROR) {
           throw new Error(
-            `Error occured while window was in this state: ${state.state}.`,
+            `Error occured while window was state ${state.state}: ${action.error}`,
           );
         }
         return {
@@ -38,13 +38,13 @@ export default (state: IState, action: IAction): IState => {
         };
       }
       throw new Error("Cannot change state due to missing payload.");
-    case actionType.setWindow:
+    case CHILD_WINDOW_ACTION.SET_WINDOW:
       if (action.payload && isWindow(action.payload)) {
         return { ...state, window: action.payload };
       }
       throw new Error(`Cannot set window: ${action.payload}`);
-    case actionType.reset:
-      return initialChildWindowState;
+    case CHILD_WINDOW_ACTION.RESET:
+      return INITIAL_CHILD_WINDOW_STATE;
     default:
       throw new Error(`Invalid action type: ${action.type}.`);
   }

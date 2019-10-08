@@ -14,3 +14,16 @@ button {
 button:disabled{
     cursor: default;
 }
+textarea, input {
+    display: -webkit-box;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+input[type="checkbox"]{
+    display: inline;
+}
+
+label {
+    margin: 10px 0;
+}

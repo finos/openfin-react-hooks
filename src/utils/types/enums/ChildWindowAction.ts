@@ -1,10 +1,10 @@
-enum childWindowAction {
-  changeState = "CHANGE_STATE",
-  setWindow = "SET_WINDOW",
-  launch = "LAUNCH",
-  populate = "POPULATE",
-  close = "CLOSE",
-  reset = "RESET",
+enum CHILD_WINDOW_ACTION {
+  CHANGE_STATE = "CHANGE_STATE",
+  SET_WINDOW = "SET_WINDOW",
+  LAUNCH = "LAUNCH",
+  POPULATE = "POPULATE",
+  CLOSE = "CLOSE",
+  RESET = "RESET",
 }
 
-export default childWindowAction;
+export default CHILD_WINDOW_ACTION;

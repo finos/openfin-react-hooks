@@ -1,12 +1,13 @@
-import {Action} from "openfin/_v2/api/interappbus/channel/channel";
-import {ChannelClient} from "openfin/_v2/api/interappbus/channel/client";
-import {ChannelProvider} from "openfin/_v2/api/interappbus/channel/provider";
+import { Action } from "openfin/_v2/api/interappbus/channel/channel";
+import { ChannelClient } from "openfin/_v2/api/interappbus/channel/client";
+import { ChannelProvider } from "openfin/_v2/api/interappbus/channel/provider";
 import Bounds from "openfin/_v2/api/window/bounds";
-import {_Window} from "openfin/_v2/api/window/window";
-import {WindowOption} from "openfin/_v2/api/window/windowOption";
-import {Identity} from "openfin/_v2/identity";
-import {ScreenEdge} from "./src/ScreenEdge";
-import ChildWindowState from "./src/utils/types/enums/ChildWindowState";
+import {_Window } from "openfin/_v2/api/window/window";
+import { WindowOption } from "openfin/_v2/api/window/windowOption";
+import { Identity } from "openfin/_v2/identity";
+import { ReactElement } from "react";
+import { ScreenEdge } from "./src/ScreenEdge";
+import CHILD_WINDOW_STATE from "./src/utils/types/enums/ChildWindowState";
 
 export interface IDimensions {
     dockedWidth: number;
@@ -24,6 +25,8 @@ export interface IUseChildWindow {
     parentDocument?: HTMLDocument;
     cssUrl?: string;
     shouldClosePreviousOnLaunch?: boolean;
+    shouldInheritCSS?: boolean;
+    shouldInheritScripts?: boolean;
 }
 
 export const useBounds: (target?: _Window) => Bounds;
@@ -38,11 +41,13 @@ export const useChannelProvider: (channelName: string, channelActions: IChannelA
   error: Error;
 };
 
+export enum enums {CHILD_WINDOW_STATE}
+
 export const useChildWindow: (useChildWindowOptions: IUseChildWindow) => {
         close: () => void,
         launch: (windowOptions?: WindowOption) => void,
-        populateDOM: (jsx: JSX.Element) => void,
-        state: ChildWindowState,
+        populate: (jsx: ReactElement[]) => void,
+        state: CHILD_WINDOW_STATE,
         window: _Window,
 };
 

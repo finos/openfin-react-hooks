@@ -1,10 +1,10 @@
-enum ChildWindowState {
-  initial = "INITIAL",
-  launching = "LAUNCHING",
-  launched = "LAUNCHED",
-  populating = "POPULATING",
-  populated = "POPULATED",
-  error = "ERROR",
+enum CHILD_WINDOW_STATE {
+  INITIAL = "INITIAL",
+  LAUNCHING = "LAUNCHING",
+  LAUNCHED = "LAUNCHED",
+  POPULATING = "POPULATING",
+  POPULATED = "POPULATED",
+  ERROR = "ERROR",
 }
 
-export default ChildWindowState;
+export default CHILD_WINDOW_STATE;

@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/react-html-parser": "^2.0.1",
     "classnames": "^2.2.6",
     "openfin-layouts": "^1.0.3",
     "openfin-react-hooks": "file:../",
@@ -48,6 +47,7 @@
     "@types/prismjs": "^1.16.0",
     "@types/react": "^16.8.17",
     "@types/react-dom": "^16.8.4",
+    "@types/react-html-parser": "^2.0.1",
     "@types/react-router-dom": "^4.3.3",
     "@types/uuid": "^3.4.4",
     "cross-env": "^5.2.0",

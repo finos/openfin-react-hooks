@@ -1,9 +1,9 @@
-import {_Window} from "openfin/_v2/api/window/window";
+import { _Window } from "openfin/_v2/api/window/window";
 import CHILD_WINDOW_ACTION from "../types/enums/ChildWindowAction";
 import CHILD_WINDOW_STATE from "../types/enums/ChildWindowState";
 interface IState {
   state: CHILD_WINDOW_STATE;
-  window: _Window | null;
+  windowRef: _Window | null;
 }
 
 interface IAction {
@@ -14,7 +14,7 @@ interface IAction {
 
 export const INITIAL_CHILD_WINDOW_STATE: IState = {
   state: CHILD_WINDOW_STATE.INITIAL,
-  window: null,
+  windowRef: null,
 };
 
 function isWindow(payload: any): payload is _Window {
@@ -40,7 +40,7 @@ export default (state: IState, action: IAction): IState => {
       throw new Error("Cannot change state due to missing payload.");
     case CHILD_WINDOW_ACTION.SET_WINDOW:
       if (action.payload && isWindow(action.payload)) {
-        return { ...state, window: action.payload };
+        return { ...state, windowRef: action.payload };
       }
       throw new Error(`Cannot set window: ${action.payload}`);
     case CHILD_WINDOW_ACTION.RESET:

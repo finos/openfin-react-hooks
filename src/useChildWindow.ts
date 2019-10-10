@@ -1,8 +1,8 @@
-import {_Window} from "openfin/_v2/api/window/window";
+import { _Window } from "openfin/_v2/api/window/window";
 import { WindowOption } from "openfin/_v2/api/window/windowOption";
-import { ReactElement, useCallback, useEffect, useReducer } from "react";
+import { useCallback, useEffect, useReducer } from "react";
 import ReactDOM from "react-dom";
-import { IUseChildWindow } from "../index";
+import { IUseChildWindowOptions } from "../index";
 import reducer, {
   INITIAL_CHILD_WINDOW_STATE,
 } from "./utils/reducers/ChildWindowReducer";
@@ -14,22 +14,26 @@ export default ({
   windowOptions,
   parentDocument,
   cssUrl,
+  jsx,
   shouldClosePreviousOnLaunch,
-  shouldInheritCSS,
+  shouldInheritCss,
   shouldInheritScripts,
-}: IUseChildWindow) => {
-  const [childWindow, dispatch] = useReducer(reducer, INITIAL_CHILD_WINDOW_STATE);
+}: IUseChildWindowOptions) => {
+  const [childWindow, dispatch] = useReducer(
+    reducer,
+    INITIAL_CHILD_WINDOW_STATE,
+  );
 
   const injectNode = useCallback(
     (node: HTMLStyleElement | HTMLScriptElement) => {
-      if (childWindow.window) {
-          childWindow.window
-            .getWebWindow()
-            .document.getElementsByTagName("head")[0]
-            .appendChild(node.cloneNode(true));
+      if (childWindow.windowRef) {
+        childWindow.windowRef
+          .getWebWindow()
+          .document.getElementsByTagName("head")[0]
+          .appendChild(node.cloneNode(true));
       }
     },
-    [childWindow.window],
+    [childWindow.windowRef],
   );
 
   const injectNodes = useCallback(
@@ -42,43 +46,58 @@ export default ({
     [injectNode],
   );
 
-  const inheritFromParent = useCallback(() => {
+  const inheritScripts = useCallback(() => {
     if (parentDocument) {
-      if (shouldInheritCSS) {
-        const parentStyles = parentDocument.getElementsByTagName("style");
-        injectNodes(parentStyles);
-      }
-      if (shouldInheritScripts) {
-        const parentScripts = parentDocument.getElementsByTagName("script");
-        injectNodes(parentScripts);
-      }
+      const parentScripts = parentDocument.getElementsByTagName("script");
+      injectNodes(parentScripts);
+    }
+  }, [parentDocument, injectNodes]);
+
+  const inheritCss = useCallback(() => {
+    if (parentDocument) {
+      const parentStyles = parentDocument.getElementsByTagName("style");
+      injectNodes(parentStyles);
     }
   }, [parentDocument, injectNodes]);
 
   useEffect(() => {
-    if (childWindow.window) {
-      if (parentDocument) {
-        inheritFromParent();
-      }
+    if (shouldInheritCss) { inheritCss(); }
+    if (shouldInheritScripts) { inheritScripts(); }
 
-      if (cssUrl) {
-        const linkElement = childWindow.window
-        .getWebWindow().document.createElement("link");
-        linkElement.setAttribute("rel", "stylesheet");
-        linkElement.setAttribute("href", cssUrl);
-        injectNode(linkElement);
+    if (cssUrl && childWindow.windowRef) {
+      const linkElement = childWindow.windowRef
+        .getWebWindow()
+        .document.createElement("link");
+      linkElement.setAttribute("rel", "stylesheet");
+      linkElement.setAttribute("href", cssUrl);
+      injectNode(linkElement);
+    }
+  }, [
+    childWindow.windowRef,
+    cssUrl,
+    parentDocument,
+    inheritCss,
+    inheritScripts,
+    injectNode,
+  ]);
+
+  useEffect(() => {
+    if (childWindow.state === CHILD_WINDOW_STATE.LAUNCHED) {
+      if (jsx) {
+        populate(jsx);
       }
     }
-  }, [childWindow.window, cssUrl, parentDocument, inheritFromParent, injectNode]);
+  }, [childWindow.state]);
 
-  const closeExistingWindows = useCallback(async () => {
+  const closeExistingWindow = useCallback(async () => {
     const application = await fin.Application.getCurrent();
     const childWindows = await application.getChildWindows();
 
     await Promise.all(
-      childWindows.map((win) => (win.identity.name && win.identity.name === name
+      childWindows.map((win) =>
+        win.identity.name && win.identity.name === name
           ? win.close()
-          : Promise.resolve()),
+          : Promise.resolve(),
       ),
     );
   }, [name]);
@@ -99,34 +118,38 @@ export default ({
 
   const launch = useCallback(
     async (newWindowOptions?: WindowOption) => {
-      const options = newWindowOptions ? newWindowOptions : windowOptions ? windowOptions : null;
+      const options = newWindowOptions
+        ? newWindowOptions
+        : windowOptions
+        ? windowOptions
+        : null;
       if (childWindow.state !== CHILD_WINDOW_STATE.LAUNCHING && options) {
         try {
           dispatchNewState(CHILD_WINDOW_STATE.LAUNCHING);
           if (shouldClosePreviousOnLaunch) {
-            await closeExistingWindows();
+            await closeExistingWindow();
           }
           dispatch({
             payload: await fin.Window.create(options),
             type: ACTION.SET_WINDOW,
           });
-          dispatchNewState(CHILD_WINDOW_STATE.LAUNCHING);
+          dispatchNewState(CHILD_WINDOW_STATE.LAUNCHED);
         } catch (error) {
           dispatchError(error);
         }
       }
     },
-    [childWindow.state, closeExistingWindows],
+    [childWindow.state, closeExistingWindow],
   );
 
   const populate = useCallback(
-    (jsx: ReactElement[]) => {
-      if (childWindow.window) {
+    (jsxElement: JSX.Element) => {
+      if (childWindow.windowRef) {
         try {
           dispatchNewState(CHILD_WINDOW_STATE.POPULATING);
           ReactDOM.render(
-            jsx,
-            childWindow.window.getWebWindow().document.getElementById("root"),
+            jsxElement,
+            childWindow.windowRef.getWebWindow().document.getElementById("root"),
           );
           dispatchNewState(CHILD_WINDOW_STATE.POPULATED);
         } catch (error) {
@@ -134,25 +157,25 @@ export default ({
         }
       }
     },
-    [childWindow.window],
+    [childWindow.windowRef],
   );
 
   const close = useCallback(async () => {
     try {
-      if (childWindow.window) {
-        await childWindow.window.close();
+      if (childWindow.windowRef) {
+        await childWindow.windowRef.close();
         dispatch({ type: ACTION.RESET });
       }
     } catch (error) {
       dispatchError(error);
     }
-  }, [childWindow.window]);
+  }, [childWindow.windowRef]);
 
   return {
     close,
     launch,
     populate,
     state: childWindow.state,
-    window: childWindow.window,
+    windowRef: childWindow.windowRef,
   };
 };

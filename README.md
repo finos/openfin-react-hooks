@@ -1,6 +1,6 @@
 # Openfin React Hooks : useOpenFin()
 
-A collection of [React Hooks](https://reactjs.org/docs/hooks-intro.html) built on top of the [Openfin API](https://developers.openfin.co/docs/javascript-api).
+A collection of [React Hooks](https://reactjs.org/docs/hooks-intro.html) built on top of the [Openfin API](https://developers.openfin.co/docs/javascript-api), brought to you by [Scott Logic](https://www.scottlogic.com/).
 
 ![screenshot](https://user-images.githubusercontent.com/2376919/61056255-e3246a00-a3ea-11e9-9807-9b4824ee032c.PNG)
 

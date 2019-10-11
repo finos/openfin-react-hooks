@@ -23,7 +23,7 @@ const CHILD_BODY_AS_HOOK_OPTION = (
   <div className="App_containerApp__F0W0w">
     <p>
       This jsx was passed in as a part of <code>CHILD_WINDOW_HOOK_OPTIONS</code>
-      . See <code>Code Example</code> Section for more information.
+      . See "Code Example" Section for more information.
     </p>
   </div>
 );
@@ -39,6 +39,7 @@ const ChildWindow: React.FC = () => {
     shouldClosePreviousOnLaunch: true,
     shouldInheritCss: true,
     shouldInheritScripts: true,
+    shouldLoadJsxAfterLaunch: true,
     windowName: WINDOW_NAME,
   });
 
@@ -56,7 +57,9 @@ const ChildWindow: React.FC = () => {
 
   const CHILD_WINDOW_HOOK_OPTIONS: IUseChildWindowOptions = {
     cssUrl: launchConfig.cssUrl,
-    jsx: CHILD_BODY_AS_HOOK_OPTION,
+    jsx: launchConfig.shouldLoadJsxAfterLaunch
+      ? CHILD_BODY_AS_HOOK_OPTION
+      : undefined,
     name: launchConfig.windowName,
     parentDocument: document,
     shouldClosePreviousOnLaunch: launchConfig.shouldClosePreviousOnLaunch,

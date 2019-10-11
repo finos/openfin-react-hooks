@@ -3,6 +3,7 @@ interface ILaunchConfig {
   htmlUrl?: string;
   shouldClosePreviousOnLaunch: boolean;
   shouldInheritCss: boolean;
+  shouldLoadJsxAfterLaunch: boolean;
   shouldInheritScripts: boolean;
   windowName: string;
 }

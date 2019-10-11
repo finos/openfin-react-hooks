@@ -7,7 +7,7 @@ interface IProps {
   textAreaValue: string;
 }
 const NOTE: string = `Note: You need to relaunch the window if you want the
- changes you make to <code>Child Window Configuration</code> to take place`;
+ changes you make to \"Child Window Configuration\" to take place`;
 const DEFAULT_CHILD_BODY: JSX.Element = (
   <p>Use textArea in the parent window to change me!</p>
 );

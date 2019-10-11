@@ -4,7 +4,7 @@ import {Transition} from "openfin/_v2/api/window/transition";
 import {_Window} from "openfin/_v2/api/window/window";
 import {useEffect, useState} from "react";
 
-import {IDimensions} from "../index";
+import {IDimensions, IUseDockWindowOptions} from "../index";
 import {ScreenEdge} from "./ScreenEdge";
 import transitions from "./useDockWindow.transitions";
 import usePreviousValue from "./utils/usePreviousValue";
@@ -22,7 +22,8 @@ const getMonitorRect = async (bounds: Bounds): Promise<Rect> => {
 };
 
 export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getCurrentSync(),
-                allowUserToUndock: boolean = true, stretchToFit?: IDimensions) => {
+                allowUserToUndock: boolean = true, stretchToFit?: IDimensions,
+                options?: IUseDockWindowOptions) => {
     const [edge, setEdge] = useState(initialEdge);
     const [isUndocking, setIsUndocking] = useState(false);
     const previousEdge = usePreviousValue<ScreenEdge>(edge);
@@ -88,8 +89,8 @@ export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getC
             const bounds: Bounds = await toMove.getBounds();
             const monitorRect: Rect = await getMonitorRect(bounds);
             const transition: Transition = stretchToFit ?
-                transitions.stretchedUndock(previousEdge!, monitorRect, stretchToFit) :
-                transitions.undock(previousEdge!, bounds);
+                transitions.stretchedUndock(previousEdge!, monitorRect, stretchToFit, options) :
+                transitions.undock(previousEdge!, bounds, options);
 
             await toMove.animate(transition, { interrupt: true });
             setIsUndocking(false);

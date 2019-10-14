@@ -1,0 +1,16 @@
+body {
+  padding: 5px;
+  display: flex;
+  overflow: hidden;
+}
+
+div#root {
+  width: -webkit-fill-available;
+}
+
+p {
+  margin: auto;
+  text-align: center;
+  padding: 0 25px;
+  line-height: 1.5;
+}

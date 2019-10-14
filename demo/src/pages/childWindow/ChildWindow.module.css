@@ -1,0 +1,33 @@
+.container {
+    composes: container from '../../styles/demo-content.module.css';
+}
+
+.title {
+    composes: title from '../../styles/demo-content.module.css';
+}
+
+button {
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+button:disabled{
+    cursor: default;
+}
+textarea, input {
+    display: -webkit-box;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+input[type="checkbox"]{
+    display: inline;
+}
+
+label {
+    margin: 10px 0;
+}
+
+.checkboxes {
+    margin-bottom: 20px;
+}

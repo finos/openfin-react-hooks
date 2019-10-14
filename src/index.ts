@@ -2,6 +2,7 @@ import { ScreenEdge as ScreenEdgeEnum } from "./ScreenEdge";
 import useBoundsHook from "./useBounds";
 import useChannelClientHook from "./useChannelClient";
 import useChannelProviderHook from "./useChannelProvider";
+import useChildWindowHook from "./useChildWindow";
 import useDockedHook from "./useDocked";
 import useDockWindowHook from "./useDockWindow";
 import useFocusHook from "./useFocus";
@@ -17,6 +18,7 @@ export const ScreenEdge = ScreenEdgeEnum;
 export const useBounds = useBoundsHook;
 export const useChannelClient = useChannelClientHook;
 export const useChannelProvider = useChannelProviderHook;
+export const useChildWindow = useChildWindowHook;
 export const useDockWindow = useDockWindowHook;
 export const useDocked = useDockedHook;
 export const useFocus = useFocusHook;
@@ -33,6 +35,7 @@ export default {
   useBounds,
   useChannelClient,
   useChannelProvider,
+  useChildWindow,
   useDockWindow,
   useDocked,
   useFocus,

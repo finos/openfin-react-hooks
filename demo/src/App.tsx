@@ -9,6 +9,7 @@ import { ReactComponent as LogoScottLogic } from "./images/sl-logo-charcoal.svg"
 import Bounds from "./pages/bounds";
 import ChannelProvider from "./pages/channels";
 import ChannelClient from "./pages/channels/channelClient";
+import ChildWindow from "./pages/childWindow";
 import Docked from "./pages/docked";
 import DockWindow from "./pages/dockWindow";
 import Focus from "./pages/focus";
@@ -60,6 +61,7 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
                     <Route exact path="/demo/user-movement" component={UserMovement} />
                     <Route exact path="/demo/channel-provider" component={ChannelProvider} />
                     <Route exact path="/demo/channel-client" component={ChannelClient} />
+                    <Route exact path="/demo/child-window" component={ChildWindow} />
                     <Redirect to={"/"} />
                 </Switch>
             </div>

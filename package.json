@@ -31,6 +31,7 @@
   "devDependencies": {
     "@types/openfin": "^41.0.0",
     "@types/react": "^16.8.17",
+    "@types/react-dom": "^16.9.1",
     "husky": "^2.3.0",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
@@ -39,7 +40,6 @@
     "react": "^16.8.0"
   },
   "dependencies": {
-    "@types/react-dom": "^16.9.1",
     "openfin-layouts": "^1.0.3",
     "react-dom": "^16.10.1"
   }

@@ -1,6 +1,6 @@
 # Openfin React Hooks : useOpenFin()
 
-A collection of [React Hooks](https://reactjs.org/docs/hooks-intro.html) built on top of the [Openfin API](https://developers.openfin.co/docs/javascript-api).
+A collection of [React Hooks](https://reactjs.org/docs/hooks-intro.html) built on top of the [Openfin API](https://developers.openfin.co/docs/javascript-api), brought to you by [Scott Logic](https://www.scottlogic.com/).
 
 ![screenshot](https://user-images.githubusercontent.com/2376919/61056255-e3246a00-a3ea-11e9-9807-9b4824ee032c.PNG)
 
@@ -13,7 +13,7 @@ The project is deployed and hosted by AWS, so with each time the application is 
 ## Getting Started
 
 1. `npm install --save openfin-react-hooks`
-2. `import {useDockWindow} from "openfin-react-hooks";`
+2. `import { useDockWindow } from "openfin-react-hooks";`
 3. Enjoy!
 
 ## Motive
@@ -48,8 +48,11 @@ Currently, the collection of hooks consists of the following:
 
 The following example demonstrates the usage of the `useInterApplicationBusSubscribe` and `useInterApplicationBusSend` hooks in order to subscribe to the OpenFin [InterApplicationBus](https://cdn.openfin.co/jsdocs/stable/fin.desktop.module_InterApplicationBus.html) and send a message:
 
-```
-import {useInterApplicationBusSend, useInterApplicationBusSubscribe} from "openfin-react-hooks";
+```tsx
+import {
+    useInterApplicationBusSend,
+    useInterApplicationBusSubscribe
+} from "openfin-react-hooks";
 
 const IDENTITY = window.fin.Window.me;
 const TOPIC = "demo-topic";
@@ -58,10 +61,11 @@ const Component = () => {
     const [name, setName] = useState("John Smith");
     const { data } = useInterApplicationBusSubscribe(IDENTITY, TOPIC);
     useInterApplicationBusSend(IDENTITY, TOPIC, name);
+
     return (
         <div>
-            <input type="text" onChange={(e) => setName(e.target.value)} value={name} />
-            <div><strong>Received Message:</strong> {data ? data.message : "None"}</div>
+            <input onChange={e => setName(e.target.value)} value={name} type="text" />
+            <strong>Received Message: { data ? data.message : "None" }</strong>
         </div>
     )
 }

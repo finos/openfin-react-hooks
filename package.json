@@ -18,7 +18,7 @@
     "react-hooks"
   ],
   "author": "Scott Logic",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/ScottLogic/openfin-react-hooks/issues"
   },

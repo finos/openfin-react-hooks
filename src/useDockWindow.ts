@@ -1,29 +1,27 @@
-import {MonitorDetails, MonitorInfo, Rect} from "openfin/_v2/api/system/monitor";
+import { MonitorDetails, MonitorInfo, Rect } from "openfin/_v2/api/system/monitor";
 import Bounds from "openfin/_v2/api/window/bounds";
-import {Transition} from "openfin/_v2/api/window/transition";
-import {_Window} from "openfin/_v2/api/window/window";
-import {useEffect, useState} from "react";
+import { Transition } from "openfin/_v2/api/window/transition";
+import { _Window } from "openfin/_v2/api/window/window";
+import { useEffect, useState } from "react";
 
-import {IDimensions, IUseDockWindowOptions} from "../index";
-import {ScreenEdge} from "./ScreenEdge";
+import { IDimensions, IUseDockWindowOptions } from "../index";
+import { ScreenEdge } from "./ScreenEdge";
 import transitions from "./useDockWindow.transitions";
 import usePreviousValue from "./utils/usePreviousValue";
-
-let isAnimating = false;
 
 const getMonitorRect = async (bounds: Bounds): Promise<Rect> => {
     const monitorInfo: MonitorInfo = await fin.System.getMonitorInfo();
     return monitorInfo.nonPrimaryMonitors
-            .concat(monitorInfo.primaryMonitor)
-            .map((info: MonitorDetails) => info.availableRect)
-            .find((rect) => bounds.left >= rect.left && (bounds.left + bounds.width) <= rect.right &&
-                bounds.top >= rect.top && (bounds.top + bounds.height) <= rect.bottom)
+        .concat(monitorInfo.primaryMonitor)
+        .map((info: MonitorDetails) => info.availableRect)
+        .find((rect) => bounds.left >= rect.left && (bounds.left + bounds.width) <= rect.right &&
+            bounds.top >= rect.top && (bounds.top + bounds.height) <= rect.bottom)
         || monitorInfo.primaryMonitor.availableRect;
 };
 
 export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getCurrentSync(),
-                allowUserToUndock: boolean = true, stretchToFit?: IDimensions,
-                options?: IUseDockWindowOptions) => {
+    allowUserToUndock: boolean = true, stretchToFit?: IDimensions,
+    options?: IUseDockWindowOptions) => {
     const [edge, setEdge] = useState(initialEdge);
     const [isUndocking, setIsUndocking] = useState(false);
     const previousEdge = usePreviousValue<ScreenEdge>(edge);
@@ -31,10 +29,7 @@ export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getC
     useEffect(() => {
         const handleBoundsChanged = (event: fin.WindowBoundsEvent) => {
             // Don't reset edge if we're the ones moving it or only a resize bound event has occurred
-            if (isAnimating || event.changeType === 1) {
-                if (isAnimating) {
-                    isAnimating = false;
-                }
+            if (event.reason === 'animation' || event.changeType === 1) {
                 return;
             }
 
@@ -68,7 +63,6 @@ export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getC
 
     useEffect(() => {
         const performDockTransition = async () => {
-            isAnimating = true; // set flag to prevent bounds listener from resetting edge to NONE
 
             const bounds: Bounds = await toMove.getBounds();
             const monitorRect: Rect = await getMonitorRect(bounds);

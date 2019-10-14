@@ -94,7 +94,7 @@ const cards: IDemoCard[] = [
   },
   {
     description: "Create and manage a single child window",
-    icon: "window",
+    icon: "filter_none",
     iconRotate: false,
     id: "child-window",
     name: "useChildWindow",

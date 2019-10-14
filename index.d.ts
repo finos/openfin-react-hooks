@@ -7,7 +7,7 @@ import { _Window } from "openfin/_v2/api/window/window";
 import { WindowOption } from "openfin/_v2/api/window/windowOption";
 import { Identity } from "openfin/_v2/identity";
 import { ScreenEdge } from "./src/ScreenEdge";
-import CHILD_WINDOW_STATE from "./src/utils/types/enums/ChildWindowState";
+import CHILD_WINDOW_STATE from "./src/utils/types/enums/WindowState";
 
 export interface IDimensions {
   dockedWidth: number;
@@ -31,7 +31,9 @@ export interface INotification {
   close: () => void;
   launch: () => void;
   populate: (jsx: JSX.Element) => void;
-  notificationRef: _Notification;
+  ref: _Notification;
+  state: CHILD_WINDOW_STATE;
+  windowRef: _Window;
 }
 
 export interface IUseChildWindowOptions {
@@ -57,7 +59,7 @@ export interface IUseDockWindowOptions {
 }
 
 export interface IUseNotificationOptions {
-  htmlUrl: string;
+  notificationOptions: any;
   parentDocument?: HTMLDocument;
   cssUrl?: string;
   shouldInheritCss?: boolean;
@@ -154,7 +156,7 @@ export const useInterApplicationBusSubscribe: <T>(
 
 export const useMaximized: () => [
   boolean,
-  (shouldMaximize: boolean) => Promise<void>,
+  (shouldMaximize: boolean) => Promise<void>
 ];
 
 export const useOptions: (

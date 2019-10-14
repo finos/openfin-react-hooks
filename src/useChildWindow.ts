@@ -3,11 +3,9 @@ import { WindowOption } from "openfin/_v2/api/window/windowOption";
 import { useCallback, useEffect, useReducer } from "react";
 import ReactDOM from "react-dom";
 import { IUseChildWindowOptions } from "../index";
-import reducer, {
-  INITIAL_CHILD_WINDOW_STATE,
-} from "./utils/reducers/ChildWindowReducer";
-import ACTION from "./utils/types/enums/ChildWindowAction";
-import CHILD_WINDOW_STATE from "./utils/types/enums/ChildWindowState";
+import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
+import WINDOW_ACTION from "./utils/types/enums/WindowAction";
+import WINDOW_STATE from "./utils/types/enums/WindowState";
 
 export default ({
   name,
@@ -19,10 +17,7 @@ export default ({
   shouldInheritCss,
   shouldInheritScripts,
 }: IUseChildWindowOptions) => {
-  const [childWindow, dispatch] = useReducer(
-    reducer,
-    INITIAL_CHILD_WINDOW_STATE,
-  );
+  const [childWindow, dispatch] = useReducer(reducer, INITIAL_WINDOW_STATE);
 
   const injectNode = useCallback(
     (node: HTMLStyleElement | HTMLScriptElement) => {
@@ -61,8 +56,12 @@ export default ({
   }, [parentDocument, injectNodes]);
 
   useEffect(() => {
-    if (shouldInheritCss) { inheritCss(); }
-    if (shouldInheritScripts) { inheritScripts(); }
+    if (shouldInheritCss) {
+      inheritCss();
+    }
+    if (shouldInheritScripts) {
+      inheritScripts();
+    }
 
     if (cssUrl && childWindow.windowRef) {
       const linkElement = childWindow.windowRef
@@ -82,7 +81,7 @@ export default ({
   ]);
 
   useEffect(() => {
-    if (childWindow.state === CHILD_WINDOW_STATE.LAUNCHED) {
+    if (childWindow.state === WINDOW_STATE.LAUNCHED) {
       if (jsx) {
         populate(jsx);
       }
@@ -105,15 +104,15 @@ export default ({
   const dispatchError = (error: string) => {
     dispatch({
       error,
-      payload: CHILD_WINDOW_STATE.ERROR,
-      type: ACTION.CHANGE_STATE,
+      payload: WINDOW_STATE.ERROR,
+      type: WINDOW_ACTION.CHANGE_STATE,
     });
   };
 
-  const dispatchNewState = (state: CHILD_WINDOW_STATE) =>
+  const dispatchNewState = (state: WINDOW_STATE) =>
     dispatch({
       payload: state,
-      type: ACTION.CHANGE_STATE,
+      type: WINDOW_ACTION.CHANGE_STATE,
     });
 
   const launch = useCallback(
@@ -123,17 +122,17 @@ export default ({
         : windowOptions
         ? windowOptions
         : null;
-      if (childWindow.state !== CHILD_WINDOW_STATE.LAUNCHING && options) {
+      if (childWindow.state !== WINDOW_STATE.LAUNCHING && options) {
         try {
-          dispatchNewState(CHILD_WINDOW_STATE.LAUNCHING);
+          dispatchNewState(WINDOW_STATE.LAUNCHING);
           if (shouldClosePreviousOnLaunch) {
             await closeExistingWindow();
           }
           dispatch({
             payload: await fin.Window.create(options),
-            type: ACTION.SET_WINDOW,
+            type: WINDOW_ACTION.SET_WINDOW,
           });
-          dispatchNewState(CHILD_WINDOW_STATE.LAUNCHED);
+          dispatchNewState(WINDOW_STATE.LAUNCHED);
         } catch (error) {
           dispatchError(error);
         }
@@ -146,12 +145,12 @@ export default ({
     (jsxElement: JSX.Element) => {
       if (childWindow.windowRef) {
         try {
-          dispatchNewState(CHILD_WINDOW_STATE.POPULATING);
+          dispatchNewState(WINDOW_STATE.POPULATING);
           ReactDOM.render(
             jsxElement,
             childWindow.windowRef.getWebWindow().document.getElementById("root"),
           );
-          dispatchNewState(CHILD_WINDOW_STATE.POPULATED);
+          dispatchNewState(WINDOW_STATE.POPULATED);
         } catch (error) {
           dispatchError(error);
         }
@@ -164,7 +163,7 @@ export default ({
     try {
       if (childWindow.windowRef) {
         await childWindow.windowRef.close();
-        dispatch({ type: ACTION.RESET });
+        dispatch({ type: WINDOW_ACTION.RESET });
       }
     } catch (error) {
       dispatchError(error);

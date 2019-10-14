@@ -2,9 +2,9 @@ import { IUseChildWindowOptions } from "openfin-react-hooks";
 import { WindowOption } from "openfin/_v2/api/window/windowOption";
 import * as Prism from "prismjs";
 import React, { useEffect, useState } from "react";
+import Demo from "../../common/Demo";
 import styles from "./ChildWindow.module.css";
 import CodeExample from "./components/CodeExample";
-import Demo from "./components/Demo";
 import DemoActions from "./components/DemoActions";
 import HookDescription from "./components/HookDescription";
 import Checkboxes from "./components/inputs/Checkboxes";
@@ -14,8 +14,8 @@ import ILaunchConfig from "./interfaces/ILaunchConfig";
 
 const WINDOW_HEIGHT: number = 500;
 const WINDOW_NAME: string = "Child Window";
-const HTML_URL: string | undefined = process.env.REACT_APP_CHILD_WINDOW_HTML;
-const CSS_URL: string | undefined = process.env.REACT_APP_CHILD_WINDOW_CSS;
+const HTML_URL: string | undefined = process.env.REACT_APP_SAMPLE_WINDOW_HTML;
+const CSS_URL: string | undefined = process.env.REACT_APP_SAMPLE_WINDOW_CSS;
 const INITIAL_TEXT_AREA_VALUE: string = `<div class="App_containerApp__F0W0w">
   <p>Hello World!</p>
 </div>`;

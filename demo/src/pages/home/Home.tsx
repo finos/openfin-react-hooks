@@ -89,7 +89,7 @@ const cards: IDemoCard[] = [
       name: "useChannels",
     },
     {
-      description: "Use ChildWindow",
+      description: "Use useChildWindow hook to launch and manage child windows",
       icon: "window",
       iconRotate: false,
       id: "child-window",
@@ -98,11 +98,13 @@ const cards: IDemoCard[] = [
 ];
 
 const Home: React.FC = () => {
-    return (
-        <div className={styles.containerContent}>
-            {cards.map((demo) => <DemoCard key={demo.id} demo={demo} />)}
-        </div>
-    );
+  return (
+    <div className={styles.containerContent}>
+      {cards.map((demo) => (
+        <DemoCard key={demo.id} demo={demo} />
+      ))}
+    </div>
+  );
 };
 
 export default Home;

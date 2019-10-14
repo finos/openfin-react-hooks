@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dock Window Example</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            font-family: sans-serif;
+            font-size: 16px;
+            -webkit-app-region: drag;
+        }
+
+        .container {
+            background-color: #F5F2F0;
+            height: 100%;
+        }
+
+        button {
+            margin: 5px;
+            -webkit-app-region: no-drag;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button type="button" onclick="window.fin.Window.getCurrentSync().close()">Close</button>
+    </div>
+</body>
+</html>

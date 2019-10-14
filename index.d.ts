@@ -13,17 +13,6 @@ export interface IDimensions {
   dockedHeight: number;
 }
 
-export interface IUseDockWindowOptions {
-    undockPosition?: {
-        left: number;
-        top: number;
-    };
-    undockSize?: {
-        height: number;
-        width: number;
-    };
-}
-
 export interface IChannelAction {
   topic: string;
   action: Action;
@@ -37,12 +26,39 @@ export interface IChildWindow {
   windowRef: _Window;
 }
 
+export interface INotification {
+  close: () => void;
+  launch: () => void;
+  populate: (jsx: JSX.Element) => void;
+  notificationRef: any;
+}
+
 export interface IUseChildWindowOptions {
   name: string;
   windowOptions?: WindowOption;
   parentDocument?: HTMLDocument;
   cssUrl?: string;
   shouldClosePreviousOnLaunch?: boolean;
+  shouldInheritCss?: boolean;
+  shouldInheritScripts?: boolean;
+  jsx?: JSX.Element;
+}
+
+export interface IUseDockWindowOptions {
+  undockPosition?: {
+    left: number;
+    top: number;
+  };
+  undockSize?: {
+    height: number;
+    width: number;
+  };
+}
+
+export interface IUseNotificationOptions {
+  htmlUrl: string;
+  parentDocument?: HTMLDocument;
+  cssUrl?: string;
   shouldInheritCss?: boolean;
   shouldInheritScripts?: boolean;
   jsx?: JSX.Element;
@@ -73,11 +89,21 @@ export const useChildWindow: (
   useChildWindowOptions: IUseChildWindowOptions,
 ) => IChildWindow;
 
+export const useNotification: (
+  useNotificationOptions: IUseNotificationOptions,
+) => INotification;
+
 export const useDocked: () => [boolean, () => Promise<void>];
 
-export const useDockWindow: (initialEdge?: ScreenEdge, toMove?: _Window, allowUserToUndock?: boolean,
-                             stretchToFit?: IDimensions,
-                             options?: IUseDockWindowOptions) => [ScreenEdge, {
+export const useDockWindow: (
+  initialEdge?: ScreenEdge,
+  toMove?: _Window,
+  allowUserToUndock?: boolean,
+  stretchToFit?: IDimensions,
+  options?: IUseDockWindowOptions,
+) => [
+  ScreenEdge,
+  {
     dockBottom: () => void;
     dockLeft: () => void;
     dockNone: () => void;

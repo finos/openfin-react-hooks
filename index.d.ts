@@ -1,6 +1,7 @@
 import { Action } from "openfin/_v2/api/interappbus/channel/channel";
 import { ChannelClient } from "openfin/_v2/api/interappbus/channel/client";
 import { ChannelProvider } from "openfin/_v2/api/interappbus/channel/provider";
+import { _Notification } from "openfin/_v2/api/notification/notification";
 import Bounds from "openfin/_v2/api/window/bounds";
 import { _Window } from "openfin/_v2/api/window/window";
 import { WindowOption } from "openfin/_v2/api/window/windowOption";
@@ -30,7 +31,7 @@ export interface INotification {
   close: () => void;
   launch: () => void;
   populate: (jsx: JSX.Element) => void;
-  notificationRef: any;
+  notificationRef: _Notification;
 }
 
 export interface IUseChildWindowOptions {
@@ -153,7 +154,7 @@ export const useInterApplicationBusSubscribe: <T>(
 
 export const useMaximized: () => [
   boolean,
-  (shouldMaximize: boolean) => Promise<void>
+  (shouldMaximize: boolean) => Promise<void>,
 ];
 
 export const useOptions: (

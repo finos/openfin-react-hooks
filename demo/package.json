@@ -26,6 +26,8 @@
     "extends": "react-app"
   },
   "homepage": "./",
+  "author": "Scott Logic",
+  "license": "Apache-2.0",
   "browserslist": {
     "production": [
       ">0.2%",

@@ -82,11 +82,9 @@ export default ({
   ]);
 
   useEffect(() => {
-    if (childWindow.state === CHILD_WINDOW_STATE.LAUNCHED) {
-      if (jsx) {
+    if (childWindow.state === CHILD_WINDOW_STATE.LAUNCHED && jsx) {
         populate(jsx);
       }
-    }
   }, [childWindow.state]);
 
   const closeExistingWindow = useCallback(async () => {

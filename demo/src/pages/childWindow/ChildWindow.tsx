@@ -10,7 +10,7 @@ import HookDescription from "./components/HookDescription";
 import Checkboxes from "./components/inputs/Checkboxes";
 import TextInputs from "./components/inputs/TextInputs";
 import LaunchConfiguration from "./components/LaunchConfiguration";
-import ILaunchConfig from "./interfaces/ILaunchConfig";
+import ILaunchConfig from "./ILaunchConfig";
 
 const WINDOW_HEIGHT: number = 500;
 const WINDOW_NAME: string = "Child Window";

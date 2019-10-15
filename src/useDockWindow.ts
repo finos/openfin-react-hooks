@@ -21,7 +21,7 @@ const getMonitorRect = async (bounds: Bounds): Promise<Rect> => {
 
 export default (
     initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getCurrentSync(),
-    allowUserToUndock: boolean = true, stretchToFit?: IDimensions, options?: IUseDockWindowOptions
+    allowUserToUndock: boolean = true, stretchToFit?: IDimensions, options?: IUseDockWindowOptions,
 ) => {
     const [edge, setEdge] = useState(initialEdge);
     const [isUndocking, setIsUndocking] = useState(false);

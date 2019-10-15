@@ -3,13 +3,13 @@ import { WindowOption } from "openfin/_v2/api/window/windowOption";
 import * as Prism from "prismjs";
 import React, { useEffect, useState } from "react";
 import Demo from "../../common/Demo";
+import LaunchConfiguration from "../../common/LaunchConfiguration";
 import styles from "./ChildWindow.module.css";
 import CodeExample from "./components/CodeExample";
 import DemoActions from "./components/DemoActions";
 import HookDescription from "./components/HookDescription";
 import Checkboxes from "./components/inputs/Checkboxes";
 import TextInputs from "./components/inputs/TextInputs";
-import LaunchConfiguration from "./components/LaunchConfiguration";
 import ILaunchConfig from "./interfaces/ILaunchConfig";
 
 const WINDOW_HEIGHT: number = 500;

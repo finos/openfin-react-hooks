@@ -6,7 +6,7 @@ interface IProps {
 
 export default ({ children }: IProps) => (
   <>
-    <h4>Child Window Launch Configuration</h4>
+    <h4>Launch Configuration</h4>
     {children}
   </>
 );

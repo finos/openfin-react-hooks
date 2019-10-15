@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useReducer, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useReducer,
+  useState,
+} from "react";
 import ReactDOM from "react-dom";
 import { IUseNotificationOptions } from "../index";
 import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
@@ -22,14 +28,14 @@ export default ({
 
   const injectNode = useCallback(
     (node: HTMLStyleElement | HTMLScriptElement) => {
-      if (ref) {
-        ref
+      if (notificationWindow && notificationWindow.windowRef) {
+        notificationWindow.windowRef
           .getWebWindow()
           .document.getElementsByTagName("head")[0]
           .appendChild(node.cloneNode(true));
       }
     },
-    [ref],
+    [notificationWindow.windowRef],
   );
 
   const injectNodes = useCallback(
@@ -79,11 +85,38 @@ export default ({
     }
   }, [ref, setRef]);
 
-  useEffect(() => {
-    if (name && jsx) {
+  useLayoutEffect(() => {
+    if (
+      jsx &&
+      notificationWindow.state === "LAUNCHED" &&
+      notificationWindow.windowRef
+    ) {
       populate(jsx);
     }
-  }, [jsx, name]);
+  }, [jsx, name, notificationWindow]);
+
+  useEffect(() => {
+    if (shouldInheritCss) {
+      inheritCss();
+    }
+  }, [shouldInheritCss, parentDocument, inheritCss]);
+
+  useEffect(() => {
+    if (shouldInheritScripts) {
+      inheritScripts();
+    }
+  }, [shouldInheritScripts, parentDocument, inheritScripts]);
+
+  useEffect(() => {
+    if (cssUrl && notificationWindow.windowRef) {
+      const linkElement = notificationWindow.windowRef
+        .getWebWindow()
+        .document.createElement("link");
+      linkElement.setAttribute("rel", "stylesheet");
+      linkElement.setAttribute("href", cssUrl);
+      injectNode(linkElement);
+    }
+  }, [notificationWindow, cssUrl, injectNode]);
 
   useEffect(() => {
     if (shouldInheritCss) {
@@ -93,13 +126,21 @@ export default ({
       inheritScripts();
     }
 
-    if (cssUrl && ref) {
-      const linkElement = ref.getWebWindow().document.createElement("link");
+    if (cssUrl && notificationWindow.windowRef) {
+      const linkElement = notificationWindow.windowRef
+        .getWebWindow()
+        .document.createElement("link");
       linkElement.setAttribute("rel", "stylesheet");
       linkElement.setAttribute("href", cssUrl);
       injectNode(linkElement);
     }
-  }, [ref, cssUrl, parentDocument, inheritCss, inheritScripts, injectNode]);
+  }, [
+    notificationWindow.windowRef,
+    cssUrl,
+    inheritCss,
+    inheritScripts,
+    injectNode,
+  ]);
 
   const dispatchNewState = (state: WINDOW_STATE) =>
     dispatch({
@@ -135,9 +176,9 @@ export default ({
 
   const populate = useCallback(
     (jsxElement: JSX.Element) => {
-      dispatchNewState(WINDOW_STATE.POPULATING);
       if (notificationWindow.windowRef) {
         try {
+          dispatchNewState(WINDOW_STATE.POPULATING);
           ReactDOM.render(
             jsxElement,
             notificationWindow.windowRef
@@ -157,6 +198,8 @@ export default ({
     try {
       if (ref) {
         await ref.close();
+        dispatch({ type: WINDOW_ACTION.RESET });
+        setRef(null);
       }
     } catch (error) {
       throw new Error(error);

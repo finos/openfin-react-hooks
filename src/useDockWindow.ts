@@ -9,6 +9,11 @@ import { ScreenEdge } from "./ScreenEdge";
 import transitions from "./useDockWindow.transitions";
 import usePreviousValue from "./utils/usePreviousValue";
 
+interface IBoundsChangedEvent extends fin.WindowBoundsChange<"window", "bounds-changed"> {
+    changeType: number;
+    reason?: "animation" | "self";
+}
+
 const getMonitorRect = async (bounds: Bounds): Promise<Rect> => {
     const monitorInfo: MonitorInfo = await fin.System.getMonitorInfo();
     return monitorInfo.nonPrimaryMonitors
@@ -28,7 +33,7 @@ export default (
     const previousEdge = usePreviousValue<ScreenEdge>(edge);
 
     useEffect(() => {
-        const handleBoundsChanged = (event: any) => {
+        const handleBoundsChanged = (event: IBoundsChangedEvent) => {
             // Don't reset edge if we're the ones moving it or only a resize bound event has occurred
             if (event.reason && event.reason === "animation" || event.changeType === 1) {
                 return;

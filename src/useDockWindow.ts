@@ -27,9 +27,9 @@ export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getC
     const previousEdge = usePreviousValue<ScreenEdge>(edge);
 
     useEffect(() => {
-        const handleBoundsChanged = (event: { changeType: number, reason: string }) => {
+        const handleBoundsChanged = (event: fin.WindowBoundsEvent) => {
             // Don't reset edge if we're the ones moving it or only a resize bound event has occurred
-            if (event.reason === 'animation' || event.changeType === 1) {
+            if (event && event.reason && event.reason === 'animation' || event.changeType === 1) {
                 return;
             }
 

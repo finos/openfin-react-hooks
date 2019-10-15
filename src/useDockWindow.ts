@@ -9,7 +9,7 @@ import { ScreenEdge } from "./ScreenEdge";
 import transitions from "./useDockWindow.transitions";
 import usePreviousValue from "./utils/usePreviousValue";
 
-interface IBoundsChangedEvent extends fin.WindowBoundsEvent<"window", "bounds-changed"> {
+interface IBoundsChangedEvent extends fin.WindowBoundsEvent {
     changeType: number;
     reason?: "animation" | "self";
 }

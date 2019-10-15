@@ -19,17 +19,18 @@ const getMonitorRect = async (bounds: Bounds): Promise<Rect> => {
         || monitorInfo.primaryMonitor.availableRect;
 };
 
-export default (initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getCurrentSync(),
-    allowUserToUndock: boolean = true, stretchToFit?: IDimensions,
-    options?: IUseDockWindowOptions) => {
+export default (
+    initialEdge = ScreenEdge.NONE, toMove: _Window = fin.Window.getCurrentSync(),
+    allowUserToUndock: boolean = true, stretchToFit?: IDimensions, options?: IUseDockWindowOptions,
+) => {
     const [edge, setEdge] = useState(initialEdge);
     const [isUndocking, setIsUndocking] = useState(false);
     const previousEdge = usePreviousValue<ScreenEdge>(edge);
 
     useEffect(() => {
-        const handleBoundsChanged = (event: { changeType: number, reason: string }) => {
+        const handleBoundsChanged = (event: any) => {
             // Don't reset edge if we're the ones moving it or only a resize bound event has occurred
-            if (event.reason === 'animation' || event.changeType === 1) {
+            if (event.reason && event.reason === "animation" || event.changeType === 1) {
                 return;
             }
 

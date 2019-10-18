@@ -7,7 +7,7 @@ import { _Window } from "openfin/_v2/api/window/window";
 import { WindowOption } from "openfin/_v2/api/window/windowOption";
 import { Identity } from "openfin/_v2/identity";
 import { ScreenEdge } from "./src/ScreenEdge";
-import CHILD_WINDOW_STATE from "./src/utils/types/enums/WindowState";
+import WINDOW_STATE from "./src/utils/types/enums/WindowState";
 
 export interface IDimensions {
   dockedWidth: number;
@@ -23,16 +23,16 @@ export interface IChildWindow {
   close: () => void;
   launch: (windowOptions?: WindowOption) => void;
   populate: (jsx: JSX.Element) => void;
-  state: CHILD_WINDOW_STATE;
+  state: WINDOW_STATE;
   windowRef: _Window;
 }
 
 export interface INotification {
   close: () => void;
-  launch: () => void;
+  launch: (notificationOptions?: fin.NotificationOptions) => void;
   populate: (jsx: JSX.Element) => void;
   ref: _Notification;
-  state: CHILD_WINDOW_STATE;
+  state: WINDOW_STATE;
   windowRef: _Window;
 }
 
@@ -85,7 +85,7 @@ export const useChannelProvider: (
 };
 
 export enum enums {
-  CHILD_WINDOW_STATE,
+  WINDOW_STATE,
 }
 
 export const useChildWindow: (

@@ -10,6 +10,7 @@ const Component = () => {
 
     const CHILD_WINDOW_HOOK_OPTIONS: IUseChildWindowOptions = {
         cssUrl: PATH_TO_CHILD_WINDOW_CSS,
+        jsx: <p>I am a child window!</p>
         name: WINDOW_NAME,
         shouldClosePreviousOnLaunch: true,
         shouldInheritCss: true,

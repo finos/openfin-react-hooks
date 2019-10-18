@@ -1,7 +1,8 @@
 body {
-  padding: 5px;
   display: flex;
   overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 div#root {
@@ -17,6 +18,6 @@ p {
 }
 
 div.App_containerApp__F0W0w {
-  min-height: calc(100vh - 9px);
+  min-height: calc(100vh - 4px);
   font-size: 80%;
 }

@@ -39,7 +39,7 @@ export default ({
         setLaunchConfig({ ...launchConfig, cssUrl: e.target.value })
       }
     />
-    <label>Timeout</label>
+    <label>Timeout ("never" or milliseconds)</label>
     <input
       name="html-url"
       type="text"
@@ -49,7 +49,7 @@ export default ({
           ...launchConfig,
           notificationOptions: {
             ...launchConfig.notificationOptions,
-            timeout: e.target.value,
+            timeout: convertToNumberIfNumber(e.target.value),
           },
         })
       }
@@ -68,3 +68,8 @@ export default ({
     ></textarea>
   </div>
 );
+
+const convertToNumberIfNumber = (
+  stringOrNumber: string | number,
+): string | number =>
+  isNaN(Number(stringOrNumber)) ? stringOrNumber : Number(stringOrNumber);

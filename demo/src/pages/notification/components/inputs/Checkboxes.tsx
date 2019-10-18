@@ -21,7 +21,7 @@ export default ({ launchConfig, setLaunchConfig }: IProps) => (
     />
     <label>
       Should load {<code>jsx</code>} passed as a part of
-      {<code> WINDOW_HOOK_OPTIONS </code>}
+      {<code> NOTIFICATION_HOOK_OPTIONS </code>}
       immediately after the window is launched
     </label>
     <br />
@@ -36,7 +36,7 @@ export default ({ launchConfig, setLaunchConfig }: IProps) => (
         })
       }
     />
-    <label>Child window should inherit parent CSS</label>
+    <label>Notification should inherit parent CSS</label>
     <br />
     <input
       type="checkbox"
@@ -49,6 +49,6 @@ export default ({ launchConfig, setLaunchConfig }: IProps) => (
         })
       }
     />
-    <label>Child window should inherit parent scripts</label>
+    <label>Notification should inherit parent scripts</label>
   </div>
 );

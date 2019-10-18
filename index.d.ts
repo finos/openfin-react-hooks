@@ -29,7 +29,7 @@ export interface IChildWindow {
 
 export interface INotification {
   close: () => void;
-  launch: () => void;
+  launch: (notificationOptions?: fin.NotificationOptions) => void;
   populate: (jsx: JSX.Element) => void;
   ref: _Notification;
   state: CHILD_WINDOW_STATE;

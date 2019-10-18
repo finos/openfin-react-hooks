@@ -1,6 +1,6 @@
+import { IUseNotificationOptions } from "openfin-react-hooks";
 import * as Prism from "prismjs";
 import React, { useEffect, useState } from "react";
-import { IUseNotificationOptions } from "../../../..";
 import Demo from "../../common/Demo";
 import LaunchConfiguration from "../../common/LaunchConfiguration";
 import CodeExample from "./components/CodeExample";
@@ -84,6 +84,7 @@ const Notification: React.FC = () => {
           />
         </LaunchConfiguration>
         <DemoActions
+          notificationOptions={launchConfig.notificationOptions}
           textAreaValue={textAreaValue}
           NOTIFICATION_HOOK_OPTIONS={NOTIFICATION_HOOK_OPTIONS}
         />

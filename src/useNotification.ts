@@ -170,26 +170,32 @@ export default ({
     });
   };
 
-  const launch = useCallback(async () => {
-    try {
-      const newNotification = new fin.desktop.Notification({
-        ...notificationOptions,
-        onShow: () => {
-          if (notificationOptions.onShow) {
-            // interface defines this argument as required, but we just want
-            // to call the function user passed in to notificationOptions
-            // tslint:disable-next-line no-empty
-            notificationOptions.onShow(() => {});
-          }
-          dispatchNewState(WINDOW_STATE.LAUNCHING);
-        },
-        timeout: notificationOptions.timeout,
-      });
-      setRef(newNotification);
-    } catch (error) {
-      dispatchError(error);
-    }
-  }, []);
+  const launch = useCallback(
+    async (currentNotificationOpts?: fin.NotificationOptions) => {
+      const options = currentNotificationOpts
+        ? currentNotificationOpts
+        : notificationOptions;
+      try {
+        const newNotification = new fin.desktop.Notification({
+          ...currentNotificationOpts,
+          onShow: () => {
+            if (options.onShow) {
+              // interface defines this argument as required, but we just want
+              // to call the function user passed in to notificationOptions
+              // tslint:disable-next-line no-empty
+              options.onShow(() => {});
+            }
+            dispatchNewState(WINDOW_STATE.LAUNCHING);
+          },
+          timeout: options.timeout,
+        });
+        setRef(newNotification);
+      } catch (error) {
+        dispatchError(error);
+      }
+    },
+    [],
+  );
 
   const populate = useCallback(
     (jsxElement: JSX.Element) => {

@@ -1,30 +1,22 @@
 import React from "react";
 
-const codeExample = `import {useChildWindow} from "openfin-react-hooks";
+const codeExample = `import {useNotification, IUseNotificationOptions} from "openfin-react-hooks";
 
 const Component = () => {
-    const WINDOW_OPTIONS: WindowOption = {
-        name: WINDOW_NAME,
-        url: PATH_TO_CHILD_WINDOW_HTML,
+    const NOTIFICATION_HOOK_OPTIONS: IUseNotificationOptions = {
+      cssUrl: PATH_TO_NOTIFICATION_CSS,
+      jsx: <p>I am a notification!</p>,
+      parentDocument: document,
+      shouldInheritCss: true,
+      shouldInheritScripts: true,
     };
 
-    const CHILD_WINDOW_HOOK_OPTIONS: IUseChildWindowOptions = {
-        cssUrl: PATH_TO_CHILD_WINDOW_CSS,
-        name: WINDOW_NAME,
-        shouldClosePreviousOnLaunch: true,
-        shouldInheritCss: true,
-        shouldInheritScripts: true,
-        parentDocument: document,
-        windowOptions: WINDOW_OPTIONS,
-    };
-
-    const childWindow = useChildWindow(CHILD_WINDOW_HOOK_OPTIONS);
+    const notification = useNotification(NOTIFICATION_HOOK_OPTIONS);
 
     return (
-        <button onClick={() => childWindow.launch()}>Launch</button>
-        <button onClick={() => childWindow.launch(WINDOW_OPTIONS)}>Launch</button>
-        <button onClick={() => childWindow.populate(<p>Hello World!</p>)}>Populate</button>
-        <button onClick={() => childWindow.close()}>Close</button>
+        <button onClick={() => notification.launch()}>Launch</button>
+        <button onClick={() => notification.populate(<p>Hello World!</p>)}>Populate</button>
+        <button onClick={() => notification.close()}>Close</button>
     );
 }
 `;

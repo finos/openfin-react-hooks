@@ -11,7 +11,8 @@ import ILaunchConfig from "./interfaces/ILaunchConfig";
 import styles from "./Notification.module.css";
 
 const HTML_URL: string | undefined = process.env.REACT_APP_SAMPLE_WINDOW_HTML;
-const CSS_URL: string | undefined = process.env.REACT_APP_SAMPLE_WINDOW_CSS;
+const CSS_URL: string | undefined =
+  process.env.REACT_APP_SAMPLE_NOTIFICATION_CSS;
 const INITIAL_TEXT_AREA_VALUE: string = `<div class="App_containerApp__F0W0w">
   <p>Hello World!</p>
 </div>`;
@@ -23,20 +24,24 @@ const NOTIFICATION_BODY_AS_HOOK_OPTION = (
     </p>
   </div>
 );
+const INITIAL_NOTIFICATION_OPTIONS: ILaunchConfig = {
+  cssUrl: CSS_URL,
+  notificationOptions: {
+    message: null,
+    timeout: "never",
+    url: HTML_URL,
+  },
+  shouldInheritCss: true,
+  shouldInheritScripts: true,
+  shouldLoadJsxAfterLaunch: true,
+};
+
 const Notification: React.FC = () => {
   useEffect(Prism.highlightAll, []);
 
-  const [launchConfig, setLaunchConfig] = useState<ILaunchConfig>({
-    cssUrl: CSS_URL,
-    notificationOptions: {
-      message: null,
-      timeout: "never",
-      url: HTML_URL,
-    },
-    shouldInheritCss: true,
-    shouldInheritScripts: true,
-    shouldLoadJsxAfterLaunch: true,
-  });
+  const [launchConfig, setLaunchConfig] = useState<ILaunchConfig>(
+    INITIAL_NOTIFICATION_OPTIONS,
+  );
 
   const [textAreaValue, setTextAreaValue] = useState<string>(
     INITIAL_TEXT_AREA_VALUE,

@@ -1,3 +1,8 @@
+import _NotificationModule, {
+  _Notification,
+} from "openfin/_v2/api/notification/notification";
+import { _Window } from "openfin/_v2/api/window/window";
+import { WindowOption } from "openfin/_v2/api/window/windowOption";
 import {
   useCallback,
   useEffect,
@@ -11,6 +16,15 @@ import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
 import WINDOW_ACTION from "./utils/types/enums/WindowAction";
 import WINDOW_STATE from "./utils/types/enums/WindowState";
 
+interface INoteWin extends _Window {
+  windowOpts: WindowOption;
+}
+
+// This is a work-around regarding fin.OpenFinNotification interface not defining noteWin
+interface IOpenFinNotification extends fin.OpenFinNotification {
+  noteWin?: INoteWin;
+}
+
 export default ({
   parentDocument,
   cssUrl,
@@ -19,7 +33,7 @@ export default ({
   shouldInheritCss,
   shouldInheritScripts,
 }: IUseNotificationOptions) => {
-  const [ref, setRef] = useState<any>(null);
+  const [ref, setRef] = useState<IOpenFinNotification | null>(null);
   const [notificationWindow, dispatch] = useReducer(
     reducer,
     INITIAL_WINDOW_STATE,
@@ -63,27 +77,27 @@ export default ({
   }, [parentDocument, injectNodes]);
 
   useEffect(() => {
-    if (name && notificationWindow.state === WINDOW_STATE.LAUNCHED) {
-      fin.Application.getCurrent().then((application) =>
-        application.getChildWindows().then((childWindows) => {
-          childWindows.map((win) => {
-            if (win.identity.name && win.identity.name === name) {
-              dispatch({
-                payload: win,
-                type: WINDOW_ACTION.SET_WINDOW,
-              });
-            }
-          });
-        }),
-      );
+    if (name && ref && notificationWindow.state === WINDOW_STATE.LAUNCHING) {
+      fin.Application.getCurrent().then(async (application) => {
+        const childWindows = await application.getChildWindows();
+        childWindows.map((win) => {
+          if (win.identity.name && win.identity.name === name) {
+            dispatch({
+              payload: win,
+              type: WINDOW_ACTION.SET_WINDOW,
+            });
+          }
+        });
+        dispatchNewState(WINDOW_STATE.LAUNCHED);
+      });
     }
   }, [name, notificationWindow.state, ref]);
 
   useEffect(() => {
-    if (ref) {
-      setName(ref.noteWin.windowOpts.name);
+    if (ref && ref.noteWin) {
+      setName(ref.noteWin.windowOpts.name || null);
     }
-  }, [ref, setRef]);
+  }, [ref]);
 
   useLayoutEffect(() => {
     if (
@@ -158,15 +172,18 @@ export default ({
 
   const launch = useCallback(async () => {
     try {
-      dispatchNewState(WINDOW_STATE.LAUNCHING);
       const newNotification = new fin.desktop.Notification({
         ...notificationOptions,
-        onShow() {
+        onShow: () => {
           if (notificationOptions.onShow) {
-            notificationOptions.onShow();
+            // interface defines this argument as required, but we just want
+            // to call the function user passed in to notificationOptions
+            // tslint:disable-next-line no-empty
+            notificationOptions.onShow(() => {});
           }
-          dispatchNewState(WINDOW_STATE.LAUNCHED);
+          dispatchNewState(WINDOW_STATE.LAUNCHING);
         },
+        timeout: notificationOptions.timeout,
       });
       setRef(newNotification);
     } catch (error) {

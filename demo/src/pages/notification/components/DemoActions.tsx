@@ -1,10 +1,10 @@
-import { useNotification } from "openfin-react-hooks";
+import { IUseNotificationOptions, useNotification } from "openfin-react-hooks";
 import React from "react";
 import ReactHtmlParser from "react-html-parser";
 
 interface IProps {
   textAreaValue: string;
-  NOTIFICATION_HOOK_OPTIONS: any;
+  NOTIFICATION_HOOK_OPTIONS: IUseNotificationOptions;
 }
 
 export default ({ textAreaValue, NOTIFICATION_HOOK_OPTIONS }: IProps) => {

@@ -59,7 +59,7 @@ export interface IUseDockWindowOptions {
 }
 
 export interface IUseNotificationOptions {
-  notificationOptions: any;
+  notificationOptions: fin.NotificationOptions;
   parentDocument?: HTMLDocument;
   cssUrl?: string;
   shouldInheritCss?: boolean;

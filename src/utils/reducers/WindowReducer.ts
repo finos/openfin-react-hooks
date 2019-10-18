@@ -22,7 +22,6 @@ function isWindow(payload: any): payload is _Window {
 }
 
 export default (state: IState, action: IAction): IState => {
-  // console.log("state", state, action);
   switch (action.type) {
     case WINDOW_ACTION.CHANGE_STATE:
       if (action.payload && !isWindow(action.payload)) {

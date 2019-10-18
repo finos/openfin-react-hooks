@@ -1,9 +1,10 @@
 import React, { Dispatch, SetStateAction } from "react";
+import ILaunchConfig from "../../interfaces/ILaunchConfig";
 
 interface IProps {
   textAreaValue: string;
   setTextAreaValue: Dispatch<SetStateAction<string>>;
-  launchConfig: any;
+  launchConfig: ILaunchConfig;
   setLaunchConfig: Dispatch<SetStateAction<any>>;
 }
 

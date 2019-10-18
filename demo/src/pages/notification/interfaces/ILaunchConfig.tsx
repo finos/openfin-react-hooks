@@ -1,7 +1,7 @@
 interface ILaunchConfig {
   cssUrl?: string;
   htmlUrl?: string;
-  notificationOptions?: any;
+  notificationOptions: fin.NotificationOptions;
   shouldInheritCss?: boolean;
   shouldInheritScripts?: boolean;
   shouldLoadJsxAfterLaunch?: boolean;

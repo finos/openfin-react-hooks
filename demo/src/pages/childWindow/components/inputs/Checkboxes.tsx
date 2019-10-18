@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-import ILaunchConfig from "../../interfaces/ILaunchConfig";
+import ILaunchConfig from "../../ILaunchConfig";
 
 interface IProps {
   launchConfig: ILaunchConfig;

@@ -93,8 +93,8 @@ const cards: IDemoCard[] = [
     name: "useChannels",
   },
   {
-    description: "Use ChildWindow",
-    icon: "window",
+    description: "Create and manage a single child window",
+    icon: "filter_none",
     iconRotate: false,
     id: "child-window",
     name: "useChildWindow",

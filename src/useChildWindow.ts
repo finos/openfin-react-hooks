@@ -81,10 +81,8 @@ export default ({
   ]);
 
   useEffect(() => {
-    if (childWindow.state === WINDOW_STATE.LAUNCHED) {
-      if (jsx) {
-        populate(jsx);
-      }
+    if (childWindow.state === WINDOW_STATE.LAUNCHED && jsx) {
+      populate(jsx);
     }
   }, [childWindow.state]);
 

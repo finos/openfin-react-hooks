@@ -22,10 +22,10 @@ const Component = () => {
 `;
 
 export default () => (
-  <>
-    <h2>Code Example</h2>
-    <pre>
-      <code className="language-jsx">{codeExample}</code>
-    </pre>
-  </>
+    <>
+        <h2>Code Example</h2>
+        <pre>
+            <code className="language-jsx">{codeExample}</code>
+        </pre>
+    </>
 );

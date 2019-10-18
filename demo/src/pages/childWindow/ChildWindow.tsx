@@ -20,78 +20,78 @@ const INITIAL_TEXT_AREA_VALUE: string = `<div class="App_containerApp__F0W0w">
   <p>Hello World!</p>
 </div>`;
 const CHILD_BODY_AS_HOOK_OPTION = (
-  <div className="App_containerApp__F0W0w">
-    <p>
-      This jsx was passed in as a part of <code>CHILD_WINDOW_HOOK_OPTIONS</code>
-      . See "Code Example" Section for more information.
+    <div className="App_containerApp__F0W0w">
+        <p>
+            This jsx was passed in as a part of <code>CHILD_WINDOW_HOOK_OPTIONS</code>
+            . See "Code Example" Section for more information.
     </p>
-  </div>
+    </div>
 );
 
 const ChildWindow: React.FC = () => {
-  const [textAreaValue, setTextAreaValue] = useState<string>(
-    INITIAL_TEXT_AREA_VALUE,
-  );
+    const [textAreaValue, setTextAreaValue] = useState<string>(
+        INITIAL_TEXT_AREA_VALUE,
+    );
 
-  const [launchConfig, setLaunchConfig] = useState<ILaunchConfig>({
-    cssUrl: CSS_URL,
-    htmlUrl: HTML_URL,
-    shouldClosePreviousOnLaunch: true,
-    shouldInheritCss: true,
-    shouldInheritScripts: true,
-    shouldLoadJsxAfterLaunch: true,
-    windowName: WINDOW_NAME,
-  });
+    const [launchConfig, setLaunchConfig] = useState<ILaunchConfig>({
+        cssUrl: CSS_URL,
+        htmlUrl: HTML_URL,
+        shouldClosePreviousOnLaunch: true,
+        shouldInheritCss: true,
+        shouldInheritScripts: true,
+        shouldLoadJsxAfterLaunch: true,
+        windowName: WINDOW_NAME,
+    });
 
-  useEffect(Prism.highlightAll, []);
+    useEffect(Prism.highlightAll, []);
 
-  const WINDOW_OPTIONS: WindowOption = {
-    maxHeight: WINDOW_HEIGHT,
-    maxWidth: WINDOW_HEIGHT,
-    minHeight: WINDOW_HEIGHT,
-    minWidth: WINDOW_HEIGHT,
-    name: launchConfig.windowName,
-    url: launchConfig.htmlUrl,
-    waitForPageLoad: true,
-  };
+    const WINDOW_OPTIONS: WindowOption = {
+        maxHeight: WINDOW_HEIGHT,
+        maxWidth: WINDOW_HEIGHT,
+        minHeight: WINDOW_HEIGHT,
+        minWidth: WINDOW_HEIGHT,
+        name: launchConfig.windowName,
+        url: launchConfig.htmlUrl,
+        waitForPageLoad: true,
+    };
 
-  const CHILD_WINDOW_HOOK_OPTIONS: IUseChildWindowOptions = {
-    cssUrl: launchConfig.cssUrl,
-    jsx: launchConfig.shouldLoadJsxAfterLaunch
-      ? CHILD_BODY_AS_HOOK_OPTION
-      : undefined,
-    name: launchConfig.windowName,
-    parentDocument: document,
-    shouldClosePreviousOnLaunch: launchConfig.shouldClosePreviousOnLaunch,
-    shouldInheritCss: launchConfig.shouldInheritCss,
-    shouldInheritScripts: launchConfig.shouldInheritScripts,
-    windowOptions: WINDOW_OPTIONS,
-  };
+    const CHILD_WINDOW_HOOK_OPTIONS: IUseChildWindowOptions = {
+        cssUrl: launchConfig.cssUrl,
+        jsx: launchConfig.shouldLoadJsxAfterLaunch
+            ? CHILD_BODY_AS_HOOK_OPTION
+            : undefined,
+        name: launchConfig.windowName,
+        parentDocument: document,
+        shouldClosePreviousOnLaunch: launchConfig.shouldClosePreviousOnLaunch,
+        shouldInheritCss: launchConfig.shouldInheritCss,
+        shouldInheritScripts: launchConfig.shouldInheritScripts,
+        windowOptions: WINDOW_OPTIONS,
+    };
 
-  return (
-    <div className={styles.container}>
-      <HookDescription />
-      <CodeExample />
-      <Demo>
-        <LaunchConfiguration>
-          <Checkboxes
-            launchConfig={launchConfig}
-            setLaunchConfig={setLaunchConfig}
-          />
-          <TextInputs
-            launchConfig={launchConfig}
-            setLaunchConfig={setLaunchConfig}
-            textAreaValue={textAreaValue}
-            setTextAreaValue={setTextAreaValue}
-          />
-        </LaunchConfiguration>
-        <DemoActions
-          CHILD_WINDOW_HOOK_OPTIONS={CHILD_WINDOW_HOOK_OPTIONS}
-          textAreaValue={textAreaValue}
-        />
-      </Demo>
-    </div>
-  );
+    return (
+        <div className={styles.container}>
+            <HookDescription />
+            <CodeExample />
+            <Demo>
+                <LaunchConfiguration>
+                    <Checkboxes
+                        launchConfig={launchConfig}
+                        setLaunchConfig={setLaunchConfig}
+                    />
+                    <TextInputs
+                        launchConfig={launchConfig}
+                        setLaunchConfig={setLaunchConfig}
+                        textAreaValue={textAreaValue}
+                        setTextAreaValue={setTextAreaValue}
+                    />
+                </LaunchConfiguration>
+                <DemoActions
+                    CHILD_WINDOW_HOOK_OPTIONS={CHILD_WINDOW_HOOK_OPTIONS}
+                    textAreaValue={textAreaValue}
+                />
+            </Demo>
+        </div>
+    );
 };
 
 export default ChildWindow;

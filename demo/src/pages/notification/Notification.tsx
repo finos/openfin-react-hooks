@@ -21,7 +21,7 @@ const NOTIFICATION_BODY_AS_HOOK_OPTION = (
         <p>
             This jsx was passed in as a part of <code>NOTIFICATION_HOOK_OPTIONS</code>
             . See "Code Example" Section for more information.
-    </p>
+        </p>
     </div>
 );
 const INITIAL_NOTIFICATION_OPTIONS: ILaunchConfig = {

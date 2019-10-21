@@ -3,7 +3,6 @@ import { WindowOption } from "openfin/_v2/api/window/windowOption";
 import * as Prism from "prismjs";
 import React, { useEffect, useState } from "react";
 import Demo from "../../common/Demo";
-import LaunchConfiguration from "../../common/LaunchConfiguration";
 import styles from "./ChildWindow.module.css";
 import CodeExample from "./components/CodeExample";
 import DemoActions from "./components/DemoActions";
@@ -73,18 +72,16 @@ const ChildWindow: React.FC = () => {
             <HookDescription />
             <CodeExample />
             <Demo>
-                <LaunchConfiguration>
-                    <Checkboxes
-                        launchConfig={launchConfig}
-                        setLaunchConfig={setLaunchConfig}
-                    />
-                    <TextInputs
-                        launchConfig={launchConfig}
-                        setLaunchConfig={setLaunchConfig}
-                        textAreaValue={textAreaValue}
-                        setTextAreaValue={setTextAreaValue}
-                    />
-                </LaunchConfiguration>
+                <Checkboxes
+                    launchConfig={launchConfig}
+                    setLaunchConfig={setLaunchConfig}
+                />
+                <TextInputs
+                    launchConfig={launchConfig}
+                    setLaunchConfig={setLaunchConfig}
+                    textAreaValue={textAreaValue}
+                    setTextAreaValue={setTextAreaValue}
+                />
                 <DemoActions
                     CHILD_WINDOW_HOOK_OPTIONS={CHILD_WINDOW_HOOK_OPTIONS}
                     textAreaValue={textAreaValue}

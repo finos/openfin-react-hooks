@@ -20,6 +20,6 @@
     "skipLibCheck": true
   },
   "include": [
-    "src"
+    "src", "../src/utils/helpers/inject.ts"
   ]
 }

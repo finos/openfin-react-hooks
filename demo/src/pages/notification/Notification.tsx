@@ -2,9 +2,9 @@ import { IUseNotificationOptions } from "openfin-react-hooks";
 import * as Prism from "prismjs";
 import React, { useEffect, useState } from "react";
 import Demo from "../../common/Demo";
-import LaunchConfiguration from "../../common/LaunchConfiguration";
 import CodeExample from "./components/CodeExample";
 import DemoActions from "./components/DemoActions";
+import HookDescription from "./components/HookDescription";
 import Checkboxes from "./components/inputs/Checkboxes";
 import TextInputs from "./components/inputs/TextInputs";
 import ILaunchConfig from "./interfaces/ILaunchConfig";
@@ -60,29 +60,19 @@ const Notification: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>useBounds</h1>
-            <div className={styles.description}>
-                This hook returns the current (and future) bounds of the provided
-                window.
-      </div>
-            <div className={styles.description}>
-                Try moving / resizing this window to see how the bounds object
-                automatically updates.
-      </div>
+            <HookDescription />
             <CodeExample />
             <Demo>
-                <LaunchConfiguration>
-                    <Checkboxes
-                        launchConfig={launchConfig}
-                        setLaunchConfig={setLaunchConfig}
-                    />
-                    <TextInputs
-                        launchConfig={launchConfig}
-                        setLaunchConfig={setLaunchConfig}
-                        textAreaValue={textAreaValue}
-                        setTextAreaValue={setTextAreaValue}
-                    />
-                </LaunchConfiguration>
+                <Checkboxes
+                    launchConfig={launchConfig}
+                    setLaunchConfig={setLaunchConfig}
+                />
+                <TextInputs
+                    launchConfig={launchConfig}
+                    setLaunchConfig={setLaunchConfig}
+                    textAreaValue={textAreaValue}
+                    setTextAreaValue={setTextAreaValue}
+                />
                 <DemoActions
                     notificationOptions={launchConfig.notificationOptions}
                     textAreaValue={textAreaValue}

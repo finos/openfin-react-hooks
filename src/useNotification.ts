@@ -12,6 +12,7 @@ import {
 } from "react";
 import ReactDOM from "react-dom";
 import { IUseNotificationOptions } from "../index";
+import { injectNode, injectNodes } from "./utils/helpers/inject";
 import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
 import WINDOW_ACTION from "./utils/types/enums/WindowAction";
 import WINDOW_STATE from "./utils/types/enums/WindowState";
@@ -33,48 +34,34 @@ export default ({
     shouldInheritCss,
     shouldInheritScripts,
 }: IUseNotificationOptions) => {
+    const [name, setName] = useState<string | null>(null);
+    const [htmlDocument, setHtmlDocument] = useState<HTMLDocument | null>(null);
     const [ref, setRef] = useState<IOpenFinNotification | null>(null);
     const [notificationWindow, dispatch] = useReducer(
         reducer,
         INITIAL_WINDOW_STATE,
     );
-    const [name, setName] = useState<string | null>(null);
-
-    const injectNode = useCallback(
-        (node: HTMLStyleElement | HTMLScriptElement) => {
-            if (notificationWindow && notificationWindow.windowRef) {
-                notificationWindow.windowRef
-                    .getWebWindow()
-                    .document.getElementsByTagName("head")[0]
-                    .appendChild(node.cloneNode(true));
-            }
-        },
-        [notificationWindow.windowRef],
-    );
-
-    const injectNodes = useCallback(
-        (nodes: HTMLCollectionOf<HTMLStyleElement | HTMLScriptElement>) => {
-            // tslint:disable-next-line: prefer-for-of
-            for (let i = 0; i < nodes.length; i++) {
-                injectNode(nodes[i]);
-            }
-        },
-        [injectNode],
-    );
-
     const inheritScripts = useCallback(() => {
-        if (parentDocument) {
+        if (parentDocument && htmlDocument) {
             const parentScripts = parentDocument.getElementsByTagName("script");
-            injectNodes(parentScripts);
+            injectNodes(parentScripts, htmlDocument);
         }
     }, [parentDocument, injectNodes]);
 
     const inheritCss = useCallback(() => {
-        if (parentDocument) {
+        if (parentDocument && htmlDocument) {
             const parentStyles = parentDocument.getElementsByTagName("style");
-            injectNodes(parentStyles);
+            injectNodes(parentStyles, htmlDocument);
         }
-    }, [parentDocument, injectNodes]);
+    }, [parentDocument, injectNodes, htmlDocument]);
+
+    useEffect(() => {
+        if (notificationWindow.windowRef) {
+            setHtmlDocument(
+                notificationWindow.windowRef.getWebWindow().document,
+            );
+        }
+    }, [notificationWindow.windowRef]);
 
     useEffect(() => {
         if (
@@ -104,11 +91,7 @@ export default ({
     }, [ref]);
 
     useLayoutEffect(() => {
-        if (
-            jsx &&
-            notificationWindow.state === "LAUNCHED" &&
-            notificationWindow.windowRef
-        ) {
+        if (jsx && notificationWindow.state === "LAUNCHED" && htmlDocument) {
             populate(jsx);
         }
     }, [jsx, name, notificationWindow]);
@@ -126,15 +109,13 @@ export default ({
     }, [shouldInheritScripts, parentDocument, inheritScripts]);
 
     useEffect(() => {
-        if (cssUrl && notificationWindow.windowRef) {
-            const linkElement = notificationWindow.windowRef
-                .getWebWindow()
-                .document.createElement("link");
+        if (cssUrl && htmlDocument) {
+            const linkElement = htmlDocument.createElement("link");
             linkElement.setAttribute("rel", "stylesheet");
             linkElement.setAttribute("href", cssUrl);
-            injectNode(linkElement);
+            injectNode(linkElement, htmlDocument);
         }
-    }, [notificationWindow, cssUrl, injectNode]);
+    }, [notificationWindow, cssUrl, injectNode, htmlDocument]);
 
     useEffect(() => {
         if (shouldInheritCss) {
@@ -144,21 +125,13 @@ export default ({
             inheritScripts();
         }
 
-        if (cssUrl && notificationWindow.windowRef) {
-            const linkElement = notificationWindow.windowRef
-                .getWebWindow()
-                .document.createElement("link");
+        if (cssUrl && htmlDocument) {
+            const linkElement = htmlDocument.createElement("link");
             linkElement.setAttribute("rel", "stylesheet");
             linkElement.setAttribute("href", cssUrl);
-            injectNode(linkElement);
+            injectNode(linkElement, htmlDocument);
         }
-    }, [
-        notificationWindow.windowRef,
-        cssUrl,
-        inheritCss,
-        inheritScripts,
-        injectNode,
-    ]);
+    }, [cssUrl, inheritCss, inheritScripts, injectNode, htmlDocument]);
 
     const dispatchNewState = (state: WINDOW_STATE) =>
         dispatch({
@@ -174,6 +147,19 @@ export default ({
         });
     };
 
+    const close = useCallback(async () => {
+        try {
+            dispatch({ type: WINDOW_ACTION.RESET });
+            setHtmlDocument(null);
+            if (ref) {
+                await ref.close();
+            }
+            setRef(null);
+        } catch (error) {
+            throw new Error(error);
+        }
+    }, [ref]);
+
     const launch = useCallback(
         async (currentNotificationOpts?: fin.NotificationOptions) => {
             const options = currentNotificationOpts
@@ -182,10 +168,24 @@ export default ({
             try {
                 const newNotification = new fin.desktop.Notification({
                     ...currentNotificationOpts,
+                    // interface defines onShow, onDismiss and onClose as required, but we just want
+                    // to call the function user passed in to notificationOptions thus the disable lines
+                    onClose: async () => {
+                        if (options.onClose) {
+                            // tslint:disable-next-line no-empty
+                            options.onClose(() => {});
+                        }
+                        await close();
+                    },
+                    onDismiss: async () => {
+                        if (options.onDismiss) {
+                            // tslint:disable-next-line no-empty
+                            options.onDismiss(() => {});
+                        }
+                        await close();
+                    },
                     onShow: () => {
                         if (options.onShow) {
-                            // interface defines this argument as required, but we just want
-                            // to call the function user passed in to notificationOptions
                             // tslint:disable-next-line no-empty
                             options.onShow(() => {});
                         }
@@ -203,14 +203,12 @@ export default ({
 
     const populate = useCallback(
         (jsxElement: JSX.Element) => {
-            if (notificationWindow.windowRef) {
+            if (htmlDocument && htmlDocument) {
                 try {
                     dispatchNewState(WINDOW_STATE.POPULATING);
                     ReactDOM.render(
                         jsxElement,
-                        notificationWindow.windowRef
-                            .getWebWindow()
-                            .document.getElementById("root"),
+                        htmlDocument.getElementById("root"),
                     );
                     dispatchNewState(WINDOW_STATE.POPULATED);
                 } catch (error) {
@@ -218,20 +216,8 @@ export default ({
                 }
             }
         },
-        [notificationWindow.windowRef],
+        [htmlDocument],
     );
-
-    const close = useCallback(async () => {
-        try {
-            if (ref) {
-                await ref.close();
-                dispatch({ type: WINDOW_ACTION.RESET });
-                setRef(null);
-            }
-        } catch (error) {
-            throw new Error(error);
-        }
-    }, [ref]);
 
     return {
         close,

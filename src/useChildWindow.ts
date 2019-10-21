@@ -1,8 +1,9 @@
 import { _Window } from "openfin/_v2/api/window/window";
 import { WindowOption } from "openfin/_v2/api/window/windowOption";
-import { useCallback, useEffect, useReducer } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
 import ReactDOM from "react-dom";
 import { IUseChildWindowOptions } from "../index";
+import { injectNode, injectNodes } from "./utils/helpers/inject";
 import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
 import WINDOW_ACTION from "./utils/types/enums/WindowAction";
 import WINDOW_STATE from "./utils/types/enums/WindowState";
@@ -18,42 +19,27 @@ export default ({
     shouldInheritScripts,
 }: IUseChildWindowOptions) => {
     const [childWindow, dispatch] = useReducer(reducer, INITIAL_WINDOW_STATE);
-
-    const injectNode = useCallback(
-        (node: HTMLStyleElement | HTMLScriptElement) => {
-            if (childWindow.windowRef) {
-                childWindow.windowRef
-                    .getWebWindow()
-                    .document.getElementsByTagName("head")[0]
-                    .appendChild(node.cloneNode(true));
-            }
-        },
-        [childWindow.windowRef],
-    );
-
-    const injectNodes = useCallback(
-        (nodes: HTMLCollectionOf<HTMLStyleElement | HTMLScriptElement>) => {
-            // tslint:disable-next-line: prefer-for-of
-            for (let i = 0; i < nodes.length; i++) {
-                injectNode(nodes[i]);
-            }
-        },
-        [injectNode],
-    );
+    const [htmlDocument, setHtmlDocument] = useState<HTMLDocument | null>(null);
 
     const inheritScripts = useCallback(() => {
-        if (parentDocument) {
+        if (parentDocument && htmlDocument) {
             const parentScripts = parentDocument.getElementsByTagName("script");
-            injectNodes(parentScripts);
+            injectNodes(parentScripts, htmlDocument);
         }
-    }, [parentDocument, injectNodes]);
+    }, [parentDocument, injectNodes, htmlDocument]);
 
     const inheritCss = useCallback(() => {
-        if (parentDocument) {
+        if (parentDocument && htmlDocument) {
             const parentStyles = parentDocument.getElementsByTagName("style");
-            injectNodes(parentStyles);
+            injectNodes(parentStyles, htmlDocument);
         }
-    }, [parentDocument, injectNodes]);
+    }, [parentDocument, injectNodes, htmlDocument]);
+
+    useEffect(() => {
+        if (childWindow.windowRef) {
+            setHtmlDocument(childWindow.windowRef.getWebWindow().document);
+        }
+    }, [childWindow.windowRef]);
 
     useEffect(() => {
         if (shouldInheritCss) {
@@ -63,21 +49,19 @@ export default ({
             inheritScripts();
         }
 
-        if (cssUrl && childWindow.windowRef) {
-            const linkElement = childWindow.windowRef
-                .getWebWindow()
-                .document.createElement("link");
+        if (cssUrl && htmlDocument) {
+            const linkElement = htmlDocument.createElement("link");
             linkElement.setAttribute("rel", "stylesheet");
             linkElement.setAttribute("href", cssUrl);
-            injectNode(linkElement);
+            injectNode(linkElement, htmlDocument);
         }
     }, [
-        childWindow.windowRef,
         cssUrl,
         parentDocument,
         inheritCss,
         inheritScripts,
         injectNode,
+        htmlDocument,
     ]);
 
     useEffect(() => {
@@ -141,14 +125,12 @@ export default ({
 
     const populate = useCallback(
         (jsxElement: JSX.Element) => {
-            if (childWindow.windowRef) {
+            if (htmlDocument) {
                 try {
                     dispatchNewState(WINDOW_STATE.POPULATING);
                     ReactDOM.render(
                         jsxElement,
-                        childWindow.windowRef
-                            .getWebWindow()
-                            .document.getElementById("root"),
+                        htmlDocument.getElementById("root"),
                     );
                     dispatchNewState(WINDOW_STATE.POPULATED);
                 } catch (error) {
@@ -156,7 +138,7 @@ export default ({
                 }
             }
         },
-        [childWindow.windowRef],
+        [htmlDocument],
     );
 
     const close = useCallback(async () => {

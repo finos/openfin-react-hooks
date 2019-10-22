@@ -35,7 +35,10 @@ export default ({
         }
     }, [parentDocument, injectNodes, htmlDocument]);
 
-    const reset = () => dispatch({ type: WINDOW_ACTION.RESET });
+    const reset = () => {
+        dispatch({ type: WINDOW_ACTION.RESET });
+        setHtmlDocument(null);
+    };
 
     useEffect(() => {
         if (childWindow.windowRef) {
@@ -154,8 +157,8 @@ export default ({
         try {
             if (childWindow.windowRef) {
                 await childWindow.windowRef.close();
-                reset();
             }
+            reset();
         } catch (error) {
             dispatchError(error);
         }

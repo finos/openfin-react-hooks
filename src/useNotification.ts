@@ -147,14 +147,18 @@ export default ({
         });
     };
 
+    const reset = () => {
+        dispatch({ type: WINDOW_ACTION.RESET });
+        setHtmlDocument(null);
+        setRef(null);
+    };
+
     const close = useCallback(async () => {
         try {
-            dispatch({ type: WINDOW_ACTION.RESET });
-            setHtmlDocument(null);
             if (ref) {
                 await ref.close();
             }
-            setRef(null);
+            reset();
         } catch (error) {
             throw new Error(error);
         }
@@ -224,7 +228,7 @@ export default ({
         launch,
         populate,
         ref,
-        reset: () => dispatch({ type: WINDOW_ACTION.RESET }),
+        reset,
         state: notificationWindow.state,
         windowRef: notificationWindow.windowRef,
     };

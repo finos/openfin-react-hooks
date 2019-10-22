@@ -84,3 +84,22 @@ If you'd like a demo of the current collection of hooks, you can do so by:
 - Checkout the `demo` directory (e.g. `cd demo`)
 - Run `npm install` and `npm run start` within the demo directory
 - Once that's finished, execute `npm run launch` to see the demo application in all its glory
+
+## Contributing
+
+Feel free to contribute to this project by opening issues or pull request:
+ - Please open an issue if you experience a bug, or if you want to discuss new features and ideas. All feedback is gratefully received.
+ - If you want to contribute code, please raise a pull request. If you unsure of the process, please look at the [GitHub Guides](https://guides.github.com/).
+
+_NOTE:_ Commits and pull requests to FINOS repositories will only be accepted from those contributors with an active, executed Individual Contributor License Agreement (ICLA) with FINOS OR who are covered under an existing and active Corporate Contribution License Agreement (CCLA) executed with FINOS. Commits from individuals not covered under an ICLA or CCLA will be flagged and blocked by the FINOS Clabot tool. Please note that some CCLAs require individuals/employees to be explicitly named on the CCLA.
+
+*Need an ICLA? Unsure if you are covered under an existing CCLA? Email [help@finos.org](mailto:help@finos.org)*
+
+
+## License
+
+Copyright 2019 Scott Logic
+
+Distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+
+SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0)

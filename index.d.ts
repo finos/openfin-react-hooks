@@ -1,16 +1,50 @@
 import { Action } from "openfin/_v2/api/interappbus/channel/channel";
 import { ChannelClient } from "openfin/_v2/api/interappbus/channel/client";
 import { ChannelProvider } from "openfin/_v2/api/interappbus/channel/provider";
+import { _Notification } from "openfin/_v2/api/notification/notification";
 import Bounds from "openfin/_v2/api/window/bounds";
 import { _Window } from "openfin/_v2/api/window/window";
 import { WindowOption } from "openfin/_v2/api/window/windowOption";
 import { Identity } from "openfin/_v2/identity";
 import { ScreenEdge } from "./src/ScreenEdge";
-import CHILD_WINDOW_STATE from "./src/utils/types/enums/ChildWindowState";
+import WINDOW_STATE from "./src/utils/types/enums/WindowState";
 
 export interface IDimensions {
-  dockedWidth: number;
-  dockedHeight: number;
+    dockedWidth: number;
+    dockedHeight: number;
+}
+
+export interface IChannelAction {
+    topic: string;
+    action: Action;
+}
+
+export interface IChildWindow {
+    close: () => void;
+    launch: (windowOptions?: WindowOption) => void;
+    populate: (jsx: JSX.Element) => void;
+    state: WINDOW_STATE;
+    windowRef: _Window;
+}
+
+export interface INotification {
+    close: () => void;
+    launch: (notificationOptions?: fin.NotificationOptions) => void;
+    populate: (jsx: JSX.Element) => void;
+    ref: _Notification;
+    state: WINDOW_STATE;
+    windowRef: _Window;
+}
+
+export interface IUseChildWindowOptions {
+    name: string;
+    windowOptions?: WindowOption;
+    parentDocument?: HTMLDocument;
+    cssUrl?: string;
+    shouldClosePreviousOnLaunch?: boolean;
+    shouldInheritCss?: boolean;
+    shouldInheritScripts?: boolean;
+    jsx?: JSX.Element;
 }
 
 export interface IUseDockWindowOptions {
@@ -24,123 +58,114 @@ export interface IUseDockWindowOptions {
     };
 }
 
-export interface IChannelAction {
-  topic: string;
-  action: Action;
-}
-
-export interface IChildWindow {
-  close: () => void;
-  launch: (windowOptions?: WindowOption) => void;
-  populate: (jsx: JSX.Element) => void;
-  state: CHILD_WINDOW_STATE;
-  windowRef: _Window;
-}
-
-export interface IUseChildWindowOptions {
-  name: string;
-  windowOptions?: WindowOption;
-  parentDocument?: HTMLDocument;
-  cssUrl?: string;
-  shouldClosePreviousOnLaunch?: boolean;
-  shouldInheritCss?: boolean;
-  shouldInheritScripts?: boolean;
-  jsx?: JSX.Element;
+export interface IUseNotificationOptions {
+    notificationOptions: fin.NotificationOptions;
+    parentDocument?: HTMLDocument;
+    cssUrl?: string;
+    shouldInheritCss?: boolean;
+    shouldInheritScripts?: boolean;
+    jsx?: JSX.Element;
 }
 
 export const useBounds: (target?: _Window) => Bounds;
 
 export const useChannelClient: (
-  channelName: string,
+    channelName: string,
 ) => {
-  client: ChannelClient;
-  error: Error;
+    client: ChannelClient;
+    error: Error;
 };
 
 export const useChannelProvider: (
-  channelName: string,
-  channelActions: IChannelAction[],
+    channelName: string,
+    channelActions: IChannelAction[],
 ) => {
-  provider: ChannelProvider;
-  error: Error;
+    provider: ChannelProvider;
+    error: Error;
 };
 
-export enum enums {
-  CHILD_WINDOW_STATE,
-}
-
 export const useChildWindow: (
-  useChildWindowOptions: IUseChildWindowOptions,
+    useChildWindowOptions: IUseChildWindowOptions,
 ) => IChildWindow;
+
+export const useNotification: (
+    useNotificationOptions: IUseNotificationOptions,
+) => INotification;
 
 export const useDocked: () => [boolean, () => Promise<void>];
 
-export const useDockWindow: (initialEdge?: ScreenEdge, toMove?: _Window, allowUserToUndock?: boolean,
-                             stretchToFit?: IDimensions,
-                             options?: IUseDockWindowOptions) => [ScreenEdge, {
-    dockBottom: () => void;
-    dockLeft: () => void;
-    dockNone: () => void;
-    dockRight: () => void;
-    dockTop: () => void;
-  }
+export const useDockWindow: (
+    initialEdge?: ScreenEdge,
+    toMove?: _Window,
+    allowUserToUndock?: boolean,
+    stretchToFit?: IDimensions,
+    options?: IUseDockWindowOptions,
+) => [
+    ScreenEdge,
+    {
+        dockBottom: () => void;
+        dockLeft: () => void;
+        dockNone: () => void;
+        dockRight: () => void;
+        dockTop: () => void;
+    }
 ];
 
 export const useFocus: (
-  target?: _Window,
+    target?: _Window,
 ) => [
-  boolean,
-  (newFocus: boolean) => Promise<void>,
-  () => Promise<void>,
-  () => Promise<void>
+    boolean,
+    (newFocus: boolean) => Promise<void>,
+    () => Promise<void>,
+    () => Promise<void>
 ];
 
 export const useInterApplicationBusPublish: <T>(
-  topic: string,
-  message: T,
+    topic: string,
+    message: T,
 ) => {
-  success: boolean;
-  error: Error;
+    success: boolean;
+    error: Error;
 };
 
 export const useInterApplicationBusSend: <T>(
-  identity: Identity,
-  topic: string,
-  message: T,
+    identity: Identity,
+    topic: string,
+    message: T,
 ) => {
-  success: boolean;
-  error: Error;
+    success: boolean;
+    error: Error;
 };
 
 export const useInterApplicationBusSubscribe: <T>(
-  identity: Identity,
-  topic: string,
+    identity: Identity,
+    topic: string,
 ) => {
-  data: {
-    message: T;
-    name: string;
-    uuid: string;
-  };
-  subscribeError: unknown;
-  isSubscribed: boolean;
+    data: {
+        message: T;
+        name: string;
+        uuid: string;
+    };
+    subscribeError: unknown;
+    isSubscribed: boolean;
 };
 
 export const useMaximized: () => [
-  boolean,
-  (shouldMaximize: boolean) => Promise<void>
+    boolean,
+    (shouldMaximize: boolean) => Promise<void>
 ];
 
 export const useOptions: (
-  target?: _Window,
+    target?: _Window,
 ) => [WindowOption, (options: WindowOption) => Promise<void>];
 
 export const useUserMovement: (
-  target?: _Window,
-  initialValue?: boolean,
+    target?: _Window,
+    initialValue?: boolean,
 ) => [boolean, (toEnable: boolean) => Promise<void>];
 
 export const useZoom: (
-  target?: _Window,
+    target?: _Window,
 ) => [number, (newZoom: number) => Promise<void>];
 
 export { ScreenEdge } from "./src/ScreenEdge";

@@ -99,6 +99,13 @@ const cards: IDemoCard[] = [
     id: "child-window",
     name: "useChildWindow",
   },
+  {
+    description: "Launch Notifications and manage their content",
+    icon: "notification_important",
+    iconRotate: false,
+    id: "notification",
+    name: "useNotification",
+  },
 ];
 
 const Home: React.FC = () => {

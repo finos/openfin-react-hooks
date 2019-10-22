@@ -1,4 +1,4 @@
-enum CHILD_WINDOW_STATE {
+enum WINDOW_STATE {
   INITIAL = "INITIAL",
   LAUNCHING = "LAUNCHING",
   LAUNCHED = "LAUNCHED",
@@ -7,4 +7,4 @@ enum CHILD_WINDOW_STATE {
   ERROR = "ERROR",
 }
 
-export default CHILD_WINDOW_STATE;
+export default WINDOW_STATE;

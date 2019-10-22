@@ -14,6 +14,7 @@ const DEFAULT_CHILD_BODY: JSX.Element = (
 
 export default ({ CHILD_WINDOW_HOOK_OPTIONS, textAreaValue }: IProps) => {
     const childWindow = useChildWindow(CHILD_WINDOW_HOOK_OPTIONS);
+
     return (
         <>
             <h4>Child Window Actions</h4>

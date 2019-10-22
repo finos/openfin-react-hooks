@@ -23,6 +23,7 @@ export interface IChildWindow {
     close: () => void;
     launch: (windowOptions?: WindowOption) => void;
     populate: (jsx: JSX.Element) => void;
+    reset: () => void;
     state: WINDOW_STATE;
     windowRef: _Window;
 }
@@ -32,6 +33,7 @@ export interface INotification {
     launch: (notificationOptions?: fin.NotificationOptions) => void;
     populate: (jsx: JSX.Element) => void;
     ref: _Notification;
+    reset: () => void;
     state: WINDOW_STATE;
     windowRef: _Window;
 }

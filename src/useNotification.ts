@@ -224,6 +224,7 @@ export default ({
         launch,
         populate,
         ref,
+        reset: () => dispatch({ type: WINDOW_ACTION.RESET }),
         state: notificationWindow.state,
         windowRef: notificationWindow.windowRef,
     };

@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-import ILaunchConfig from "../../ILaunchConfig";
+import ILaunchConfig from "../../interfaces/ILaunchConfig";
 
 interface IProps {
     launchConfig: ILaunchConfig;
@@ -8,19 +8,6 @@ interface IProps {
 
 export default ({ launchConfig, setLaunchConfig }: IProps) => (
     <div className="checkboxes">
-        <input
-            type="checkbox"
-            name="should-close-previous"
-            checked={launchConfig.shouldClosePreviousOnLaunch}
-            onChange={() =>
-                setLaunchConfig({
-                    ...launchConfig,
-                    shouldClosePreviousOnLaunch: !launchConfig.shouldClosePreviousOnLaunch,
-                })
-            }
-        />
-        <label>Close existing windows with the same name on launch</label>
-        <br />
         <input
             type="checkbox"
             name="should-load-jsx-after-launch"
@@ -34,7 +21,7 @@ export default ({ launchConfig, setLaunchConfig }: IProps) => (
         />
         <label>
             Should load {<code>jsx</code>} passed as a part of
-      {<code> CHILD_WINDOW_HOOK_OPTIONS </code>}
+      {<code> NOTIFICATION_HOOK_OPTIONS </code>}
             immediately after the window is launched
     </label>
         <br />
@@ -49,7 +36,7 @@ export default ({ launchConfig, setLaunchConfig }: IProps) => (
                 })
             }
         />
-        <label>Child window should inherit parent CSS</label>
+        <label>Notification should inherit parent CSS</label>
         <br />
         <input
             type="checkbox"
@@ -62,6 +49,6 @@ export default ({ launchConfig, setLaunchConfig }: IProps) => (
                 })
             }
         />
-        <label>Child window should inherit parent scripts</label>
+        <label>Notification should inherit parent scripts</label>
     </div>
 );

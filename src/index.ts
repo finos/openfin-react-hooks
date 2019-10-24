@@ -10,6 +10,7 @@ import useInterApplicationBusPublishHook from "./useInterApplicationBusPublish";
 import useInterApplicationBusSendHook from "./useInterApplicationBusSend";
 import useInterApplicationBusSubscribeHook from "./useInterApplicationBusSubscribe";
 import useMaximizedHook from "./useMaximized";
+import useNotificationHook from "./useNotification";
 import useOptionsHook from "./useOptions";
 import useUserMovementHook from "./useUserMovement";
 import useZoomHook from "./useZoom";
@@ -25,6 +26,7 @@ export const useFocus = useFocusHook;
 export const useInterApplicationBusSend = useInterApplicationBusSendHook;
 export const useInterApplicationBusSubscribe = useInterApplicationBusSubscribeHook;
 export const useInterApplicationBusPublish = useInterApplicationBusPublishHook;
+export const useNotification = useNotificationHook;
 export const useMaximized = useMaximizedHook;
 export const useOptions = useOptionsHook;
 export const useUserMovement = useUserMovementHook;
@@ -43,6 +45,7 @@ export default {
   useInterApplicationBusSend,
   useInterApplicationBusSubscribe,
   useMaximized,
+  useNotification,
   useOptions,
   useUserMovement,
   useZoom,

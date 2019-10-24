@@ -228,7 +228,6 @@ export default ({
         launch,
         populate,
         ref,
-        reset,
         state: notificationWindow.state,
         windowRef: notificationWindow.windowRef,
     };

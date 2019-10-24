@@ -168,7 +168,6 @@ export default ({
         close,
         launch,
         populate,
-        reset,
         state: childWindow.state,
         windowRef: childWindow.windowRef,
     };

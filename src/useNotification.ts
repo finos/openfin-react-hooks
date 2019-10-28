@@ -36,6 +36,7 @@ export default ({
 }: IUseNotificationOptions) => {
     const [name, setName] = useState<string | null>(null);
     const [htmlDocument, setHtmlDocument] = useState<HTMLDocument | null>(null);
+    const [populateJsx, setPopulateJsx] = useState<JSX.Element | null>(null);
     const [ref, setRef] = useState<IOpenFinNotification | null>(null);
     const [notificationWindow, dispatch] = useReducer(
         reducer,
@@ -91,10 +92,15 @@ export default ({
     }, [ref]);
 
     useLayoutEffect(() => {
-        if (jsx && notificationWindow.state === "LAUNCHED" && htmlDocument) {
-            populate(jsx);
+        const jsxElement = populateJsx ? populateJsx : jsx;
+        if (
+            jsxElement &&
+            notificationWindow.state === "LAUNCHED" &&
+            htmlDocument
+        ) {
+            populate(jsxElement);
         }
-    }, [jsx, name, notificationWindow]);
+    }, [jsx, populateJsx, name, notificationWindow]);
 
     useEffect(() => {
         if (shouldInheritCss) {
@@ -203,7 +209,8 @@ export default ({
 
     const populate = useCallback(
         (jsxElement: JSX.Element) => {
-            if (htmlDocument && htmlDocument) {
+            setPopulateJsx(jsxElement);
+            if (htmlDocument) {
                 try {
                     dispatchNewState(WINDOW_STATE.POPULATING);
                     ReactDOM.render(

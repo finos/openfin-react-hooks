@@ -153,14 +153,18 @@ export default ({
         });
     };
 
+    const reset = () => {
+        dispatch({ type: WINDOW_ACTION.RESET });
+        setHtmlDocument(null);
+        setRef(null);
+    };
+
     const close = useCallback(async () => {
         try {
-            dispatch({ type: WINDOW_ACTION.RESET });
-            setHtmlDocument(null);
             if (ref) {
                 await ref.close();
             }
-            setRef(null);
+            reset();
         } catch (error) {
             throw new Error(error);
         }

@@ -35,10 +35,22 @@ export default ({
         }
     }, [parentDocument, injectNodes, htmlDocument]);
 
+    const reset = () => {
+        dispatch({ type: WINDOW_ACTION.RESET });
+        setHtmlDocument(null);
+    };
+
     useEffect(() => {
         if (childWindow.windowRef) {
             setHtmlDocument(childWindow.windowRef.getWebWindow().document);
+            childWindow.windowRef.addListener("closed", reset);
+            childWindow.windowRef.removeListener("closed", reset);
         }
+        return () => {
+            if (childWindow.windowRef) {
+                childWindow.windowRef.removeListener("closed", reset);
+            }
+        };
     }, [childWindow.windowRef]);
 
     useEffect(() => {
@@ -145,8 +157,8 @@ export default ({
         try {
             if (childWindow.windowRef) {
                 await childWindow.windowRef.close();
-                dispatch({ type: WINDOW_ACTION.RESET });
             }
+            reset();
         } catch (error) {
             dispatchError(error);
         }

@@ -11,6 +11,11 @@ export default <T>(topic: string, message: T) => {
     };
 
     useEffect(() => {
+        const fin: any = window;
+        if (!fin || !fin.InterApplicationBus) {
+            onFail(new Error(`fin is undefined. This hook can only be run in an OpenFin container.`));
+        }
+
         fin.InterApplicationBus.publish(topic, message)
             .then(onSuccess)
             .catch(onFail);

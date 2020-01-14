@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 
 import styles from "./InterApplicationBusSend.module.css";
 
-const IDENTITY = window.fin.Window.me;
+const IDENTITY = window.fin ? window.fin.Window.me : null;
 const TOPIC = "demo-topic";
 
 const codeExample = `import {useInterApplicationBusSend, useInterApplicationBusSubscribe} from "openfin-react-hooks";

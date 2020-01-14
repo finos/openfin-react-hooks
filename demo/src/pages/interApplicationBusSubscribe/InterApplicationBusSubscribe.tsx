@@ -4,7 +4,7 @@ import React, {useEffect} from "react";
 
 import styles from "./InterApplicationBusSubscribe.module.css";
 
-const IDENTITY = window.fin.Window.me;
+const IDENTITY = window.fin ? window.fin.Window.me : null;
 const TOPIC = "demo-topic";
 
 let counter = 0;

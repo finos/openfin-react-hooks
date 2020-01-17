@@ -11,7 +11,7 @@ export default <T>(topic: string, message: T) => {
     };
 
     useEffect(() => {
-        const fin: any = window;
+        const fin: any = (window as any).fin;
         if (!fin || !fin.InterApplicationBus) {
             onFail(new Error(`fin is undefined. This hook can only be run in an OpenFin container.`));
         }

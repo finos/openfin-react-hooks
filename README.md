@@ -99,6 +99,9 @@ references a local version of the openfin-react-hooks library through the packag
 NPM automatically creates a link between the two when `npm install` is run against the demo app. To update the version of 
 openfin-react-hooks referenced by the demo app, simply run `npm run compile` from the openfin-react-hooks directory.
 
+### Logging
+To see console logs, go to http://localhost:9090/ in a browser, click on the demo, and go to the console.
+
 ## Contributing
 
 Feel free to contribute to this project by opening issues or pull request:

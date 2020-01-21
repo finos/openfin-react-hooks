@@ -70,14 +70,14 @@ const CallbackWhenAnyChildClosed: React.FC = () => {
         <div className={styles.container}>
             <h1 className={styles.title}>useCallbackWhenAnyChildWindowClosed</h1>
             <div className={styles.description}>
-                This hook will invoke a callback function when <em>all</em> children of a given parent
-                window have been closed. If no parent is given then it will default to the current window.
+                This hook will invoke a callback function when <em>any</em> child window of a given parent
+                window has been closed. If no parent is given then it will default to the current window.
             </div>
             <br />
             <div className={styles.description}>
                 If no children exist when the hook is called then nothing will happen on initialization.
-                Any children created after the hook was initally called will also have to be closed to
-                invoke the callback function.
+                When children created after the hook was initally called are closed then the callback
+                function will still be invoked.
             </div>
             <h2>Code Example</h2>
             <pre>

@@ -106,6 +106,13 @@ const cards: IDemoCard[] = [
     id: "notification",
     name: "useNotification",
   },
+  {
+    description: "Close parent window when all children have closed",
+    icon: "close",
+    iconRotate: false,
+    id: "closeParentWhenAllChildrenClosed",
+    name: "useCloseParentWindowWhenAllChildrenClosed",
+  },
 ];
 
 const Home: React.FC = () => {

@@ -17,16 +17,41 @@ export default (
     const [childrenCount, setChildrenCount] = useState(0);
     const previousCount = usePreviousValue(childrenCount);
 
-    const getChildWindowsPromise = () =>
-        app.getChildWindows()
-            .then((windows) =>
-                Promise.all(
-                    windows.map((window) =>
-                        window.getParentWindow()
-                            .then((p) => p.identity.name === parent.identity.name ? window : null),
-                    ),
-                ))
-            .then((windows) => windows.filter((w) => w !== null) as _Window[]);
+    const getChildWindowsPromise = async () => {
+        const allChildWindows = await app.getChildWindows();
+
+        const projectedChildWindows = await Promise.all(
+            allChildWindows.map(
+                (window) => window.getParentWindow()
+                    .then((p) => p.identity.name === parent.identity.name ? window : null)),
+        );
+
+        return projectedChildWindows.filter((w) => w !== null) as _Window[];
+
+    };
+
+    const handleWindowCreated = (e: ChildWindowDetails) => {
+        getChildWindowsPromise().then((windows) => {
+            if (windows.some((w) => w.identity.name === e.name && w.identity.uuid === e.uuid)) {
+                setChildWindows((current) =>
+                    [
+                        ...current,
+                        {
+                            name: e.name,
+                            uuid: e.uuid,
+                        },
+                    ],
+                );
+            }
+        });
+    };
+
+    const handleWindowClosed = (e: ChildWindowDetails) => {
+        const indexToRemove = childWindows.findIndex((w) => w.name === e.name && w.uuid === e.uuid);
+        if (indexToRemove >= 0) {
+            setChildWindows(childWindows.filter((_, idx) => idx !== indexToRemove));
+        }
+    };
 
     useEffect(() => {
         getChildWindowsPromise()
@@ -36,22 +61,6 @@ export default (
     }, []);
 
     useEffect(() => {
-        const handleWindowCreated = (e: ChildWindowDetails) => {
-            getChildWindowsPromise().then((windows) => {
-                if (windows.some((w) => w.identity.name === e.name && w.identity.uuid === e.uuid)) {
-                    setChildWindows((current) =>
-                        [
-                            ...current,
-                            {
-                                name: e.name,
-                                uuid: e.uuid,
-                            },
-                        ],
-                    );
-                }
-            });
-        };
-
         app.addListener("window-created", handleWindowCreated);
 
         return () => {
@@ -61,13 +70,6 @@ export default (
     }, []);
 
     useEffect(() => {
-        const handleWindowClosed = (e: ChildWindowDetails) => {
-            const indexToRemove = childWindows.findIndex((w) => w.name === e.name && w.uuid === e.uuid);
-            if (indexToRemove >= 0) {
-                setChildWindows(childWindows.filter((_, idx) => idx !== indexToRemove));
-            }
-        };
-
         app.addListener("window-closed", handleWindowClosed);
 
         return () => {

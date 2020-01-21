@@ -4,7 +4,7 @@ import useCallbackBaseHook from "./useCallbackBaseHook";
 import ClosingOption from "./utils/types/enums/WindowClosingOptions";
 
 export default (
-    callbackFn: (parent: _Window) => void,
+    callbackFn: (parent: _Window, child: _Window) => void,
     parent: _Window = fin.Window.getCurrentSync(),
     app: Application = fin.Application.getCurrentSync(),
 ) => {

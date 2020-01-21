@@ -10,13 +10,14 @@ type ChildWindowDetails = Readonly<{
 }>;
 
 export default (
-    callbackFn: (parent: _Window) => void,
+    callbackFn: ((parent: _Window) => void) | ((parent: _Window, child: _Window) => void),
     closingOption: ClosingOption,
     parent: _Window = fin.Window.getCurrentSync(),
     app: Application = fin.Application.getCurrentSync(),
 ) => {
     const [childWindows, setChildWindows] = useState<ChildWindowDetails[]>([]);
-    const [shouldClose, setShouldClose] = useState(false);
+    const [windowThatJustClosed, setWindowThatJustClosed] = useState<ChildWindowDetails>();
+    const [shouldInvoke, setShouldInvoke] = useState(false);
     const [childrenCount, setChildrenCount] = useState(0);
     const previousCount = usePreviousValue(childrenCount);
 
@@ -52,6 +53,7 @@ export default (
     const handleWindowClosed = (e: ChildWindowDetails) => {
         const indexToRemove = childWindows.findIndex((w) => w.name === e.name && w.uuid === e.uuid);
         if (indexToRemove >= 0) {
+            setWindowThatJustClosed(childWindows[indexToRemove]);
             setChildWindows(childWindows.filter((_, idx) => idx !== indexToRemove));
         }
     };
@@ -89,11 +91,11 @@ export default (
 
         switch (closingOption) {
             case ClosingOption.AllChildren:
-                setShouldClose(previousCount === 1 && childrenCount === 0);
+                setShouldInvoke(previousCount === 1 && childrenCount === 0);
                 break;
 
             case ClosingOption.AnyChild:
-                setShouldClose(previousCount != null && (previousCount > childrenCount));
+                setShouldInvoke(previousCount != null && (previousCount > childrenCount));
                 break;
 
             default:
@@ -102,9 +104,10 @@ export default (
     }, [childrenCount]);
 
     useEffect(() => {
-        if (shouldClose) {
-            callbackFn(parent);
+        if (shouldInvoke && windowThatJustClosed != null) {
+            callbackFn(parent, fin.Window.wrapSync(windowThatJustClosed));
         }
-        setShouldClose(false);
-    }, [shouldClose]);
+        setShouldInvoke(false);
+        setWindowThatJustClosed(undefined);
+    }, [shouldInvoke]);
 };

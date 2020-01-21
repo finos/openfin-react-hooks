@@ -12,7 +12,8 @@ const Component = () => {
     const mainWindow = window.fin.Window.getCurrentSync();
 
     useCallbackWhenAnyChildWindowClosed(
-        (parent) => alert(\`A child of window \${parent.identity.name} has been closed\`),
+        (parent, child) =>
+            alert(\`A child window (\${child.identity.name}) of window \${parent.identity.name} has been closed\`),
         mainWindow,
     );
 
@@ -60,7 +61,8 @@ const CallbackWhenAnyChildClosed: React.FC = () => {
     }, [windows]);
 
     useCallbackWhenAnyChildWindowClosed(
-        (parent) => alert(`A child of window ${parent.identity.name} has been closed`),
+        (parent, child) =>
+            alert(`A child window (${child.identity.name}) of window ${parent.identity.name} has been closed`),
         mainWindow,
     );
 

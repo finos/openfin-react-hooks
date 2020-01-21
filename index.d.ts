@@ -96,7 +96,7 @@ export const useCallbackWhenAllChildWindowsClosed: (
 ) => void;
 
 export const useCallbackWhenAnyChildWindowClosed: (
-    callbackFn: (parent: _Window) => void,
+    callbackFn: (parent: _Window, child: _Window) => void,
     parentWindow?: _Window,
     app?: Application,
 ) => void;

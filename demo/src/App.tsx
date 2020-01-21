@@ -10,6 +10,7 @@ import { ReactComponent as LogoScottLogic } from "./images/sl-logo-charcoal.svg"
 
 import Bounds from "./pages/bounds";
 import CallbackWhenAllChildrenClosed from "./pages/callbackWhenAllChildrenClosed";
+import CallbackWhenAnyChildClosed from "./pages/callbackWhenAnyChildClosed";
 import ChannelProvider from "./pages/channels";
 import ChannelClient from "./pages/channels/channelClient";
 import ChildWindow from "./pages/childWindow";
@@ -99,6 +100,9 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
                     />
                     <Route exact path="/demo/callbackWhenAllChildrenClosed"
                         component={CallbackWhenAllChildrenClosed}
+                    />
+                    <Route exact path="/demo/callbackWhenAnyChildClosed"
+                        component={CallbackWhenAnyChildClosed}
                     />
                     <Redirect to={"/"} />
                 </Switch>

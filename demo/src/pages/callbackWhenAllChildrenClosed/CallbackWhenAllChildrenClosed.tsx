@@ -1,17 +1,17 @@
-import { useCallbackWindowWhenAllChildrenClosed } from "openfin-react-hooks";
+import { useCallbackWhenAnyChildWindowClosed } from "openfin-react-hooks";
 import { _Window } from "openfin/_v2/api/window/window";
 import * as Prism from "prismjs";
 import React, { useEffect, useState } from "react";
 
 import styles from "./CallbackWhenAllChildrenClosed.module.css";
 
-const codeExample = `import { useCallbackWindowWhenAllChildrenClosed } from "openfin-react-hooks";
+const codeExample = `import { useCallbackWhenAllChildWindowsClosed } from "openfin-react-hooks";
 
 const Component = () => {
 
     const mainWindow = window.fin.Window.getCurrentSync();
 
-    useCallbackWindowWhenAllChildrenClosed(
+    useCallbackWhenAllChildWindowsClosed(
         (parent: _Window) => alert('All children of window \${parent.identity.name} have been closed'),
         mainWindow
     );
@@ -60,14 +60,14 @@ const CallbackWhenAllChildrenClosed: React.FC = () => {
         };
     }, [windows]);
 
-    useCallbackWindowWhenAllChildrenClosed(
+    useCallbackWhenAnyChildWindowClosed(
         (parent) => alert(`All children of window ${parent.identity.name} have been closed`),
         mainWindow,
     );
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>useCallbackWindowWhenAllChildrenClosed</h1>
+            <h1 className={styles.title}>useCallbackWhenAllChildWindowsClosed</h1>
             <div className={styles.description}>
                 This hook will invoke a callback function when <em>all</em> children of a given parent
                 window have been closed. If no parent is given then it will default to the current window.

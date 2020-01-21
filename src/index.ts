@@ -1,6 +1,7 @@
 import { ScreenEdge as ScreenEdgeEnum } from "./ScreenEdge";
 import useBoundsHook from "./useBounds";
-import useCallbackWindowWhenAllChildrenClosedHook from "./useCallbackWindowWhenAllChildrenClosed";
+import useCallbackWhenAllChildWindowsClosedHook from "./useCallbackWhenAllChildWindowsClosed";
+import useCallbackWhenAnyChildWindowClosedHook from "./useCallbackWhenAnyChildWindowClosed";
 import useChannelClientHook from "./useChannelClient";
 import useChannelProviderHook from "./useChannelProvider";
 import useChildWindowHook from "./useChildWindow";
@@ -24,7 +25,8 @@ export const useChildWindow = useChildWindowHook;
 export const useDockWindow = useDockWindowHook;
 export const useDocked = useDockedHook;
 export const useFocus = useFocusHook;
-export const useCallbackWindowWhenAllChildrenClosed = useCallbackWindowWhenAllChildrenClosedHook;
+export const useCallbackWhenAllChildWindowsClosed = useCallbackWhenAllChildWindowsClosedHook;
+export const useCallbackWhenAnyChildWindowClosed = useCallbackWhenAnyChildWindowClosedHook;
 export const useInterApplicationBusSend = useInterApplicationBusSendHook;
 export const useInterApplicationBusSubscribe = useInterApplicationBusSubscribeHook;
 export const useInterApplicationBusPublish = useInterApplicationBusPublishHook;
@@ -37,7 +39,8 @@ export const useZoom = useZoomHook;
 export default {
   ScreenEdge,
   useBounds,
-  useCallbackWindowWhenAllChildrenClosed,
+  useCallbackWhenAllChildWindowsClosed,
+  useCallbackWhenAnyChildWindowClosed,
   useChannelClient,
   useChannelProvider,
   useChildWindow,

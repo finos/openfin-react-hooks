@@ -9,6 +9,7 @@ type ChildWindowDetails = Readonly<{
 }>;
 
 export default (
+    callbackFn: (parent: _Window) => void,
     parent: _Window = fin.Window.getCurrentSync(),
     app: Application = fin.Application.getCurrentSync(),
 ) => {
@@ -88,7 +89,7 @@ export default (
 
     useEffect(() => {
         if (shouldClose) {
-            app.getWindow().then((window) => window.close());
+            callbackFn(parent);
         }
     }, [shouldClose]);
 };

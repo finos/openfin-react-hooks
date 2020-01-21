@@ -9,10 +9,10 @@ import { ReactComponent as LogoOpenfin } from "./images/logo-openfin.svg";
 import { ReactComponent as LogoScottLogic } from "./images/sl-logo-charcoal.svg";
 
 import Bounds from "./pages/bounds";
+import CallbackWhenAllChildrenClosed from "./pages/callbackWhenAllChildrenClosed";
 import ChannelProvider from "./pages/channels";
 import ChannelClient from "./pages/channels/channelClient";
 import ChildWindow from "./pages/childWindow";
-import CloseParentWhenAllChildrenClosed from "./pages/closeParentWhenAllChildrenClosed";
 import Docked from "./pages/docked";
 import DockWindow from "./pages/dockWindow";
 import Focus from "./pages/focus";
@@ -97,8 +97,8 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
                     <Route exact path="/demo/notification"
                         component={Notification}
                     />
-                    <Route exact path="/demo/closeParentWhenAllChildrenClosed"
-                        component={CloseParentWhenAllChildrenClosed}
+                    <Route exact path="/demo/callbackWhenAllChildrenClosed"
+                        component={CallbackWhenAllChildrenClosed}
                     />
                     <Redirect to={"/"} />
                 </Switch>

@@ -107,11 +107,11 @@ const cards: IDemoCard[] = [
     name: "useNotification",
   },
   {
-    description: "Close parent window when all children have closed",
-    icon: "close",
+    description: "Invoke callback when all children have closed",
+    icon: "exit_to_app",
     iconRotate: false,
-    id: "closeParentWhenAllChildrenClosed",
-    name: "useCloseParentWindowWhenAllChildrenClosed",
+    id: "callbackWhenAllChildrenClosed",
+    name: "useCallbackWindowWhenAllChildrenClosed",
   },
 ];
 

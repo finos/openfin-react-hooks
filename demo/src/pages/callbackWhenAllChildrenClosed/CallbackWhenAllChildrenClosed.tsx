@@ -9,8 +9,11 @@ const codeExample = `import { useCallbackWindowWhenAllChildrenClosed } from "ope
 
 const Component = () => {
 
+    const mainWindow = window.fin.Window.getCurrentSync();
+
     useCallbackWindowWhenAllChildrenClosed(
         (parent: _Window) => alert('All children of window \${parent.identity.name} have been closed'),
+        mainWindow
     );
 
     return (
@@ -21,6 +24,8 @@ const Component = () => {
 
 const CallbackWhenAllChildrenClosed: React.FC = () => {
     const [windows, setWindows] = useState<_Window[]>([]);
+
+    const mainWindow = window.fin.Window.getCurrentSync();
 
     useEffect(Prism.highlightAll, []);
 
@@ -57,18 +62,19 @@ const CallbackWhenAllChildrenClosed: React.FC = () => {
 
     useCallbackWindowWhenAllChildrenClosed(
         (parent) => alert(`All children of window ${parent.identity.name} have been closed`),
+        mainWindow,
     );
 
     return (
         <div className={styles.container}>
             <h1 className={styles.title}>useCallbackWindowWhenAllChildrenClosed</h1>
             <div className={styles.description}>
-                This hook will invoke a callback function when <em>all</em> of its children have been closed.
+                This hook will invoke a callback function when <em>all</em> children of a given parent
+                window have been closed. If no parent is given then it will default to the current window.
             </div>
+            <br />
             <div className={styles.description}>
                 If no children exist when the hook is called then nothing will happen on initialization.
-            </div>
-            <div className={styles.description}>
                 Any children created after the hook was initally called will also have to be closed to
                 invoke the callback function.
             </div>

@@ -1,4 +1,4 @@
-import { useCallbackWhenAnyChildWindowClosed } from "openfin-react-hooks";
+import { useCallbackWhenAllChildWindowsClosed } from "openfin-react-hooks";
 import { _Window } from "openfin/_v2/api/window/window";
 import * as Prism from "prismjs";
 import React, { useEffect, useState } from "react";
@@ -12,7 +12,7 @@ const Component = () => {
     const mainWindow = window.fin.Window.getCurrentSync();
 
     useCallbackWhenAllChildWindowsClosed(
-        (parent: _Window) => alert('All children of window \${parent.identity.name} have been closed'),
+        (parent: _Window) => alert(\`All children of window \${parent.identity.name} have been closed\`),
         mainWindow
     );
 
@@ -60,7 +60,7 @@ const CallbackWhenAllChildrenClosed: React.FC = () => {
         };
     }, [windows]);
 
-    useCallbackWhenAnyChildWindowClosed(
+    useCallbackWhenAllChildWindowsClosed(
         (parent) => alert(`All children of window ${parent.identity.name} have been closed`),
         mainWindow,
     );

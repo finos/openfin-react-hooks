@@ -12,8 +12,8 @@ const Component = () => {
     const mainWindow = window.fin.Window.getCurrentSync();
 
     useCallbackWhenAnyChildWindowClosed(
-        (parent: _Window) => alert('All children of window \${parent.identity.name} have been closed'),
-        mainWindow
+        (parent) => alert(\`A child of window \${parent.identity.name} has been closed\`),
+        mainWindow,
     );
 
     return (

@@ -105,5 +105,6 @@ export default (
         if (shouldClose) {
             callbackFn(parent);
         }
+        setShouldClose(false);
     }, [shouldClose]);
 };

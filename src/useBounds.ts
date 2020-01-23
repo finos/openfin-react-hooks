@@ -19,5 +19,5 @@ export default (win: _Window = fin.Window.getCurrentSync()) => {
         updateBounds();
     }, [win.identity.uuid, win.identity.name]);
 
-    return bounds;
+    return [bounds, (newBounds: Bounds) => win.setBounds(newBounds).then(() => setBounds(newBounds))];
 };

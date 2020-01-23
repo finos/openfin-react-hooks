@@ -67,7 +67,10 @@ export interface IUseNotificationOptions {
     jsx?: JSX.Element;
 }
 
-export const useBounds: (target?: _Window) => Bounds;
+export const useBounds: (target?: _Window) => [
+    Bounds | undefined,
+    (newBounds: Bounds) => Promise<void>
+];
 
 export const useChannelClient: (
     channelName: string,

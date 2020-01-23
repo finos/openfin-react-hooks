@@ -83,7 +83,24 @@ If you'd like a demo of the current collection of hooks, you can do so by:
 - Run `npm install` and `npm run compile` within the root of the project directory
 - Checkout the `demo` directory (e.g. `cd demo`)
 - Run `npm install` and `npm run start` within the demo directory
-- Once that's finished, execute `npm run launch` to see the demo application in all its glory
+- Once that's finished, execute `npm run launch` in a new console window to see the demo application in all its glory
+
+## Testing Local Changes
+
+If you are adding or editing any hooks, then they should be tested manually by exposing them through the demo app. The demo app
+references a local version of the openfin-react-hooks library through the package.json file like this:
+
+```javascript
+  "dependencies": {
+    // other dependencies
+    "openfin-react-hooks": "file:../",
+  }
+```
+NPM automatically creates a link between the two when `npm install` is run against the demo app. To update the version of 
+openfin-react-hooks referenced by the demo app, simply run `npm run compile` from the openfin-react-hooks directory.
+
+### Logging
+To see console logs, go to http://localhost:9090/ in a browser, click on the demo, and go to the console.
 
 ## Contributing
 

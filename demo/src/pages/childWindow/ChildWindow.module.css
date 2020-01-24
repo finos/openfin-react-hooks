@@ -31,3 +31,7 @@ label {
 .checkboxes {
     margin-bottom: 20px;
 }
+
+.external_style code {
+    color: navy;
+}

@@ -13,24 +13,38 @@ const IDENTITY = window.fin.Window.me;
 const TOPIC = "demo-topic";
 
 const Component = () => {
-    const [name, setName] = useState("John Smith");
-    const { data } = useInterApplicationBusSubscribe(IDENTITY, TOPIC);
-    useInterApplicationBusSend(IDENTITY, TOPIC, name);
+    const [receivedName, setReceivedName] = useState("");
+    const [sentName, setSentName] = useState("John Smith");
+    const onReceiveMessage = (message: string) => setReceivedName(message);
+    const onFail = (error: unknown) => { throw error };
+    useInterApplicationBusSubscribe(IDENTITY, TOPIC, onReceiveMessage, onFail);
+
+    useInterApplicationBusSend(IDENTITY, TOPIC, sentName);
 
     return (
         <div>
-            <input type="text" onChange={(e) => setName(e.target.value)} value={name} />
-            <div><strong>Received Message:</strong> {data ? data.message : "None"}</div>
+            <input
+                placeholder="Enter a name"
+                type="text"
+                onChange={(e) => setSentName(e.target.value)}
+                value={sentName}
+            />
+            <div className={styles.input}>
+                <strong>Received Message:</strong> {receivedName ? receivedName : "None"}
+            </div>
         </div>
     )
 }
 `;
 
 const InterApplicationBusSend: React.FC = () => {
-    const [name, setName] = useState("John Smith");
-    const {data} = useInterApplicationBusSubscribe(IDENTITY, TOPIC);
+    const [receivedName, setReceivedName] = useState("");
+    const [sentName, setSentName] = useState("John Smith");
+    const onReceiveMessage = (message: string) => setReceivedName(message);
+    const onFail = (error: unknown) => { throw error; };
+    useInterApplicationBusSubscribe(IDENTITY, TOPIC, onReceiveMessage, onFail);
 
-    useInterApplicationBusSend(IDENTITY, TOPIC, name);
+    useInterApplicationBusSend(IDENTITY, TOPIC, sentName);
     useEffect(Prism.highlightAll, []);
 
     return (
@@ -49,8 +63,15 @@ const InterApplicationBusSend: React.FC = () => {
                 </code>
             </pre>
             <h2>Try it out</h2>
-            <input placeholder="Enter a name" type="text" onChange={(e) => setName(e.target.value)} value={name} />
-            <div className={styles.input}><strong>Received Message:</strong> {data ? data.message : "None"}</div>
+            <input
+                placeholder="Enter a name"
+                type="text"
+                onChange={(e) => setSentName(e.target.value)}
+                value={sentName}
+            />
+            <div className={styles.input}>
+                <strong>Received Message:</strong> {receivedName ? receivedName : "None"}
+            </div>
         </div>
     );
 };

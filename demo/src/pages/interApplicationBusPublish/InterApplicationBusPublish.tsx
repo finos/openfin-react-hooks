@@ -41,12 +41,11 @@ const Component = () => {
 const InterApplicationBusPublish: React.FC = () => {
     const [receivedName, setReceivedName] = useState("");
     const [nameToPublish, setNameToPublish] = useState("John Smith");
-    const [sentName, setSentName] = useState("");
     const onReceiveMessage = (message: string) => setReceivedName(message);
     const onFail = (error: unknown) => { throw error; };
     useInterApplicationBusSubscribe({uuid: "*"}, TOPIC, onReceiveMessage, onFail);
 
-    useInterApplicationBusPublish(TOPIC, sentName);
+    const publishMessage = useInterApplicationBusPublish(TOPIC);
     useEffect(Prism.highlightAll, []);
 
     return (
@@ -65,7 +64,7 @@ const InterApplicationBusPublish: React.FC = () => {
                 </code>
             </pre>
             <h2>Try it out</h2>
-            <form onSubmit={(e) => { setSentName(nameToPublish); e.preventDefault(); }}>
+            <form onSubmit={(e) => { publishMessage(nameToPublish); e.preventDefault(); }}>
                 <input
                     placeholder="Enter a name"
                     type="text"

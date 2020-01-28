@@ -12,19 +12,22 @@ const codeExample = `import {useInterApplicationBusSend, useInterApplicationBusS
 const IDENTITY = window.fin ? window.fin.Window.me : null;
 const TOPIC = "demo-topic";
 
+const formatNames = (names: string[]) => {
+    return ["["].concat(names.join(", ").concat("]"));
+}
+
 const Component = () => {
-    const [receivedName, setReceivedName] = useState("");
+    const [receivedNames, setReceivedNames] = useState([] as string[]);
     const [nameToSend, setNameToSend] = useState("John Smith");
-    const [sentName, setSentName] = useState("");
-    const onReceiveMessage = (message: string) => setReceivedName(message);
+    const onReceiveMessage = (message: string) => setReceivedNames((allData) => [message].concat(allData));
     const onFail = (error: unknown) => { throw error; };
     useInterApplicationBusSubscribe(IDENTITY, TOPIC, onReceiveMessage, onFail);
 
-    useInterApplicationBusSend(IDENTITY, TOPIC, sentName);
+    const sendMessage = useInterApplicationBusSend(IDENTITY, TOPIC);
 
     return (
         <div>
-            <form onSubmit={(e) => { setSentName(nameToSend); e.preventDefault(); }}>
+            <form onSubmit={(e) => { sendMessage(nameToSend); e.preventDefault(); }}>
                 <input
                     placeholder="Enter a name"
                     type="text"
@@ -34,22 +37,25 @@ const Component = () => {
                 <button type="submit">Submit</button>
             </form>
             <div>
-                <strong>Received Message:</strong> {receivedName ? receivedName : "None"}
+                <strong>Received Messages:</strong> {receivedNames ? formatNames(receivedNames) : "None"}
             </div>
         </div>
     )
 }
 `;
 
+const formatNames = (names: string[]) => {
+    return ["["].concat(names.join(", ").concat("]"));
+};
+
 const InterApplicationBusSend: React.FC = () => {
-    const [receivedName, setReceivedName] = useState("");
+    const [receivedNames, setReceivedNames] = useState([] as string[]);
     const [nameToSend, setNameToSend] = useState("John Smith");
-    const [sentName, setSentName] = useState("");
-    const onReceiveMessage = (message: string) => setReceivedName(message);
+    const onReceiveMessage = (message: string) => setReceivedNames((allData) => [message].concat(allData));
     const onFail = (error: unknown) => { throw error; };
     useInterApplicationBusSubscribe(IDENTITY, TOPIC, onReceiveMessage, onFail);
 
-    useInterApplicationBusSend(IDENTITY, TOPIC, sentName);
+    const sendMessage = useInterApplicationBusSend(IDENTITY, TOPIC);
     useEffect(Prism.highlightAll, []);
 
     return (
@@ -68,7 +74,7 @@ const InterApplicationBusSend: React.FC = () => {
                 </code>
             </pre>
             <h2>Try it out</h2>
-            <form onSubmit={(e) => { setSentName(nameToSend); e.preventDefault(); }}>
+            <form onSubmit={(e) => { sendMessage(nameToSend); e.preventDefault(); }}>
                 <input
                     placeholder="Enter a name"
                     type="text"
@@ -79,7 +85,7 @@ const InterApplicationBusSend: React.FC = () => {
                 <button type="submit" className={styles.formChild}>Submit</button>
             </form>
             <div className={styles.input}>
-                <strong>Received Message:</strong> {receivedName ? receivedName : "None"}
+                <strong>Received Messages:</strong> {receivedNames ? formatNames(receivedNames) : "None"}
             </div>
         </div>
     );

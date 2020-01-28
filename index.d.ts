@@ -134,11 +134,7 @@ export const useInterApplicationBusPublish: <T>(
 export const useInterApplicationBusSend: <T>(
     identity: Identity,
     topic: string,
-    message: T,
-) => {
-    success: boolean;
-    error: Error;
-};
+) => (message: T) => Promise<void>;
 
 export const useInterApplicationBusSubscribe: <T>(
     identity: Identity,

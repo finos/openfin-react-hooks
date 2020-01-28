@@ -21,13 +21,16 @@ const Component = () => {
 
     return (
         <div>
-            <input
-                placeholder="Enter a name"
-                type="text"
-                onChange={(e) => setSentName(e.target.value)}
-                value={sentName}
-            />
-            <div className={styles.input}>
+            <form onSubmit={(e) => { setSentName(nameToPublish); e.preventDefault(); }}>
+                <input
+                    placeholder="Enter a name"
+                    type="text"
+                    onChange={(e) => setNameToPublish(e.target.value)}
+                    value={nameToPublish}
+                />
+                <button type="submit">Submit</button>
+            </form>
+            <div>
                 <strong>Received Message:</strong> {receivedName ? receivedName : "None"}
             </div>
         </div>
@@ -37,10 +40,11 @@ const Component = () => {
 
 const InterApplicationBusPublish: React.FC = () => {
     const [receivedName, setReceivedName] = useState("");
-    const [sentName, setSentName] = useState("John Smith");
+    const [nameToPublish, setNameToPublish] = useState("John Smith");
+    const [sentName, setSentName] = useState("");
     const onReceiveMessage = (message: string) => setReceivedName(message);
     const onFail = (error: unknown) => { throw error; };
-    useInterApplicationBusSubscribe({ uuid: "*" }, TOPIC, onReceiveMessage, onFail);
+    useInterApplicationBusSubscribe({uuid: "*"}, TOPIC, onReceiveMessage, onFail);
 
     useInterApplicationBusPublish(TOPIC, sentName);
     useEffect(Prism.highlightAll, []);
@@ -61,11 +65,16 @@ const InterApplicationBusPublish: React.FC = () => {
                 </code>
             </pre>
             <h2>Try it out</h2>
-            <input
-                placeholder="Enter a name"
-                type="text"
-                onChange={(e) => setSentName(e.target.value)} value={sentName}
-            />
+            <form onSubmit={(e) => { setSentName(nameToPublish); e.preventDefault(); }}>
+                <input
+                    placeholder="Enter a name"
+                    type="text"
+                    onChange={(e) => setNameToPublish(e.target.value)}
+                    value={nameToPublish}
+                    className={styles.formChild}
+                />
+                <button type="submit" className={styles.formChild}>Submit</button>
+            </form>
             <div className={styles.input}>
                 <strong>Received Message:</strong> {receivedName ? receivedName : "None"}
             </div>

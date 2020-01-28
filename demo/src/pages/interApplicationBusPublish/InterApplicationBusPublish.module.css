@@ -6,6 +6,10 @@
     composes: title from '../../styles/demo-content.module.css';
 }
 
+.formChild {
+    composes: formChild from '../../styles/demo-content.module.css';
+}
+
 .input {
     margin-top: var(--margin-medium);
 }

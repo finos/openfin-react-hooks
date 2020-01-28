@@ -17,9 +17,7 @@ const Component = () => {
         mainWindow,
     );
 
-    return (
-        <div></div>
-    );
+    return null;
 }
 `;
 

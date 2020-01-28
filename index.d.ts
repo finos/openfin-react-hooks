@@ -1,3 +1,4 @@
+import { Application } from "openfin/_v2/api/application/application";
 import { Action } from "openfin/_v2/api/interappbus/channel/channel";
 import { ChannelClient } from "openfin/_v2/api/interappbus/channel/client";
 import { ChannelProvider } from "openfin/_v2/api/interappbus/channel/provider";
@@ -67,7 +68,10 @@ export interface IUseNotificationOptions {
     jsx?: JSX.Element;
 }
 
-export const useBounds: (target?: _Window) => Bounds;
+export const useBounds: (target?: _Window) => [
+    Bounds | undefined,
+    (newBounds: Bounds) => Promise<void>
+];
 
 export const useChannelClient: (
     channelName: string,
@@ -88,6 +92,18 @@ export const useChildWindow: (
     useChildWindowOptions: IUseChildWindowOptions,
 ) => IChildWindow;
 
+export const useCallbackWhenAllChildWindowsClosed: (
+    callbackFn: (parent: _Window) => void,
+    parentWindow?: _Window,
+    app?: Application,
+) => void;
+
+export const useCallbackWhenAnyChildWindowClosed: (
+    callbackFn: (parent: _Window, child: _Window) => void,
+    parentWindow?: _Window,
+    app?: Application,
+) => void;
+
 export const useNotification: (
     useNotificationOptions: IUseNotificationOptions,
 ) => INotification;
@@ -101,24 +117,24 @@ export const useDockWindow: (
     stretchToFit?: IDimensions,
     options?: IUseDockWindowOptions,
 ) => [
-    ScreenEdge,
-    {
-        dockBottom: () => void;
-        dockLeft: () => void;
-        dockNone: () => void;
-        dockRight: () => void;
-        dockTop: () => void;
-    }
-];
+        ScreenEdge,
+        {
+            dockBottom: () => void;
+            dockLeft: () => void;
+            dockNone: () => void;
+            dockRight: () => void;
+            dockTop: () => void;
+        }
+    ];
 
 export const useFocus: (
     target?: _Window,
 ) => [
-    boolean,
-    (newFocus: boolean) => Promise<void>,
-    () => Promise<void>,
-    () => Promise<void>
-];
+        boolean,
+        (newFocus: boolean) => Promise<void>,
+        () => Promise<void>,
+        () => Promise<void>
+    ];
 
 export const useInterApplicationBusPublish: <T>(
     topic: string,

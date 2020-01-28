@@ -10,38 +10,47 @@ const codeExample = `import {useInterApplicationBusPublish, useInterApplicationB
 
 const TOPIC = "demo-topic";
 
-const Component = () => {
-    const [receivedName, setReceivedName] = useState("");
-    const [sentName, setSentName] = useState("John Smith");
-    const onReceiveMessage = (message: string) => setReceivedName(message);
-    const onFail = (error: unknown) => { throw error };
-    useInterApplicationBusSubscribe({ uuid: "*" }, TOPIC, onReceiveMessage, onFail);
+const formatNames = (names: string[]) => {
+    return ["["].concat(names.join(", ").concat("]"));
+};
 
-    useInterApplicationBusPublish(TOPIC, sentName);
+const Component = () => {
+    const [receivedNames, setReceivedNames] = useState([] as string[]);
+    const [nameToPublish, setNameToPublish] = useState("John Smith");
+    const onReceiveMessage = (message: string) => setReceivedNames((names) => [message].concat(names));
+    const onFail = (error: unknown) => { throw error; };
+    useInterApplicationBusSubscribe({uuid: "*"}, TOPIC, onReceiveMessage, onFail);
+
+    const publishMessage = useInterApplicationBusPublish(TOPIC);
 
     return (
         <div>
-            <form onSubmit={(e) => { setSentName(nameToPublish); e.preventDefault(); }}>
+            <form onSubmit={(e) => { publishMessage(nameToPublish); e.preventDefault(); }}>
                 <input
                     placeholder="Enter a name"
                     type="text"
                     onChange={(e) => setNameToPublish(e.target.value)}
                     value={nameToPublish}
+                    className={styles.formChild}
                 />
-                <button type="submit">Submit</button>
+                <button type="submit" className={styles.formChild}>Submit</button>
             </form>
-            <div>
-                <strong>Received Message:</strong> {receivedName ? receivedName : "None"}
+            <div className={styles.input}>
+                <strong>Received Messages:</strong> {receivedNames ? formatNames(receivedNames) : "None"}
             </div>
         </div>
     )
 }
 `;
 
+const formatNames = (names: string[]) => {
+    return ["["].concat(names.join(", ").concat("]"));
+};
+
 const InterApplicationBusPublish: React.FC = () => {
-    const [receivedName, setReceivedName] = useState("");
+    const [receivedNames, setReceivedNames] = useState([] as string[]);
     const [nameToPublish, setNameToPublish] = useState("John Smith");
-    const onReceiveMessage = (message: string) => setReceivedName(message);
+    const onReceiveMessage = (message: string) => setReceivedNames((names) => [message].concat(names));
     const onFail = (error: unknown) => { throw error; };
     useInterApplicationBusSubscribe({uuid: "*"}, TOPIC, onReceiveMessage, onFail);
 
@@ -75,7 +84,7 @@ const InterApplicationBusPublish: React.FC = () => {
                 <button type="submit" className={styles.formChild}>Submit</button>
             </form>
             <div className={styles.input}>
-                <strong>Received Message:</strong> {receivedName ? receivedName : "None"}
+                <strong>Received Messages:</strong> {receivedNames ? formatNames(receivedNames) : "None"}
             </div>
         </div>
     );

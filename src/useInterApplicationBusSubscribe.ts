@@ -14,7 +14,7 @@ export default <T>(source: Identity, topic: string) => {
     };
 
     useEffect(() => {
-        const fin: any = window;
+        const fin = window.fin;
         if (isSubscribed || !fin || !fin.InterApplicationBus) {
             return () => null;
         }

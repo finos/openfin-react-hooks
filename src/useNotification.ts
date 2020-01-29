@@ -22,7 +22,7 @@ interface INoteWin extends _Window {
 }
 
 // This is a work-around regarding fin.OpenFinNotification interface not defining noteWin
-interface IOpenFinNotification extends fin.OpenFinNotification {
+interface IOpenFinNotification extends _Notification {
     noteWin?: INoteWin;
 }
 
@@ -175,41 +175,57 @@ export default ({
             const options = currentNotificationOpts
                 ? currentNotificationOpts
                 : notificationOptions;
+            console.log(options);
+
+            const notification = window.fin.Notification.create({
+                url: 'https://cdn.openfin.co/docs/javascript/stable/tutorial-Notification.create.html',
+                timeout: 3000
+            }); // .then(() => console.log('Notification created')).catch(err => console.log(err));
+
             try {
-                const newNotification = new fin.desktop.Notification({
-                    ...currentNotificationOpts,
-                    // interface defines onShow, onDismiss and onClose as required, but we just want
-                    // to call the function user passed in to notificationOptions thus the disable lines
-                    onClose: async () => {
-                        if (options.onClose) {
-                            // tslint:disable-next-line no-empty
-                            options.onClose(() => {});
-                        }
-                        await close();
-                    },
-                    onDismiss: async () => {
-                        if (options.onDismiss) {
-                            // tslint:disable-next-line no-empty
-                            options.onDismiss(() => {});
-                        }
-                        await close();
-                    },
-                    onShow: () => {
-                        if (options.onShow) {
-                            // tslint:disable-next-line no-empty
-                            options.onShow(() => {});
-                        }
+                console.log("SHOW");
+                // notification.show().then(console.log).catch(console.error);
+                const message = await notification.sendMessage("hello");
+                console.log(message);
+                // .then(console.log).catch(console.error)
+
+                const customShow = () => {
+                    return new Promise((resolve, reject) => {
+                        window.setTimeout(() => {
+                            reject("TIMEOUT ERROR")
+                        }, 1)
+                        notification.show().then(resolve).catch(reject);
+                    })
+                }
+
+                await customShow().catch(console.error);
+                // .then(() => console.log('bla0'))
+                // .catch(() => console.log('blaErr'));
+
+                console.log("blah");
+                const newNotification = window.fin.Notification
+                    .create(options)
+                console.log(newNotification);
+
+                newNotification.sendMessage("HELLO");
+                newNotification.show()
+                    .then(() => {
+                        console.log("Launching new notification...");
                         dispatchNewState(WINDOW_STATE.LAUNCHING);
-                    },
-                    timeout: options.timeout,
-                });
+                    })
+                    .catch((error: Error) => { throw error; });
+
                 setRef(newNotification);
             } catch (error) {
+                console.log("ERROR")
+                console.log(error);
                 dispatchError(error);
             }
         },
         [],
     );
+
+    console.log(launch)
 
     const populate = useCallback(
         (jsxElement: JSX.Element) => {

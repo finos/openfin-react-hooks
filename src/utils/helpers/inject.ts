@@ -1,5 +1,5 @@
 export const injectNode = (
-    node: HTMLStyleElement | HTMLScriptElement,
+    node: HTMLStyleElement | HTMLScriptElement | Node,
     document: HTMLDocument,
 ) => {
     if (document) {

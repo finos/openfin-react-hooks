@@ -20,8 +20,9 @@ export default <T>(
             .catch(onFail);
 
         return () => {
+            // Set unsubscribe state before unsubscribing otherwise the component may be unmounted:
+            setIsSubscribed(false);
             fin.InterApplicationBus.unsubscribe(source, topic, onReceiveMessage)
-                .then(() => setIsSubscribed(false))
                 .catch(onFail);
         };
     }, [source.name, source.uuid, topic]);

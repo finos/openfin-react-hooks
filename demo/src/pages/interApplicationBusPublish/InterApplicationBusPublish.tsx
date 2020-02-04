@@ -15,7 +15,7 @@ const formatNames = (names: string[]) => {
 };
 
 const Component = () => {
-    const [receivedNames, setReceivedNames] = useState([] as string[]);
+    const [receivedNames, setReceivedNames] = useState<string[]>([]);
     const [nameToPublish, setNameToPublish] = useState("John Smith");
     const onReceiveMessage = (message: string) => setReceivedNames((names) => [message].concat(names));
     const onFail = (error: unknown) => { throw error; };
@@ -48,7 +48,7 @@ const formatNames = (names: string[]) => {
 };
 
 const InterApplicationBusPublish: React.FC = () => {
-    const [receivedNames, setReceivedNames] = useState([] as string[]);
+    const [receivedNames, setReceivedNames] = useState<string[]>([]);
     const [nameToPublish, setNameToPublish] = useState("John Smith");
     const onReceiveMessage = (message: string) => setReceivedNames((names) => [message].concat(names));
     const onFail = (error: unknown) => { throw error; };

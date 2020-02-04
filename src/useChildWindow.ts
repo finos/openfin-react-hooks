@@ -30,8 +30,11 @@ export default ({
 
     const inheritCss = useCallback(() => {
         if (parentDocument && htmlDocument) {
-            const parentStyles = parentDocument.getElementsByTagName("style");
-            injectNodes(parentStyles, htmlDocument);
+            const externalStyles =  parentDocument.styleSheets;
+            // tslint:disable-next-line: prefer-for-of
+            for (let i = 0; i < externalStyles.length; i ++ ) {
+                injectNode(externalStyles[i].ownerNode, htmlDocument);
+            }
         }
     }, [parentDocument, injectNodes, htmlDocument]);
 

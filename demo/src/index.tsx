@@ -13,7 +13,7 @@ const mountApp = () => {
 };
 
 if ("fin" in window) {
-    window.fin.desktop.main(mountApp);
+    mountApp();
 } else {
     throw new Error("This application can only be run in an OpenFin container");
 }

@@ -20,7 +20,7 @@ const INITIAL_TEXT_AREA_VALUE: string = `<div class="App_containerApp__F0W0w">
 </div>`;
 const CHILD_BODY_AS_HOOK_OPTION = (
     <div className="App_containerApp__F0W0w">
-        <p>
+        <p className="ChildWindow_external_style__2s3g_">
             This jsx was passed in as a part of <code>CHILD_WINDOW_HOOK_OPTIONS</code>
             . See "Code Example" Section for more information.
     </p>

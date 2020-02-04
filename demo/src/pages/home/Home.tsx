@@ -106,6 +106,20 @@ const cards: IDemoCard[] = [
     id: "notification",
     name: "useNotification",
   },
+  {
+    description: "Invoke callback when all child windows have closed",
+    icon: "exit_to_app",
+    iconRotate: false,
+    id: "callbackWhenAllChildrenClosed",
+    name: "useCallbackWhenAllChildWindowsClosed",
+  },
+  {
+    description: "Invoke callback when any child window has closed",
+    icon: "exit_to_app",
+    iconRotate: false,
+    id: "callbackWhenAnyChildClosed",
+    name: "useCallbackWhenAnyChildWindowClosed",
+  },
 ];
 
 const Home: React.FC = () => {

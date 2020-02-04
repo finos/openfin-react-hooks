@@ -1,6 +1,10 @@
 {
   "name": "openfin-react-hooks",
+<<<<<<< HEAD
   "version": "1.4.0",
+=======
+  "version": "1.3.3",
+>>>>>>> df9136ead1e3b353d1146f2c8c8e29759f789628
   "description": "A collection of React Hooks built on top of the Openfin API",
   "main": "dist/index.js",
   "scripts": {

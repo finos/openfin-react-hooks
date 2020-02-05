@@ -1,13 +1,14 @@
 import WINDOW_ACTION from "../../../utils/types/enums/WindowAction";
 import WINDOW_STATE from "../../../utils/types/enums/WindowState";
+
 interface IState {
   state: WINDOW_STATE;
-  windowRef: any | null;
+  windowRef: fin.OpenFinWindow | null;
 }
 
 interface IAction {
   error?: string;
-  payload?: WINDOW_STATE | any;
+  payload?: WINDOW_STATE | fin.OpenFinWindow;
   type: WINDOW_ACTION;
 }
 
@@ -16,8 +17,8 @@ export const INITIAL_WINDOW_STATE: IState = {
   windowRef: null,
 };
 
-function isWindow(payload: any) {
-  return payload.nativeWindow !== undefined;
+function isWindow(payload: any): payload is fin.OpenFinWindow {
+  return payload.getNativeWindow !== undefined;
 }
 
 export default (state: IState, action: IAction): IState => {

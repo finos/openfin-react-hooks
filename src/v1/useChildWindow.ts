@@ -2,9 +2,10 @@ import { useCallback, useEffect, useReducer, useState } from "react";
 import ReactDOM from "react-dom";
 import { IUseChildWindowOptions } from "../../index";
 import { injectNode, injectNodes } from "../utils/helpers/inject";
-import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
 import WINDOW_ACTION from "../utils/types/enums/WindowAction";
 import WINDOW_STATE from "../utils/types/enums/WindowState";
+import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
+import { WindowOption } from "./utils/types/WindowOption";
 
 export default ({
     name,
@@ -42,13 +43,13 @@ export default ({
     };
 
     useEffect(() => {
-        if (childWindow.windowRef && childWindow.windowRef.nativeWindow) {
-            setHtmlDocument(childWindow.windowRef.nativeWindow.document);
-            childWindow.windowRef.nativeWindow.onclose = reset;
+        if (childWindow.windowRef) {
+            setHtmlDocument(childWindow.windowRef.getNativeWindow().document);
+            childWindow.windowRef.getNativeWindow().onclose = reset;
         }
         return () => {
-            if (childWindow.windowRef && childWindow.windowRef.nativeWindow) {
-                childWindow.windowRef.nativeWindow.onclose = null;
+            if (childWindow.windowRef) {
+                childWindow.windowRef.getNativeWindow().onclose = null;
             }
         };
     }, [childWindow.windowRef]);
@@ -110,7 +111,7 @@ export default ({
         });
 
     const launch = useCallback(
-        async (newWindowOptions?: any) => {
+        async (newWindowOptions?: WindowOption) => {
             const options = newWindowOptions
                 ? newWindowOptions
                 : windowOptions

@@ -5,7 +5,6 @@ import useCallbackWhenAnyChildWindowClosedHook from "./useCallbackWhenAnyChildWi
 import useChannelClientHook from "./useChannelClient";
 import useChannelProviderHook from "./useChannelProvider";
 import useChildWindowHook from "./useChildWindow";
-import useChildWindowV1Hook from "./v1/useChildWindow";
 import useDockedHook from "./useDocked";
 import useDockWindowHook from "./useDockWindow";
 import useFocusHook from "./useFocus";
@@ -17,6 +16,7 @@ import useNotificationHook from "./useNotification";
 import useOptionsHook from "./useOptions";
 import useUserMovementHook from "./useUserMovement";
 import useZoomHook from "./useZoom";
+import useChildWindowV1Hook from "./v1/useChildWindow";
 
 export const ScreenEdge = ScreenEdgeEnum;
 export const useBounds = useBoundsHook;

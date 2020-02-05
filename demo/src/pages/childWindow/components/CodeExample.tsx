@@ -19,6 +19,7 @@ const Component = () => {
         windowOptions: WINDOW_OPTIONS,
     };
 
+    // Use useChildWindowV1 here if you are still using v1 of the api:
     const childWindow = useChildWindow(CHILD_WINDOW_HOOK_OPTIONS);
 
     return (

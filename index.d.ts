@@ -92,6 +92,10 @@ export const useChildWindow: (
     useChildWindowOptions: IUseChildWindowOptions,
 ) => IChildWindow;
 
+export const useChildWindowV1: (
+    useChildWindowOptions: IUseChildWindowOptions,
+) => IChildWindow;
+
 export const useCallbackWhenAllChildWindowsClosed: (
     callbackFn: (parent: _Window) => void,
     parentWindow?: _Window,

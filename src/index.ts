@@ -5,6 +5,7 @@ import useCallbackWhenAnyChildWindowClosedHook from "./useCallbackWhenAnyChildWi
 import useChannelClientHook from "./useChannelClient";
 import useChannelProviderHook from "./useChannelProvider";
 import useChildWindowHook from "./useChildWindow";
+import useChildWindowV1Hook from "./v1/useChildWindow";
 import useDockedHook from "./useDocked";
 import useDockWindowHook from "./useDockWindow";
 import useFocusHook from "./useFocus";
@@ -22,6 +23,7 @@ export const useBounds = useBoundsHook;
 export const useChannelClient = useChannelClientHook;
 export const useChannelProvider = useChannelProviderHook;
 export const useChildWindow = useChildWindowHook;
+export const useChildWindowV1 = useChildWindowV1Hook;
 export const useDockWindow = useDockWindowHook;
 export const useDocked = useDockedHook;
 export const useFocus = useFocusHook;
@@ -44,6 +46,7 @@ export default {
   useChannelClient,
   useChannelProvider,
   useChildWindow,
+  useChildWindowV1,
   useDockWindow,
   useDocked,
   useFocus,

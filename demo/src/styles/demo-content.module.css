@@ -7,3 +7,7 @@
 .title {
     margin: var(--margin-medium) 0;
 }
+
+.formChild {
+    display: inline-block;
+}

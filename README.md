@@ -28,22 +28,24 @@ More complex hooks (e.g. `useDockWindow`) provide functionality that could save 
 
 Currently, the collection of hooks consists of the following:
 
-| Name                              | Description                                                                         |
-| --------------------------------- | ----------------------------------------------------------------------------------- |
-| `useBounds`                       | Subscribe to the bounds of a window changing                                        |
-| `useChannels`                     | Use the Channels API to send/receive messages between windows or applications       |
-| `useChildWindow`                  | Create and manage a single child window                                             |
-| `useDocked`                       | Detects if the current window is docked                                             |
-| `useDockWindow`                   | Dock a window to the edges of a screen                                              |
-| `useFocus`                        | Listen to and affect focus of a window                                              |
-| `useInterApplicationBusSend`      | Auto-magically send properties on the `InterApplicationBus` whenever they change    |
-| `useInterApplicationBusPublish`   | Auto-magically publish properties on the `InterApplicationBus` whenever they change |
-| `useInterApplicationBusSubscribe` | Subscribe to a topic on the `InterApplicationBus`                                   |
-| `useMaximized`                    | Detects if the current window is maximized                                          |
-| `useNotification`                 | Launch notification and manage it's content                                         |
-| `useOptions`                      | Listen to and update window options                                                 |
-| `useUserMovement`                 | Listen to and update whether user movement is enabled / disabled for a window       |
-| `useZoom`                         | Listen to and update window zoom level                                              |
+| Name                                   | Description                                                                         |
+| -------------------------------------- | ----------------------------------------------------------------------------------- |
+| `useBounds`                            | Subscribe to the bounds of a window changing                                        |
+| `useChannels`                          | Use the Channels API to send/receive messages between windows or applications       |
+| `useChildWindow`                       | Create and manage a single child window                                             |
+| `useDocked`                            | Detects if the current window is docked                                             |
+| `useDockWindow`                        | Dock a window to the edges of a screen                                              |
+| `useFocus`                             | Listen to and affect focus of a window                                              |
+| `useInterApplicationBusSend`           | Auto-magically send properties on the `InterApplicationBus` whenever they change    |
+| `useInterApplicationBusPublish`        | Auto-magically publish properties on the `InterApplicationBus` whenever they change |
+| `useInterApplicationBusSubscribe`      | Subscribe to a topic on the `InterApplicationBus`                                   |
+| `useMaximized`                         | Detects if the current window is maximized                                          |
+| `useNotification`                      | Launch notification and manage it's content                                         |
+| `useOptions`                           | Listen to and update window options                                                 |
+| `useUserMovement`                      | Listen to and update whether user movement is enabled / disabled for a window       |
+| `useZoom`                              | Listen to and update window zoom level                                              |
+| `useCallbackWhenAllChildWindowsClosed` | Invoke callback when all child windows have been closed                             |
+| `useCallbackWhenAnyChildWindowClosed`  | Invoke callback when any child window has been closed                               |
 
 ## Example
 
@@ -59,14 +61,17 @@ const IDENTITY = window.fin.Window.me;
 const TOPIC = "demo-topic";
 
 const Component = () => {
-    const [name, setName] = useState("John Smith");
-    const { data } = useInterApplicationBusSubscribe(IDENTITY, TOPIC);
-    useInterApplicationBusSend(IDENTITY, TOPIC, name);
+    const [receivedName, setReceivedName] = useState("John Smith");
+    const onReceiveMessage = (message: string) => setReceivedName(message);
+    useInterApplicationBusSubscribe(IDENTITY, TOPIC, onReceiveMessage);
+
+    const sendMessage = useInterApplicationBusSend(IDENTITY, TOPIC);
+
 
     return (
         <div>
-            <input onChange={e => setName(e.target.value)} value={name} type="text" />
-            <strong>Received Message: { data ? data.message : "None" }</strong>
+            <input onChange={e => sendMessage(e.target.value)} value={receivedName} type="text" />
+            <strong>Received Message: { receivedName }</strong>
         </div>
     )
 }

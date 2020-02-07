@@ -111,4 +111,4 @@ const App: React.FC<RouteComponentProps> = ({ history }) => {
     );
 };
 
-export default withRouter<RouteComponentProps>(App);
+export default withRouter<RouteComponentProps, React.FC<RouteComponentProps>>(App);

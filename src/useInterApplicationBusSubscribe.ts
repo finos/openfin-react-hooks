@@ -1,17 +1,13 @@
 import {Identity} from "openfin/_v2/identity";
 import {useEffect, useState} from "react";
 
-export default <T>(source: Identity, topic: string) => {
-    const [data, setData] = useState();
+export default <T>(
+    source: Identity,
+    topic: string,
+    onReceiveMessage: (message: T, uuid: string, name: string) => void,
+    onFail: (error: unknown) => void = (error) => { throw error; },
+) => {
     const [isSubscribed, setIsSubscribed] = useState(false);
-    const [subscribeError, setSubscribeError] = useState();
-
-    const onReceiveMessage = (message: T, uuid: string, name: string) => setData({message, name, uuid});
-
-    const onFail = (error: unknown) => {
-        setSubscribeError(error);
-        setIsSubscribed(false);
-    };
 
     useEffect(() => {
         const fin = window.fin;
@@ -24,11 +20,12 @@ export default <T>(source: Identity, topic: string) => {
             .catch(onFail);
 
         return () => {
+            // Set unsubscribe state before unsubscribing otherwise the component may be unmounted:
+            setIsSubscribed(false);
             fin.InterApplicationBus.unsubscribe(source, topic, onReceiveMessage)
-                .then(() => setIsSubscribed(false))
                 .catch(onFail);
         };
     }, [source.name, source.uuid, topic]);
 
-    return {data, subscribeError, isSubscribed};
+    return isSubscribed;
 };

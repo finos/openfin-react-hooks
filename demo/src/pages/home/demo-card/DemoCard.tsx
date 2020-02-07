@@ -23,4 +23,4 @@ const DemoCard: React.FC<IProps> = ({demo, history}) => {
     );
 };
 
-export default withRouter<IProps>(DemoCard);
+export default withRouter<IProps, React.FC<IProps>>(DemoCard);

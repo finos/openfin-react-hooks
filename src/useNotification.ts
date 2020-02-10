@@ -57,12 +57,12 @@ export default ({
     }, [parentDocument, injectNodes, htmlDocument]);
 
     useEffect(() => {
-        if (notificationWindow.windowRef) {
+        if (notificationWindow.windowRefV2) {
             setHtmlDocument(
-                notificationWindow.windowRef.getWebWindow().document,
+                notificationWindow.windowRefV2.getWebWindow().document,
             );
         }
-    }, [notificationWindow.windowRef]);
+    }, [notificationWindow.windowRefV2]);
 
     useEffect(() => {
         if (
@@ -76,7 +76,7 @@ export default ({
                     if (win.identity.name && win.identity.name === name) {
                         dispatch({
                             payload: win,
-                            type: WINDOW_ACTION.SET_WINDOW,
+                            type: WINDOW_ACTION.SET_V2_WINDOW,
                         });
                     }
                 });
@@ -236,6 +236,6 @@ export default ({
         populate,
         ref,
         state: notificationWindow.state,
-        windowRef: notificationWindow.windowRef,
+        windowRefV2: notificationWindow.windowRefV2,
     };
 };

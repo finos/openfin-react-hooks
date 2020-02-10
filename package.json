@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "compile": "tsc",
-    "lint": "tslint {**,.}/*.ts{,x}",
+    "lint": "tslint src/{**,.}/*.ts{,x} demo/{**,.}/ts{,x}",
     "test": "echo \"Error: no test specified\" && exit 1",
     "license-validation": "npm prune --production && npm install --production && npx node-license-validator . --allow-licenses MIT Apache-2.0"
   },

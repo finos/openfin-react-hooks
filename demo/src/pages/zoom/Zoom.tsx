@@ -84,7 +84,8 @@ const Zoom: React.FC = () => {
                     max={3}
                     value={zoom}
                     track={false}
-                    onChange={(_, newZoomLevel: any) => setZoom(newZoomLevel)}
+                    onChange={(_: React.ChangeEvent<{}>, newZoomLevel: number | number[]) =>
+                        setZoom(Array.isArray(newZoomLevel) ? newZoomLevel[0] : newZoomLevel)}
                 />
             </div>
         </div>

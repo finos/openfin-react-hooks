@@ -1,3 +1,4 @@
+import { Slider } from "@material-ui/core";
 import {useZoom} from "openfin-react-hooks";
 import {_Window} from "openfin/_v2/api/window/window";
 import * as Prism from "prismjs";
@@ -76,8 +77,15 @@ const Zoom: React.FC = () => {
             </div>
             <div>
                 <strong>Adjust zoom level:</strong>
-                <input className={styles.value} type="range" min="-3" max="3" value={zoom} step="0.1"
-                    onChange={(e) => setZoom(Number(e.target.value))}
+                <Slider
+                    defaultValue={0}
+                    step={0.1}
+                    min={-3}
+                    max={3}
+                    value={zoom}
+                    track={false}
+                    onChange={(_: React.ChangeEvent<{}>, newZoomLevel: number | number[]) =>
+                        setZoom(Array.isArray(newZoomLevel) ? newZoomLevel[0] : newZoomLevel)}
                 />
             </div>
         </div>

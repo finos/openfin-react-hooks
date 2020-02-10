@@ -142,24 +142,18 @@ export const useFocus: (
 
 export const useInterApplicationBusPublish: <T>(
     topic: string,
-    message: T,
-) => {
-    success: boolean;
-    error: Error;
-};
+) => (message: T) => Promise<void>;
 
 export const useInterApplicationBusSend: <T>(
     identity: Identity,
     topic: string,
-    message: T,
-) => {
-    success: boolean;
-    error: Error;
-};
+) => (message: T) => Promise<void>;
 
 export const useInterApplicationBusSubscribe: <T>(
     identity: Identity,
     topic: string,
+    onReceiveMessage: (message: T, uuid: string, name: string) => any,
+    onFail?: (error: unknown) => any,
 ) => {
     data: {
         message: T;

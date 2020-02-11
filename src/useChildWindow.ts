@@ -1,4 +1,3 @@
-// import { _Window } from "openfin/_v2/api/window/window";
 import { WindowOption } from "openfin/_v2/api/window/windowOption";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import ReactDOM from "react-dom";
@@ -139,17 +138,21 @@ export default ({
                         await closeExistingWindow();
                     }
                     if (versionNum === 1) {
-                        dispatch({
-                            payload: new fin.desktop.Window(options),
-                            type: WINDOW_ACTION.SET_V1_WINDOW,
-                        });
+                        const newWindow = new fin.desktop.Window({ ...options, autoShow: true }, () => {
+                            dispatch({
+                                payload: newWindow,
+                                type: WINDOW_ACTION.SET_V1_WINDOW,
+                            });
+                            dispatchNewState(WINDOW_STATE.LAUNCHED);
+                        }, dispatchError);
+
                     } else if (versionNum === 2) {
                         dispatch({
                             payload: await fin.Window.create(options),
                             type: WINDOW_ACTION.SET_V2_WINDOW,
                         });
+                        dispatchNewState(WINDOW_STATE.LAUNCHED);
                     }
-                    dispatchNewState(WINDOW_STATE.LAUNCHED);
                 } catch (error) {
                     dispatchError(error);
                 }

@@ -90,7 +90,7 @@ export const useChannelProvider: (
 
 export const useChildWindow: (
     useChildWindowOptions: IUseChildWindowOptions,
-) => IChildWindow;
+) => Promise<IChildWindow>;
 
 export const useCallbackWhenAllChildWindowsClosed: (
     callbackFn: (parent: _Window) => void,

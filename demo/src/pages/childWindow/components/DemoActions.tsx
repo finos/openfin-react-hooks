@@ -13,32 +13,37 @@ const DEFAULT_CHILD_BODY: JSX.Element = (
 );
 
 export default ({ CHILD_WINDOW_HOOK_OPTIONS, textAreaValue }: IProps) => {
-    const childWindow = useChildWindow(CHILD_WINDOW_HOOK_OPTIONS);
-    return (
-        <>
-            <h4>Child Window Actions</h4>
-            <h5>{NOTE}</h5>
-            <button onClick={() => childWindow.launch()}>Launch</button>
-            <button
-                onClick={() =>
-                    childWindow.populate(
-                        textAreaValue ? (
-                            <>{ReactHtmlParser(textAreaValue)}</>
-                        ) : (
-                                DEFAULT_CHILD_BODY
-                            ),
-                    )
-                }
-                disabled={childWindow.state === "INITIAL"}
-            >
-                Populate
-      </button>
-            <button
-                onClick={() => childWindow.close()}
-                disabled={!childWindow.windowRef}
-            >
-                Close
-      </button>
-        </>
-    );
+    let childWindow: any = null;
+    useChildWindow(CHILD_WINDOW_HOOK_OPTIONS).then((createdChildWindow) => childWindow = createdChildWindow);
+    if (childWindow) {
+        return (
+            <>
+                <h4>Child Window Actions</h4>
+                <h5>{NOTE}</h5>
+                <button onClick={() => childWindow.launch()}>Launch</button>
+                <button
+                    onClick={() =>
+                        childWindow.populate(
+                            textAreaValue ? (
+                                <>{ReactHtmlParser(textAreaValue)}</>
+                            ) : (
+                                    DEFAULT_CHILD_BODY
+                                ),
+                        )
+                    }
+                    disabled={childWindow.state === "INITIAL"}
+                >
+                    Populate
+          </button>
+                <button
+                    onClick={() => childWindow.close()}
+                    disabled={!childWindow.windowRef}
+                >
+                    Close
+          </button>
+            </>
+        );
+    } else {
+        return null;
+    }
 };

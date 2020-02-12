@@ -1,6 +1,6 @@
 import { Application } from "openfin/_v2/api/application/application";
 import { _Window } from "openfin/_v2/api/window/window";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import ClosingOption from "./utils/types/enums/WindowClosingOptions";
 import usePreviousValue from "./utils/usePreviousValue";
 
@@ -58,14 +58,14 @@ export default (
         }
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         getChildWindowsPromise()
             .then((windows) => {
                 setChildWindows(windows.map((w) => ({ name: w.identity.name, uuid: w.identity.uuid })));
             });
     }, []);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         app.addListener("window-created", handleWindowCreated);
 
         return () => {
@@ -74,7 +74,7 @@ export default (
 
     }, []);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         app.addListener("window-closed", handleWindowClosed);
 
         return () => {
@@ -83,11 +83,11 @@ export default (
 
     }, [childWindows]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setChildrenCount(childWindows.length);
     }, [childWindows]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
 
         switch (closingOption) {
             case ClosingOption.AllChildren:
@@ -103,7 +103,7 @@ export default (
         }
     }, [childrenCount]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (shouldInvoke && windowThatJustClosed != null) {
             callbackFn(parent, fin.Window.wrapSync(windowThatJustClosed));
         }

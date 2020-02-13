@@ -6,7 +6,7 @@ import uuidv4 from "uuid/v4";
 
 import styles from "./Docked.module.css";
 
-const codeExample = `import {useMaximized} from "openfin-react-hooks";
+const codeExample = `import {useDocked} from "openfin-react-hooks";
 
 const Component = () => {
     const [isDocked, undock] = useDocked();

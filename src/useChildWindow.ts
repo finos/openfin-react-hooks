@@ -12,6 +12,21 @@ const Version = Object.freeze({
     two: 2,
 });
 
+const createChildWindowV1 = (options: any) => {
+    return new Promise((resolve, reject) => {
+        const newWindow = new fin.desktop.Window({ ...options, autoShow: true }, () => {
+            resolve(newWindow);
+        }, reject);
+    });
+};
+const createChildWindowV2 = (options: any) => {
+    return fin.Window.create(options);
+};
+const createChildWindow = async (versionNum: number, options: any) =>
+    versionNum === Version.one ?
+        createChildWindowV1(options) :
+        createChildWindowV2(options);
+
 export default ({
     name,
     windowOptions,
@@ -135,22 +150,15 @@ export default ({
                     if (shouldClosePreviousOnLaunch) {
                         await closeExistingWindow();
                     }
-                    if (versionNum === Version.one) {
-                        const newWindow = new fin.desktop.Window({ ...options, autoShow: true }, () => {
+                    createChildWindow(versionNum, options)
+                        .then((newWindow) => {
                             dispatch({
                                 payload: newWindow,
                                 type: WINDOW_ACTION.SET_WINDOW,
                             });
                             dispatchNewState(WINDOW_STATE.LAUNCHED);
-                        }, dispatchError);
-
-                    } else if (versionNum === Version.two) {
-                        dispatch({
-                            payload: await fin.Window.create(options),
-                            type: WINDOW_ACTION.SET_WINDOW,
-                        });
-                        dispatchNewState(WINDOW_STATE.LAUNCHED);
-                    }
+                        })
+                        .catch(dispatchError);
                 } catch (error) {
                     dispatchError(error);
                 }

@@ -7,6 +7,11 @@ import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
 import WINDOW_ACTION from "./utils/types/enums/WindowAction";
 import WINDOW_STATE from "./utils/types/enums/WindowState";
 
+const Version = Object.freeze({
+    one: 1,
+    two: 2,
+});
+
 export default ({
     name,
     windowOptions,
@@ -17,16 +22,9 @@ export default ({
     shouldInheritCss,
     shouldInheritScripts,
 }: IUseChildWindowOptions) => {
-    const [versionNum, setVersionNum] = useState<number | null>(null);
     const [childWindow, dispatch] = useReducer(reducer, INITIAL_WINDOW_STATE);
     const [htmlDocument, setHtmlDocument] = useState<HTMLDocument | null>(null);
-
-    fin.System.getVersion().then((fourPartVersion) => {
-        const allVersions = fourPartVersion.split(".");
-        const jsFullVersion = allVersions[2];
-        const jsShortVersion = parseInt(jsFullVersion, 10) < 39 ? 1 : 2;
-        setVersionNum(jsShortVersion);
-    });
+    const versionNum = fin.Window.getCurrentSync().getWebWindow ? Version.two : Version.one;
 
     const inheritScripts = useCallback(() => {
         if (parentDocument && htmlDocument) {
@@ -51,22 +49,22 @@ export default ({
     };
 
     useEffect(() => {
-        if (childWindow.windowRefV1 && versionNum === 1) {
-            setHtmlDocument(childWindow.windowRefV1.getNativeWindow().document);
-            childWindow.windowRefV1.getNativeWindow().onclose = reset;
-        } else if (childWindow.windowRefV2 && versionNum === 2) {
-            setHtmlDocument(childWindow.windowRefV2.getWebWindow().document);
-            childWindow.windowRefV2.addListener("closed", reset);
-            childWindow.windowRefV2.removeListener("closed", reset);
+        if (childWindow.windowRef && versionNum === Version.one) {
+            setHtmlDocument(childWindow.windowRef.getNativeWindow().document);
+            childWindow.windowRef.getNativeWindow().onclose = reset;
+        } else if (childWindow.windowRef && versionNum === Version.two) {
+            setHtmlDocument(childWindow.windowRef.getWebWindow().document);
+            childWindow.windowRef.addListener("closed", reset);
+            childWindow.windowRef.removeListener("closed", reset);
         }
         return () => {
-            if (childWindow.windowRefV1) {
-                childWindow.windowRefV1.getNativeWindow().onclose = null;
-            } else if (childWindow.windowRefV2) {
-                childWindow.windowRefV2.removeListener("closed", reset);
+            if (childWindow.windowRef && versionNum === Version.one) {
+                childWindow.windowRef.getNativeWindow().onclose = null;
+            } else if (childWindow.windowRef && versionNum === Version.two) {
+                childWindow.windowRef.removeListener("closed", reset);
             }
         };
-    }, [childWindow.windowRefV1, childWindow.windowRefV2, versionNum]);
+    }, [childWindow.windowRef, versionNum]);
 
     useEffect(() => {
         if (shouldInheritCss) {
@@ -137,19 +135,19 @@ export default ({
                     if (shouldClosePreviousOnLaunch) {
                         await closeExistingWindow();
                     }
-                    if (versionNum === 1) {
+                    if (versionNum === Version.one) {
                         const newWindow = new fin.desktop.Window({ ...options, autoShow: true }, () => {
                             dispatch({
                                 payload: newWindow,
-                                type: WINDOW_ACTION.SET_V1_WINDOW,
+                                type: WINDOW_ACTION.SET_WINDOW,
                             });
                             dispatchNewState(WINDOW_STATE.LAUNCHED);
                         }, dispatchError);
 
-                    } else if (versionNum === 2) {
+                    } else if (versionNum === Version.two) {
                         dispatch({
                             payload: await fin.Window.create(options),
-                            type: WINDOW_ACTION.SET_V2_WINDOW,
+                            type: WINDOW_ACTION.SET_WINDOW,
                         });
                         dispatchNewState(WINDOW_STATE.LAUNCHED);
                     }
@@ -181,23 +179,20 @@ export default ({
 
     const close = useCallback(async () => {
         try {
-            if (childWindow.windowRefV1) {
-                await childWindow.windowRefV1.close();
-            }
-            if (childWindow.windowRefV2) {
-                await childWindow.windowRefV2.close();
+            if (childWindow.windowRef) {
+                await childWindow.windowRef.close();
             }
             reset();
         } catch (error) {
             dispatchError(error);
         }
-    }, [childWindow.windowRefV1, childWindow.windowRefV2, versionNum]);
+    }, [childWindow.windowRef]);
 
     return {
         close,
         launch,
         populate,
         state: childWindow.state,
-        windowRef: versionNum === 1 ? childWindow.windowRefV1 : childWindow.windowRefV2,
+        windowRef: childWindow.windowRef,
     };
 };

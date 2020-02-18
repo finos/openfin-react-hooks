@@ -1,31 +1,15 @@
 import { WindowOption } from "openfin/_v2/api/window/windowOption";
-import { useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { IUseChildWindowOptions } from "../index";
 import { injectNode, injectNodes } from "./utils/helpers/inject";
-import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
-import WINDOW_ACTION from "./utils/types/enums/WindowAction";
 import WINDOW_STATE from "./utils/types/enums/WindowState";
+import { IChildWindow, ChildWindowV1, ChildWindowV2 } from "./utils/types/ChildWindows";
 
 const Version = Object.freeze({
     one: 1,
     two: 2,
 });
-
-const createChildWindowV1 = (options: any) => {
-    return new Promise((resolve, reject) => {
-        const newWindow = new fin.desktop.Window({ ...options, autoShow: true }, () => {
-            resolve(newWindow);
-        }, reject);
-    });
-};
-const createChildWindowV2 = (options: any) => {
-    return fin.Window.create(options);
-};
-const createChildWindow = async (versionNum: number, options: any) =>
-    versionNum === Version.one ?
-        createChildWindowV1(options) :
-        createChildWindowV2(options);
 
 export default ({
     name,
@@ -37,18 +21,19 @@ export default ({
     shouldInheritCss,
     shouldInheritScripts,
 }: IUseChildWindowOptions) => {
-    const [childWindow, dispatch] = useReducer(reducer, INITIAL_WINDOW_STATE);
-    const [htmlDocument, setHtmlDocument] = useState<HTMLDocument | null>(null);
     const versionNum = fin.Window.getCurrentSync().getWebWindow ? Version.two : Version.one;
+    const [childWindow] = useState<IChildWindow>(versionNum === Version.one ? new ChildWindowV1() : new ChildWindowV2()); // useState for individual elements e.g. state
 
     const inheritScripts = useCallback(() => {
+        const htmlDocument = childWindow.getHtmlDocument();
         if (parentDocument && htmlDocument) {
             const parentScripts = parentDocument.getElementsByTagName("script");
             injectNodes(parentScripts, htmlDocument);
         }
-    }, [parentDocument, injectNodes, htmlDocument]);
+    }, [parentDocument, injectNodes, childWindow.getHtmlDocument()]);
 
     const inheritCss = useCallback(() => {
+        const htmlDocument = childWindow.getHtmlDocument();
         if (parentDocument && htmlDocument) {
             const externalStyles =  parentDocument.styleSheets;
             // tslint:disable-next-line: prefer-for-of
@@ -56,55 +41,15 @@ export default ({
                 injectNode(externalStyles[i].ownerNode, htmlDocument);
             }
         }
-    }, [parentDocument, injectNodes, htmlDocument]);
-
-    const reset = () => {
-        dispatch({ type: WINDOW_ACTION.RESET });
-        setHtmlDocument(null);
-    };
-
-    const setupChildForPopulationV1 = (childWindowRef: any) => {
-        setHtmlDocument(childWindowRef.getNativeWindow().document);
-        childWindowRef.getNativeWindow().onclose = reset;
-    };
-
-    const setupChildForPopulationV2 = (childWindowRef: any) => {
-        setHtmlDocument(childWindowRef.getWebWindow().document);
-        childWindowRef.addListener("closed", reset);
-        childWindowRef.removeListener("closed", reset);
-    };
-
-    const setupChildForPopulation = (childWindowRef: any) => {
-        versionNum === Version.one ?
-            setupChildForPopulationV1(childWindowRef) :
-            setupChildForPopulationV2(childWindowRef);
-    };
-
-    const removeChildOnCloseListenersV1 = (childWindowRef: any) => {
-        childWindowRef.getNativeWindow().onclose = null;
-    };
-
-    const removeChildOnCloseListenersV2 = (childWindowRef: any) => {
-        childWindowRef.removeListener("closed", reset);
-    };
-
-    const removeChildOnCloseListeners = (childWindowRef: any) => {
-        versionNum === Version.one ?
-            removeChildOnCloseListenersV1(childWindowRef) :
-            removeChildOnCloseListenersV2(childWindowRef);
-    };
+    }, [parentDocument, injectNodes, childWindow.getHtmlDocument()]);
 
     useEffect(() => {
-        if (childWindow.windowRef) {
-            setupChildForPopulation(childWindow.windowRef);
-        }
+        childWindow.setupListeners();
 
         return () => {
-            if (childWindow.windowRef) {
-                removeChildOnCloseListeners(childWindow.windowRef);
-            }
+            childWindow.removeListeners();
         };
-    }, [childWindow.windowRef]);
+    }, [childWindow.getWindow()]);
 
     useEffect(() => {
         if (shouldInheritCss) {
@@ -114,6 +59,7 @@ export default ({
             inheritScripts();
         }
 
+        const htmlDocument = childWindow.getHtmlDocument();
         if (cssUrl && htmlDocument) {
             const linkElement = htmlDocument.createElement("link");
             linkElement.setAttribute("rel", "stylesheet");
@@ -126,7 +72,7 @@ export default ({
         inheritCss,
         inheritScripts,
         injectNode,
-        htmlDocument,
+        childWindow.getHtmlDocument(),
     ]);
 
     useEffect(() => {
@@ -148,20 +94,6 @@ export default ({
         );
     }, [name]);
 
-    const dispatchError = (error: string) => {
-        dispatch({
-            error,
-            payload: WINDOW_STATE.ERROR,
-            type: WINDOW_ACTION.CHANGE_STATE,
-        });
-    };
-
-    const dispatchNewState = (state: WINDOW_STATE) =>
-        dispatch({
-            payload: state,
-            type: WINDOW_ACTION.CHANGE_STATE,
-        });
-
     const launch = useCallback(
         async (newWindowOptions?: WindowOption) => {
             const options = newWindowOptions
@@ -171,61 +103,51 @@ export default ({
                 : null;
             if (childWindow.state !== WINDOW_STATE.LAUNCHING && options) {
                 try {
-                    dispatchNewState(WINDOW_STATE.LAUNCHING);
+                    childWindow.setState(WINDOW_STATE.LAUNCHING);
                     if (shouldClosePreviousOnLaunch) {
                         await closeExistingWindow();
                     }
-                    createChildWindow(versionNum, options)
-                        .then((newWindow) => {
-                            dispatch({
-                                payload: newWindow,
-                                type: WINDOW_ACTION.SET_WINDOW,
-                            });
-                            dispatchNewState(WINDOW_STATE.LAUNCHED);
-                        })
-                        .catch(dispatchError);
+                    await childWindow.create(options);
                 } catch (error) {
-                    dispatchError(error);
+                    throw error;
                 }
             }
         },
-        [childWindow.state, closeExistingWindow, versionNum],
+        [childWindow.state, closeExistingWindow],
     );
 
     const populate = useCallback(
         (jsxElement: JSX.Element) => {
+            const htmlDocument = childWindow.getHtmlDocument();
             if (htmlDocument) {
                 try {
-                    dispatchNewState(WINDOW_STATE.POPULATING);
+                    childWindow.setState(WINDOW_STATE.POPULATING);
                     ReactDOM.render(
                         jsxElement,
                         htmlDocument.getElementById("root"),
                     );
-                    dispatchNewState(WINDOW_STATE.POPULATED);
+                    childWindow.setState(WINDOW_STATE.POPULATED);
                 } catch (error) {
-                    dispatchError(error);
+                    throw error;
                 }
             }
         },
-        [htmlDocument],
+        [childWindow.getHtmlDocument()],
     );
 
     const close = useCallback(async () => {
         try {
-            if (childWindow.windowRef) {
-                await childWindow.windowRef.close();
-            }
-            reset();
+            await childWindow.close();
         } catch (error) {
-            dispatchError(error);
+            throw error;
         }
-    }, [childWindow.windowRef]);
+    }, [childWindow.getWindow()]);
 
     return {
         close,
         launch,
         populate,
         state: childWindow.state,
-        windowRef: childWindow.windowRef,
+        windowRef: childWindow.getWindow(),
     };
 };

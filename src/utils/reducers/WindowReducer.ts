@@ -1,9 +1,10 @@
 import { _Window } from "openfin/_v2/api/window/window";
 import WINDOW_ACTION from "../types/enums/WindowAction";
 import WINDOW_STATE from "../types/enums/WindowState";
+import { IChildWindow } from "../types/ChildWindows";
 interface IState {
   state: WINDOW_STATE;
-  windowRef: any;
+  windowRef: IChildWindow | null;
 }
 
 interface IAction {

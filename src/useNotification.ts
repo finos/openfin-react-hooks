@@ -58,9 +58,10 @@ export default ({
 
     useEffect(() => {
         if (notificationWindow.windowRef) {
-            setHtmlDocument(
-                notificationWindow.windowRef.getWebWindow().document,
-            );
+            // setHtmlDocument(
+            //     notificationWindow.windowRef.getWebWindow().document,
+            // );
+            setHtmlDocument(null);
         }
     }, [notificationWindow.windowRef]);
 

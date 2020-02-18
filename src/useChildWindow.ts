@@ -63,23 +63,48 @@ export default ({
         setHtmlDocument(null);
     };
 
+    const setupChildForPopulationV1 = (childWindowRef: any) => {
+        setHtmlDocument(childWindowRef.getNativeWindow().document);
+        childWindowRef.getNativeWindow().onclose = reset;
+    };
+
+    const setupChildForPopulationV2 = (childWindowRef: any) => {
+        setHtmlDocument(childWindowRef.getWebWindow().document);
+        childWindowRef.addListener("closed", reset);
+        childWindowRef.removeListener("closed", reset);
+    };
+
+    const setupChildForPopulation = (childWindowRef: any) => {
+        versionNum === Version.one ?
+            setupChildForPopulationV1(childWindowRef) :
+            setupChildForPopulationV2(childWindowRef);
+    };
+
+    const removeChildOnCloseListenersV1 = (childWindowRef: any) => {
+        childWindowRef.getNativeWindow().onclose = null;
+    };
+
+    const removeChildOnCloseListenersV2 = (childWindowRef: any) => {
+        childWindowRef.removeListener("closed", reset);
+    };
+
+    const removeChildOnCloseListeners = (childWindowRef: any) => {
+        versionNum === Version.one ?
+            removeChildOnCloseListenersV1(childWindowRef) :
+            removeChildOnCloseListenersV2(childWindowRef);
+    };
+
     useEffect(() => {
-        if (childWindow.windowRef && versionNum === Version.one) {
-            setHtmlDocument(childWindow.windowRef.getNativeWindow().document);
-            childWindow.windowRef.getNativeWindow().onclose = reset;
-        } else if (childWindow.windowRef && versionNum === Version.two) {
-            setHtmlDocument(childWindow.windowRef.getWebWindow().document);
-            childWindow.windowRef.addListener("closed", reset);
-            childWindow.windowRef.removeListener("closed", reset);
+        if (childWindow.windowRef) {
+            setupChildForPopulation(childWindow.windowRef);
         }
+
         return () => {
-            if (childWindow.windowRef && versionNum === Version.one) {
-                childWindow.windowRef.getNativeWindow().onclose = null;
-            } else if (childWindow.windowRef && versionNum === Version.two) {
-                childWindow.windowRef.removeListener("closed", reset);
+            if (childWindow.windowRef) {
+                removeChildOnCloseListeners(childWindow.windowRef);
             }
         };
-    }, [childWindow.windowRef, versionNum]);
+    }, [childWindow.windowRef]);
 
     useEffect(() => {
         if (shouldInheritCss) {

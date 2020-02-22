@@ -1,14 +1,16 @@
 import { _Window } from "openfin/_v2/api/window/window";
+
+import { isWindow } from "../helpers/isWindow";
 import WINDOW_ACTION from "../types/enums/WindowAction";
 import WINDOW_STATE from "../types/enums/WindowState";
 interface IState {
   state: WINDOW_STATE;
-  windowRef: any;
+  windowRef: _Window | fin.OpenFinWindow | null;
 }
 
 interface IAction {
   error?: string;
-  payload?: any;
+  payload?: WINDOW_STATE | _Window | fin.OpenFinWindow;
   type: WINDOW_ACTION;
 }
 
@@ -16,11 +18,6 @@ export const INITIAL_WINDOW_STATE: IState = {
   state: WINDOW_STATE.INITIAL,
   windowRef: null,
 };
-
-function isWindow(payload: any) {
-  return payload.getNativeWindow !== undefined || // V1
-         payload.getWebWindow !== undefined; // V2
-}
 
 export default (state: IState, action: IAction): IState => {
   switch (action.type) {

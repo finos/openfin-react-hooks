@@ -1,8 +1,11 @@
 import { WindowOption } from "openfin/_v2/api/window/windowOption";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import ReactDOM from "react-dom";
+
 import { IUseChildWindowOptions } from "../index";
+import createWindow from "./utils/helpers/createWindow";
 import { injectNode, injectNodes } from "./utils/helpers/inject";
+import { isWindowV1, isWindowV2 } from "./utils/helpers/isWindow";
 import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
 import WINDOW_ACTION from "./utils/types/enums/WindowAction";
 import WINDOW_STATE from "./utils/types/enums/WindowState";
@@ -11,21 +14,6 @@ const Version = Object.freeze({
     one: 1,
     two: 2,
 });
-
-const createChildWindowV1 = (options: any) => {
-    return new Promise((resolve, reject) => {
-        const newWindow = new fin.desktop.Window({ ...options, autoShow: true }, () => {
-            resolve(newWindow);
-        }, reject);
-    });
-};
-const createChildWindowV2 = (options: any) => {
-    return fin.Window.create(options);
-};
-const createChildWindow = async (versionNum: number, options: any) =>
-    versionNum === Version.one ?
-        createChildWindowV1(options) :
-        createChildWindowV2(options);
 
 export default ({
     name,
@@ -64,18 +52,19 @@ export default ({
     };
 
     useEffect(() => {
-        if (childWindow.windowRef && versionNum === Version.one) {
+        if (childWindow.windowRef && isWindowV1(childWindow.windowRef)) {
             setHtmlDocument(childWindow.windowRef.getNativeWindow().document);
             childWindow.windowRef.getNativeWindow().onclose = reset;
-        } else if (childWindow.windowRef && versionNum === Version.two) {
+        } else if (childWindow.windowRef && isWindowV2(childWindow.windowRef)) {
             setHtmlDocument(childWindow.windowRef.getWebWindow().document);
             childWindow.windowRef.addListener("closed", reset);
             childWindow.windowRef.removeListener("closed", reset);
         }
+
         return () => {
-            if (childWindow.windowRef && versionNum === Version.one) {
+            if (childWindow.windowRef && isWindowV1(childWindow.windowRef)) {
                 childWindow.windowRef.getNativeWindow().onclose = null;
-            } else if (childWindow.windowRef && versionNum === Version.two) {
+            } else if (childWindow.windowRef && isWindowV2(childWindow.windowRef)) {
                 childWindow.windowRef.removeListener("closed", reset);
             }
         };
@@ -150,7 +139,7 @@ export default ({
                     if (shouldClosePreviousOnLaunch) {
                         await closeExistingWindow();
                     }
-                    createChildWindow(versionNum, options)
+                    createWindow(versionNum, options)
                         .then((newWindow) => {
                             dispatch({
                                 payload: newWindow,

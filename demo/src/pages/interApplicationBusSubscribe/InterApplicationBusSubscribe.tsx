@@ -13,13 +13,16 @@ const sendMessage = () => window.fin.InterApplicationBus.send(IDENTITY, TOPIC, c
 const codeExample = `import {useInterApplicationBusSubscribe} from "openfin-react-hooks";
 
 const Component = () => {
-    const {data, isSubscribed, subscribeError} = useInterApplicationBusSubscribe(window.fin.Window.me, "demo-topic");
+    const [numMessages, setNumMessages] = useState(0);
+    const onReceiveMessage = () => setNumMessages((currentNumMessages) => currentNumMessages + 1);
+    const onFail = (error: unknown) => { throw error; };
+    const isSubscribed = useInterApplicationBusSubscribe(IDENTITY, TOPIC, onReceiveMessage, onFail);
 
     return (
         <div>
+            <button type="button" onClick={sendMessage}>Send Message</button>
             <div>{isSubscribed ? "Subscribed" : "Subscribing"} to <strong>demo-topic</strong></div>
-            {subscribeError && <div>Subscribe error: \${subscribeError}</div>}
-            <div>Last received message: {data ? data.message : "None"}</div>
+            <div>Last received message: {numMessages ? numMessages : "None"}</div>
         </div>
     );
 }

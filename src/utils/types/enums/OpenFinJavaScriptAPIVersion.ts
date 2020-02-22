@@ -1,4 +1,4 @@
-enum OpenFinJavaScriptAPIVersion {
+const enum OpenFinJavaScriptAPIVersion {
     ONE,
     TWO,
 }

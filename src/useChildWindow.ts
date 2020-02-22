@@ -10,11 +10,6 @@ import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
 import WINDOW_ACTION from "./utils/types/enums/WindowAction";
 import WINDOW_STATE from "./utils/types/enums/WindowState";
 
-const Version = Object.freeze({
-    one: 1,
-    two: 2,
-});
-
 export default ({
     name,
     windowOptions,
@@ -27,7 +22,8 @@ export default ({
 }: IUseChildWindowOptions) => {
     const [childWindow, dispatch] = useReducer(reducer, INITIAL_WINDOW_STATE);
     const [htmlDocument, setHtmlDocument] = useState<HTMLDocument | null>(null);
-    const versionNum = fin.Window.getCurrentSync().getWebWindow ? Version.two : Version.one;
+    const version = fin.Window.getCurrentSync().getWebWindow ?
+        OpenFinJavaScriptAPIVersion.TWO : OpenFinJavaScriptAPIVersion.ONE;
 
     const inheritScripts = useCallback(() => {
         if (parentDocument && htmlDocument) {
@@ -68,7 +64,7 @@ export default ({
                 childWindow.windowRef.removeListener("closed", reset);
             }
         };
-    }, [childWindow.windowRef, versionNum]);
+    }, [childWindow.windowRef, version]);
 
     useEffect(() => {
         if (shouldInheritCss) {
@@ -139,7 +135,7 @@ export default ({
                     if (shouldClosePreviousOnLaunch) {
                         await closeExistingWindow();
                     }
-                    createWindow(versionNum, options)
+                    createWindow(version, options)
                         .then((newWindow) => {
                             dispatch({
                                 payload: newWindow,
@@ -153,7 +149,7 @@ export default ({
                 }
             }
         },
-        [childWindow.state, closeExistingWindow, versionNum],
+        [childWindow.state, closeExistingWindow, version],
     );
 
     const populate = useCallback(

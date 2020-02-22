@@ -10,7 +10,7 @@ const createWindowV1 = (options: WindowOption): Promise<fin.OpenFinWindow> =>
 
 const createWindowV2 = (options: WindowOption): Promise<_Window> => fin.Window.create(options);
 
-export default (versionNum: number, options: WindowOption): Promise<fin.OpenFinWindow | _Window> =>
-    versionNum === 1 ?
+export default (version: OpenFinJavaScriptAPIVersion, options: WindowOption): Promise<fin.OpenFinWindow | _Window> =>
+    version === OpenFinJavaScriptAPIVersion.ONE ?
         createWindowV1(options) :
         createWindowV2(options);

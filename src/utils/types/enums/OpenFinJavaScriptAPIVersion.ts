@@ -1,0 +1,4 @@
+enum OpenFinJavaScriptAPIVersion {
+    ONE,
+    TWO,
+}

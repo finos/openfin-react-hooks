@@ -1,9 +1,11 @@
-import { _Window } from "openfin/_v2/api/window/window";
 import { WindowOption } from "openfin/_v2/api/window/windowOption";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import ReactDOM from "react-dom";
+
 import { IUseChildWindowOptions } from "../index";
+import createWindow from "./utils/helpers/createWindow";
 import { injectNode, injectNodes } from "./utils/helpers/inject";
+import { isWindowV1, isWindowV2 } from "./utils/helpers/isWindow";
 import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
 import WINDOW_ACTION from "./utils/types/enums/WindowAction";
 import WINDOW_STATE from "./utils/types/enums/WindowState";
@@ -20,6 +22,8 @@ export default ({
 }: IUseChildWindowOptions) => {
     const [childWindow, dispatch] = useReducer(reducer, INITIAL_WINDOW_STATE);
     const [htmlDocument, setHtmlDocument] = useState<HTMLDocument | null>(null);
+    const version = fin.Window.getCurrentSync().getWebWindow ?
+        OpenFinJavaScriptAPIVersion.TWO : OpenFinJavaScriptAPIVersion.ONE;
 
     const inheritScripts = useCallback(() => {
         if (parentDocument && htmlDocument) {
@@ -44,17 +48,23 @@ export default ({
     };
 
     useEffect(() => {
-        if (childWindow.windowRef) {
+        if (childWindow.windowRef && isWindowV1(childWindow.windowRef)) {
+            setHtmlDocument(childWindow.windowRef.getNativeWindow().document);
+            childWindow.windowRef.getNativeWindow().onclose = reset;
+        } else if (childWindow.windowRef && isWindowV2(childWindow.windowRef)) {
             setHtmlDocument(childWindow.windowRef.getWebWindow().document);
             childWindow.windowRef.addListener("closed", reset);
             childWindow.windowRef.removeListener("closed", reset);
         }
+
         return () => {
-            if (childWindow.windowRef) {
+            if (childWindow.windowRef && isWindowV1(childWindow.windowRef)) {
+                childWindow.windowRef.getNativeWindow().onclose = null;
+            } else if (childWindow.windowRef && isWindowV2(childWindow.windowRef)) {
                 childWindow.windowRef.removeListener("closed", reset);
             }
         };
-    }, [childWindow.windowRef]);
+    }, [childWindow.windowRef, version]);
 
     useEffect(() => {
         if (shouldInheritCss) {
@@ -125,17 +135,21 @@ export default ({
                     if (shouldClosePreviousOnLaunch) {
                         await closeExistingWindow();
                     }
-                    dispatch({
-                        payload: await fin.Window.create(options),
-                        type: WINDOW_ACTION.SET_WINDOW,
-                    });
-                    dispatchNewState(WINDOW_STATE.LAUNCHED);
+                    createWindow(version, options)
+                        .then((newWindow) => {
+                            dispatch({
+                                payload: newWindow,
+                                type: WINDOW_ACTION.SET_WINDOW,
+                            });
+                            dispatchNewState(WINDOW_STATE.LAUNCHED);
+                        })
+                        .catch(dispatchError);
                 } catch (error) {
                     dispatchError(error);
                 }
             }
         },
-        [childWindow.state, closeExistingWindow],
+        [childWindow.state, closeExistingWindow, version],
     );
 
     const populate = useCallback(

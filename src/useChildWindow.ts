@@ -22,7 +22,7 @@ export default ({
     shouldInheritScripts,
 }: IUseChildWindowOptions) => {
     const versionNum = fin.Window.getCurrentSync().getWebWindow ? Version.two : Version.one;
-    const [childWindow] = useState<IChildWindow>(versionNum === Version.one ? new ChildWindowV1() : new ChildWindowV2()); // useState for individual elements e.g. state
+    const [childWindow, setChildWindow] = useState<IChildWindow>(versionNum === Version.one ? new ChildWindowV1() : new ChildWindowV2());
 
     const inheritScripts = useCallback(() => {
         const htmlDocument = childWindow.getHtmlDocument();
@@ -30,7 +30,7 @@ export default ({
             const parentScripts = parentDocument.getElementsByTagName("script");
             injectNodes(parentScripts, htmlDocument);
         }
-    }, [parentDocument, injectNodes, childWindow.getHtmlDocument()]);
+    }, [parentDocument, injectNodes, childWindow.htmlDocument]);
 
     const inheritCss = useCallback(() => {
         const htmlDocument = childWindow.getHtmlDocument();
@@ -41,15 +41,15 @@ export default ({
                 injectNode(externalStyles[i].ownerNode, htmlDocument);
             }
         }
-    }, [parentDocument, injectNodes, childWindow.getHtmlDocument()]);
+    }, [parentDocument, injectNodes, childWindow.htmlDocument]);
 
     useEffect(() => {
-        childWindow.setupListeners();
+        childWindow.setupListeners(setChildWindow);
 
         return () => {
             childWindow.removeListeners();
         };
-    }, [childWindow.getWindow()]);
+    }, [childWindow.window]);
 
     useEffect(() => {
         if (shouldInheritCss) {
@@ -72,14 +72,14 @@ export default ({
         inheritCss,
         inheritScripts,
         injectNode,
-        childWindow.getHtmlDocument(),
+        childWindow.htmlDocument,
     ]);
 
     useEffect(() => {
         if (childWindow.state === WINDOW_STATE.LAUNCHED && jsx) {
             populate(jsx);
         }
-    }, [childWindow.state]);
+    }, [childWindow.state, childWindow.htmlDocument]);
 
     const closeExistingWindow = useCallback(async () => {
         const application = await fin.Application.getCurrent();
@@ -103,11 +103,11 @@ export default ({
                 : null;
             if (childWindow.state !== WINDOW_STATE.LAUNCHING && options) {
                 try {
-                    childWindow.setState(WINDOW_STATE.LAUNCHING);
+                    childWindow.setState(WINDOW_STATE.LAUNCHING, setChildWindow);
                     if (shouldClosePreviousOnLaunch) {
                         await closeExistingWindow();
                     }
-                    await childWindow.create(options);
+                    await childWindow.create(options, setChildWindow);
                 } catch (error) {
                     throw error;
                 }
@@ -121,33 +121,33 @@ export default ({
             const htmlDocument = childWindow.getHtmlDocument();
             if (htmlDocument) {
                 try {
-                    childWindow.setState(WINDOW_STATE.POPULATING);
+                    childWindow.setState(WINDOW_STATE.POPULATING, setChildWindow);
                     ReactDOM.render(
                         jsxElement,
                         htmlDocument.getElementById("root"),
                     );
-                    childWindow.setState(WINDOW_STATE.POPULATED);
+                    childWindow.setState(WINDOW_STATE.POPULATED, setChildWindow);
                 } catch (error) {
                     throw error;
                 }
             }
         },
-        [childWindow.getHtmlDocument()],
+        [childWindow.htmlDocument],
     );
 
     const close = useCallback(async () => {
         try {
-            await childWindow.close();
+            await childWindow.close(setChildWindow);
         } catch (error) {
             throw error;
         }
-    }, [childWindow.getWindow()]);
+    }, [childWindow.window]);
 
     return {
         close,
         launch,
         populate,
         state: childWindow.state,
-        windowRef: childWindow.getWindow(),
+        windowRef: childWindow.window,
     };
 };

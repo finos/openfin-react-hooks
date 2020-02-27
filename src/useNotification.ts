@@ -38,7 +38,7 @@ export default ({
 }: IUseNotificationOptions) => {
     const version = fin.Window.getCurrentSync().getWebWindow ?
         OpenFinJavaScriptAPIVersion.TWO : OpenFinJavaScriptAPIVersion.ONE;
-    const [name, setName] = useState<string | null>(null);
+    const [windowOptions, setWindowOptions] = useState<WindowOption | null>(null);
     const [htmlDocument, setHtmlDocument] = useState<HTMLDocument | null>(null);
     const [populateJsx, setPopulateJsx] = useState<JSX.Element | null>(null);
     const [ref, setRef] = useState<IOpenFinNotification | null>(null);
@@ -74,11 +74,11 @@ export default ({
 
     useEffect(() => {
         if (
-            name &&
+            windowOptions &&
             ref &&
             notificationWindow.state === WINDOW_STATE.LAUNCHING
         ) {
-            getNotificationWindow(version, name).then((childWindow) => {
+            getNotificationWindow(version, windowOptions).then((childWindow) => {
                 dispatch({
                     payload: childWindow,
                     type: WINDOW_ACTION.SET_WINDOW,
@@ -86,15 +86,11 @@ export default ({
                 dispatchNewState(WINDOW_STATE.LAUNCHED);
             }).catch((error) => { throw error; });
         }
-    }, [name, notificationWindow.state, ref]);
+    }, [windowOptions, notificationWindow.state, ref]);
 
     useEffect(() => {
         if (ref && ref.noteWin) {
-            if (version === OpenFinJavaScriptAPIVersion.ONE) {
-                setName(ref.noteWin.windowOpts.uuid || null);
-            } else {
-                setName(ref.noteWin.windowOpts.name || null);
-            }
+            setWindowOptions(ref.noteWin.windowOpts || null);
         }
     }, [ref]);
 
@@ -107,7 +103,7 @@ export default ({
         ) {
             populate(jsxElement);
         }
-    }, [jsx, populateJsx, name, notificationWindow]);
+    }, [jsx, populateJsx, windowOptions, notificationWindow]);
 
     useEffect(() => {
         if (shouldInheritCss) {

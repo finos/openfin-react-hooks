@@ -1,6 +1,7 @@
 import { _Window } from "openfin/_v2/api/window/window";
+import { WindowOption } from "openfin/_v2/api/window/windowOption";
 
-const getNotificationWindowV1 = (name: string): Promise<any> =>
+const getNotificationWindowV1 = (windowOptions: WindowOption): Promise<any> =>
     new Promise((resolve, reject) => {
         const application = fin.desktop.Application.getCurrent();
         application.getChildWindows((childWindows) => {
@@ -8,19 +9,19 @@ const getNotificationWindowV1 = (name: string): Promise<any> =>
                 // A "queueCounter" window needs to be filtered out (it has the same name/uuid):
                 .filter((win: any) => win.nativeWindow)
                 .map((win: any) => {
-                    if (win.uuid && win.uuid === name) {
+                    if (win.uuid && win.uuid === windowOptions.uuid) {
                         resolve(win);
                     }
                 });
         }, reject);
     });
 
-const getNotificationWindowV2 = (name: string): Promise<_Window> =>
+const getNotificationWindowV2 = (windowOptions: WindowOption): Promise<_Window> =>
     new Promise((resolve, reject) => {
         fin.Application.getCurrent().then(async (application) => {
             const childWindows = await application.getChildWindows();
             childWindows.map((win) => {
-                if (win.identity.name && win.identity.name === name) {
+                if (win.identity.name && win.identity.name === windowOptions.name) {
                     resolve(win);
                 }
             });
@@ -28,7 +29,10 @@ const getNotificationWindowV2 = (name: string): Promise<_Window> =>
         }).catch(reject);
     });
 
-export default (version: OpenFinJavaScriptAPIVersion, name: string): Promise<fin.OpenFinWindow | _Window> =>
+export default (
+    version: OpenFinJavaScriptAPIVersion,
+    windowOptions: WindowOption,
+): Promise<fin.OpenFinWindow | _Window> =>
     version === OpenFinJavaScriptAPIVersion.ONE ?
-        getNotificationWindowV1(name) :
-        getNotificationWindowV2(name);
+        getNotificationWindowV1(windowOptions) :
+        getNotificationWindowV2(windowOptions);

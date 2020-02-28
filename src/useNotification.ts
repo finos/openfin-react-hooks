@@ -12,7 +12,7 @@ import {
 } from "react";
 import ReactDOM from "react-dom";
 import { IUseNotificationOptions } from "../index";
-import getNotificationWindow from "./utils/helpers/getNotificationWindow";
+import getChildWindows from "./utils/helpers/getChildWindows";
 import { injectNode, injectNodes } from "./utils/helpers/inject";
 import { isWindowV1, isWindowV2 } from "./utils/helpers/isWindow";
 import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
@@ -78,13 +78,33 @@ export default ({
             ref &&
             notificationWindow.state === WINDOW_STATE.LAUNCHING
         ) {
-            getNotificationWindow(version, windowOptions).then((childWindow) => {
-                dispatch({
-                    payload: childWindow,
-                    type: WINDOW_ACTION.SET_WINDOW,
-                });
-                dispatchNewState(WINDOW_STATE.LAUNCHED);
-            }).catch((error) => { throw error; });
+            getChildWindows(version).then((childWindows: any[]) => {
+                let childWindow: _Window | fin.OpenFinWindow | null = null;
+                if (version === OpenFinJavaScriptAPIVersion.ONE) {
+                    childWindow = childWindows
+                        // A "queueCounter" window needs to be filtered out (it has the same name/uuid):
+                        .filter((win: fin.OpenFinWindow) => win.getNativeWindow())
+                        // This includes only notification windows.
+                        // There doesn't seem to be a better way of differentiating child windows from notifications:
+                        .filter((win: fin.OpenFinWindow) => win.name.includes("newNotifications"))
+                        .find((win) => (win.uuid && win.uuid === windowOptions.uuid));
+                } else {
+                    childWindows.map((win) => {
+                        if (win.identity.name && win.identity.name === windowOptions.name) {
+                            childWindow = win;
+                        }
+                    });
+                }
+                if (childWindow) {
+                    dispatch({
+                        payload: childWindow,
+                        type: WINDOW_ACTION.SET_WINDOW,
+                    });
+                    dispatchNewState(WINDOW_STATE.LAUNCHED);
+                } else {
+                    dispatchError("Failed to get notification window");
+                }
+            }).catch((error: any) => { throw error; });
         }
     }, [windowOptions, notificationWindow.state, ref]);
 

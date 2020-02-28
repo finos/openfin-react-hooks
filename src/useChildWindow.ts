@@ -1,9 +1,11 @@
+import { _Window } from "openfin/_v2/api/window/window";
 import { WindowOption } from "openfin/_v2/api/window/windowOption";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import ReactDOM from "react-dom";
 
 import { IUseChildWindowOptions } from "../index";
 import createWindow from "./utils/helpers/createWindow";
+import getChildWindows from "./utils/helpers/getChildWindows";
 import { injectNode, injectNodes } from "./utils/helpers/inject";
 import { isWindowV1, isWindowV2 } from "./utils/helpers/isWindow";
 import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
@@ -59,7 +61,10 @@ export default ({
 
         return () => {
             if (childWindow.windowRef && isWindowV1(childWindow.windowRef)) {
-                childWindow.windowRef.getNativeWindow().onclose = null;
+                const nativeWindow = childWindow.windowRef.getNativeWindow();
+                if (nativeWindow) {
+                    nativeWindow.onclose = null;
+                }
             } else if (childWindow.windowRef && isWindowV2(childWindow.windowRef)) {
                 childWindow.windowRef.removeListener("closed", reset);
             }
@@ -96,16 +101,16 @@ export default ({
     }, [childWindow.state]);
 
     const closeExistingWindow = useCallback(async () => {
-        const application = await fin.Application.getCurrent();
-        const childWindows = await application.getChildWindows();
-
-        await Promise.all(
-            childWindows.map((win) =>
-                win.identity.name && win.identity.name === name
-                    ? win.close()
-                    : Promise.resolve(),
-            ),
-        );
+        const windowsToClose: Array<fin.OpenFinWindow | _Window> = await getChildWindows(version);
+        if (version === OpenFinJavaScriptAPIVersion.ONE) {
+            await Promise.all(
+                windowsToClose.map((windowToClose) =>
+                    new Promise((resolve, reject) =>
+                        windowToClose.close(true, resolve, reject))));
+        } else if (version === OpenFinJavaScriptAPIVersion.TWO) {
+            await Promise.all(
+                windowsToClose.map((windowToClose) => windowToClose.close()));
+        }
     }, [name]);
 
     const dispatchError = (error: string) => {

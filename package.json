@@ -48,11 +48,9 @@
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
   },
-  "peerDependencies": {
-    "react": "^16.8.0"
-  },
   "dependencies": {
     "openfin-layouts": "^1.0.3",
+    "react": "16.13.0",
     "react-dom": "^16.10.1"
   }
 }

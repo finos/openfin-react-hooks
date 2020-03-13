@@ -104,7 +104,7 @@ export default ({
                 } else {
                     dispatchError("Failed to get notification window");
                 }
-            }).catch((error: any) => { throw error; });
+            }).catch((error: Error) => { throw error; });
         }
     }, [windowOptions, notificationWindow.state, ref]);
 

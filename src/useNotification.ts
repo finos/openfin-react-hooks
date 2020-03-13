@@ -176,18 +176,20 @@ export default ({
         });
     };
 
-    const reset = () => {
-        dispatch({ type: WINDOW_ACTION.RESET });
-        setHtmlDocument(null);
-        setRef(null);
-    };
+    const reset = async () =>
+        new Promise((resolve) => {
+            dispatch({ type: WINDOW_ACTION.RESET });
+            setHtmlDocument(null);
+            setRef(null);
+            resolve();
+        });
 
     const close = useCallback(async () => {
         try {
             if (ref) {
                 await ref.close();
             }
-            reset();
+            await reset();
         } catch (error) {
             throw new Error(error);
         }

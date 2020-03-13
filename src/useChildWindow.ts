@@ -44,10 +44,12 @@ export default ({
         }
     }, [parentDocument, injectNodes, htmlDocument]);
 
-    const reset = () => {
-        dispatch({ type: WINDOW_ACTION.RESET });
-        setHtmlDocument(null);
-    };
+    const reset = async () =>
+        new Promise((resolve) => {
+            dispatch({ type: WINDOW_ACTION.RESET });
+            setHtmlDocument(null);
+            resolve();
+        });
 
     useEffect(() => {
         if (childWindow.windowRef && isWindowV1(childWindow.windowRef)) {
@@ -180,7 +182,7 @@ export default ({
             if (childWindow.windowRef) {
                 await childWindow.windowRef.close();
             }
-            reset();
+            await reset();
         } catch (error) {
             dispatchError(error);
         }

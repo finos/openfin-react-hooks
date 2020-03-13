@@ -89,11 +89,8 @@ export default ({
                         .filter((win: fin.OpenFinWindow) => win.name.includes("newNotifications"))
                         .find((win) => (win.uuid && win.uuid === windowOptions.uuid));
                 } else {
-                    childWindows.map((win) => {
-                        if (win.identity.name && win.identity.name === windowOptions.name) {
-                            childWindow = win;
-                        }
-                    });
+                    childWindow = childWindows.find((win) =>
+                        win.identity.name && win.identity.name === windowOptions.name);
                 }
                 if (childWindow) {
                     dispatch({

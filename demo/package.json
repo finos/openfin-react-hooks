@@ -54,7 +54,6 @@
     "@types/uuid": "^3.4.4",
     "cross-env": "^5.2.0",
     "openfin-cli": "^2.0.8",
-    "react-scripts": "^3.3.0",
     "typescript": "3.4.5"
   }
 }

@@ -1,4 +1,5 @@
 import { _Window } from "openfin/_v2/api/window/window";
+import OpenFinJavaScriptAPIVersion from "../types/enums/OpenFinJavaScriptAPIVersion";
 
 const getChildWindowsV1 = (): Promise<fin.OpenFinWindow[]> =>
     new Promise((resolve, reject) => {

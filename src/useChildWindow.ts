@@ -7,6 +7,7 @@ import createWindow from "./utils/helpers/createWindow";
 import { injectNode, injectNodes } from "./utils/helpers/inject";
 import { isWindowV1, isWindowV2 } from "./utils/helpers/isWindow";
 import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
+import OpenFinJavaScriptAPIVersion from "./utils/types/enums/OpenFinJavaScriptAPIVersion";
 import WINDOW_ACTION from "./utils/types/enums/WindowAction";
 import WINDOW_STATE from "./utils/types/enums/WindowState";
 

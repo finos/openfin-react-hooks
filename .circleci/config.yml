@@ -23,15 +23,14 @@ jobs:
       # check the licenses for production dependencies
       - run: npm run license-validation
       - run: cd demo && npm run license-validation
+      # install peer dependencies
+      - run: sudo npm i react react-dom typescript
       # compile and lint
       - run: npm install
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: sudo npm install -g typescript
-      ## install peer dependencies
-      - run: sudo npm i react react-dom
       - run: npm run compile
       - run: npm run lint
       - restore_cache:

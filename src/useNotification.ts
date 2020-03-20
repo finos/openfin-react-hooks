@@ -12,7 +12,9 @@ import {
 } from "react";
 import ReactDOM from "react-dom";
 import { IUseNotificationOptions } from "../index";
+import getChildWindows from "./utils/helpers/getChildWindows";
 import { injectNode, injectNodes } from "./utils/helpers/inject";
+import { isWindowV1, isWindowV2 } from "./utils/helpers/isWindow";
 import reducer, { INITIAL_WINDOW_STATE } from "./utils/reducers/WindowReducer";
 import WINDOW_ACTION from "./utils/types/enums/WindowAction";
 import WINDOW_STATE from "./utils/types/enums/WindowState";
@@ -34,7 +36,9 @@ export default ({
     shouldInheritCss,
     shouldInheritScripts,
 }: IUseNotificationOptions) => {
-    const [name, setName] = useState<string | null>(null);
+    const version = fin.Window.getCurrentSync().getWebWindow ?
+        OpenFinJavaScriptAPIVersion.TWO : OpenFinJavaScriptAPIVersion.ONE;
+    const [windowOptions, setWindowOptions] = useState<WindowOption | null>(null);
     const [htmlDocument, setHtmlDocument] = useState<HTMLDocument | null>(null);
     const [populateJsx, setPopulateJsx] = useState<JSX.Element | null>(null);
     const [ref, setRef] = useState<IOpenFinNotification | null>(null);
@@ -57,37 +61,53 @@ export default ({
     }, [parentDocument, injectNodes, htmlDocument]);
 
     useEffect(() => {
-        if (notificationWindow.windowRef) {
+        if (notificationWindow.windowRef && isWindowV1(notificationWindow.windowRef)) {
             setHtmlDocument(
-                (notificationWindow.windowRef as _Window).getWebWindow().document,
+                notificationWindow.windowRef.getNativeWindow().document,
+            );
+        } else if (notificationWindow.windowRef && isWindowV2(notificationWindow.windowRef)) {
+            setHtmlDocument(
+                notificationWindow.windowRef.getWebWindow().document,
             );
         }
     }, [notificationWindow.windowRef]);
 
     useEffect(() => {
         if (
-            name &&
+            windowOptions &&
             ref &&
             notificationWindow.state === WINDOW_STATE.LAUNCHING
         ) {
-            fin.Application.getCurrent().then(async (application) => {
-                const childWindows = await application.getChildWindows();
-                childWindows.map((win) => {
-                    if (win.identity.name && win.identity.name === name) {
-                        dispatch({
-                            payload: win,
-                            type: WINDOW_ACTION.SET_WINDOW,
-                        });
-                    }
-                });
-                dispatchNewState(WINDOW_STATE.LAUNCHED);
-            });
+            getChildWindows(version).then((childWindows: any[]) => {
+                let childWindow: _Window | fin.OpenFinWindow | null = null;
+                if (version === OpenFinJavaScriptAPIVersion.ONE) {
+                    childWindow = childWindows
+                        // A "queueCounter" window needs to be filtered out (it has the same name/uuid):
+                        .filter((win: fin.OpenFinWindow) => win.getNativeWindow())
+                        // This includes only notification windows.
+                        // There doesn't seem to be a better way of differentiating child windows from notifications:
+                        .filter((win: fin.OpenFinWindow) => win.name.includes("newNotifications"))
+                        .find((win) => (win.uuid && win.uuid === windowOptions.uuid));
+                } else {
+                    childWindow = childWindows.find((win) =>
+                        win.identity.name && win.identity.name === windowOptions.name);
+                }
+                if (childWindow) {
+                    dispatch({
+                        payload: childWindow,
+                        type: WINDOW_ACTION.SET_WINDOW,
+                    });
+                    dispatchNewState(WINDOW_STATE.LAUNCHED);
+                } else {
+                    dispatchError("Failed to get notification window");
+                }
+            }).catch((error: Error) => { throw error; });
         }
-    }, [name, notificationWindow.state, ref]);
+    }, [windowOptions, notificationWindow.state, ref]);
 
     useEffect(() => {
         if (ref && ref.noteWin) {
-            setName(ref.noteWin.windowOpts.name || null);
+            setWindowOptions(ref.noteWin.windowOpts || null);
         }
     }, [ref]);
 
@@ -100,7 +120,7 @@ export default ({
         ) {
             populate(jsxElement);
         }
-    }, [jsx, populateJsx, name, notificationWindow]);
+    }, [jsx, populateJsx, windowOptions, notificationWindow]);
 
     useEffect(() => {
         if (shouldInheritCss) {
@@ -153,18 +173,20 @@ export default ({
         });
     };
 
-    const reset = () => {
-        dispatch({ type: WINDOW_ACTION.RESET });
-        setHtmlDocument(null);
-        setRef(null);
-    };
+    const reset = async () =>
+        new Promise((resolve) => {
+            dispatch({ type: WINDOW_ACTION.RESET });
+            setHtmlDocument(null);
+            setRef(null);
+            resolve();
+        });
 
     const close = useCallback(async () => {
         try {
             if (ref) {
                 await ref.close();
             }
-            reset();
+            await reset();
         } catch (error) {
             throw new Error(error);
         }

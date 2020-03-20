@@ -34,6 +34,7 @@
     "@babel/core": "7.8.7",
     "@babel/plugin-transform-typescript": "7.8.7",
     "@babel/preset-env": "7.8.7",
+    "@babel/register": "7.9.0",
     "@testing-library/react-hooks": "3.2.1",
     "@types/jest": "25.1.4",
     "@types/openfin": "^41.0.0",
@@ -53,6 +54,8 @@
     "react-dom": "^16.10.1"
   },
   "dependencies": {
-    "openfin-layouts": "^1.0.3"
+    "openfin-layouts": "^1.0.3",
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
   }
 }

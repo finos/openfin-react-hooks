@@ -30,6 +30,8 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: sudo npm install -g typescript
+      ## install peer dependencies
+      - run: sudo npm i react react-dom
       - run: npm run compile
       - run: npm run lint
       - restore_cache:

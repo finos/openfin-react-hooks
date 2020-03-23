@@ -15,17 +15,17 @@ jobs:
     working_directory: ~/build
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+      # - restore_cache:
+      #     keys:
+      #       - v1-dependencies-{{ checksum "package.json" }}
+      #       # fallback to using the latest cache if no exact match is found
+      #       - v1-dependencies-
       # check the licenses for production dependencies
       - run: npm run license-validation
       - run: cd demo && npm run license-validation
       # compile and lint
       - run: npm ci
-      # - run: npm install react react-scripts
+      - run: npm install react react-dom
       # run tests
       - run: npm test
       - save_cache:
@@ -35,15 +35,15 @@ jobs:
       - run: sudo npm install -g typescript
       - run: npm run compile
       - run: npm run lint
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "./demo/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+      # - restore_cache:
+      #     keys:
+      #       - v1-dependencies-{{ checksum "./demo/package.json" }}
+      #       # fallback to using the latest cache if no exact match is found
+      #       - v1-dependencies-
       # build the demo
       - run: cd demo && npm install
-      - save_cache:
-          paths:
-            - ./demo/node_modules
-          key: v1-dependencies-{{ checksum "./demo/package.json" }}
+      # - save_cache:
+      #     paths:
+      #       - ./demo/node_modules
+      #     key: v1-dependencies-{{ checksum "./demo/package.json" }}
       - run: cd demo && npm run build

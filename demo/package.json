@@ -8,7 +8,6 @@
     "openfin-layouts": "^1.0.3",
     "openfin-react-hooks": "file:../",
     "prismjs": "^1.16.0",
-    "react-dom": "^16.8.6",
     "react-html-parser": "^2.0.2",
     "react-router-dom": "^5.0.0",
     "react-switch": "^5.0.0",
@@ -53,8 +52,11 @@
     "@types/uuid": "^3.4.4",
     "cross-env": "^5.2.0",
     "openfin-cli": "^2.0.8",
-    "react": "^16.8.0",
     "react-scripts": "3.4.1",
     "typescript": "3.4.5"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0",
+    "react-dom": "^16.10.1"
   }
 }

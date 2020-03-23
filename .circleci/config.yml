@@ -25,6 +25,9 @@ jobs:
       - run: cd demo && npm run license-validation
       # compile and lint
       - run: npm install
+      - run: npm install react react-scripts
+      # run tests
+      - run: npm test
       - save_cache:
           paths:
             - node_modules

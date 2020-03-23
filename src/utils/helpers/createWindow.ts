@@ -1,5 +1,6 @@
 import { _Window } from "openfin/_v2/api/window/window";
 import { WindowOption } from "openfin/_v2/api/window/windowOption";
+import OpenFinJavaScriptAPIVersion from "../types/enums/OpenFinJavaScriptAPIVersion";
 
 const createWindowV1 = (options: WindowOption): Promise<fin.OpenFinWindow> =>
     new Promise((resolve, reject) => {

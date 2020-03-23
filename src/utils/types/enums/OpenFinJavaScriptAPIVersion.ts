@@ -1,4 +1,6 @@
-const enum OpenFinJavaScriptAPIVersion {
+enum OpenFinJavaScriptAPIVersion {
     ONE,
     TWO,
 }
+
+export default OpenFinJavaScriptAPIVersion;

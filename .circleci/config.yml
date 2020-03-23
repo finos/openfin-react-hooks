@@ -46,4 +46,4 @@ jobs:
       #     paths:
       #       - ./demo/node_modules
       #     key: v1-dependencies-{{ checksum "./demo/package.json" }}
-      - run: cd demo && npm run build
+      - run: npm run build

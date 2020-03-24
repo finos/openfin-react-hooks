@@ -106,12 +106,21 @@ export default ({
         const windowsToClose: Array<fin.OpenFinWindow | _Window> = await getChildWindows(version);
         if (version === OpenFinJavaScriptAPIVersion.ONE) {
             await Promise.all(
-                windowsToClose.map((windowToClose) =>
-                    new Promise((resolve, reject) =>
-                        windowToClose.close(true, resolve, reject))));
+                windowsToClose.map((windowToClose: any) =>
+                    new Promise((resolve, reject) => {
+                        if (windowToClose.name && windowToClose.name === name) {
+                            windowToClose.close(true, resolve, reject);
+                        } else {
+                            resolve();
+                        }
+                    })));
+
         } else if (version === OpenFinJavaScriptAPIVersion.TWO) {
             await Promise.all(
-                windowsToClose.map((windowToClose) => windowToClose.close()));
+                windowsToClose.map((windowToClose: any) =>
+                    (windowToClose.identity.name && windowToClose.identity.name === name)
+                        ? windowToClose.close()
+                        : Promise.resolve()));
         }
     }, [name]);
 

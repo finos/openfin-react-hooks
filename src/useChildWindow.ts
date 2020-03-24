@@ -107,10 +107,13 @@ export default ({
         if (version === OpenFinJavaScriptAPIVersion.ONE) {
             await Promise.all(
                 windowsToClose.map((windowToClose: any) =>
-                    (windowToClose.name && windowToClose.name === name)
-                        ? new Promise((resolve, reject) => {
-                            windowToClose.close(true, resolve, reject); })
-                        : Promise.resolve()));
+                    new Promise((resolve, reject) => {
+                        if (windowToClose.name && windowToClose.name === name) {
+                            windowToClose.close(true, resolve, reject);
+                        } else {
+                            resolve();
+                        }
+                    })));
 
         } else if (version === OpenFinJavaScriptAPIVersion.TWO) {
             await Promise.all(

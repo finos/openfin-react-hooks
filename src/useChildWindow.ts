@@ -141,6 +141,8 @@ export default ({
                     dispatchNewState(WINDOW_STATE.LAUNCHING);
                     if (shouldClosePreviousOnLaunch) {
                         await closeExistingWindow();
+                    } else {
+                        await reset();
                     }
                     createWindow(version, options)
                         .then((newWindow) => {
